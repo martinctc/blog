@@ -1,0 +1,13 @@
+---
+title: "First Post"
+author: "Martin Chan"
+date: "April 13, 2019"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+This is my first ever time creating a blog post using only RMarkdown. I used a template from the package called `prettyjekyll`, which was fairly straightforward. A lot of the styling and code is borrowed from Florian Privé, where you can check out his Github account at <https://github.com/privefl>.
+
+
