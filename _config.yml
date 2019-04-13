@@ -1,10 +1,10 @@
 #
 # This file contains configuration flags to customize your site
 # Name of your site (displayed in the header)
-name: Blog
+name: R Blog by Martin Chan
 
 # Short bio or description (displayed in the header)
-description: My blogs on all things R and Data Science
+description: A blog on all things R and Data Science
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://martinctc.github.io/cover.jpg
@@ -29,7 +29,7 @@ footer-links:
   email: martinchan53@gmail.com
   facebook:
   flickr:
-  github: 
+  github: http://www.github.com/martinctc
   instagram:
   linkedin: https://www.linkedin.com/in/martin-chan-tc
   pinterest:

@@ -14,7 +14,7 @@ library(tidyverse)
 ```
 
 
-Ever since I discovered [r-bloggers](https://www.r-bloggers.com/) and subsequently learnt so much from the useful articles contributed by R users all around the world, I've wanted to start a R blog myself. Part of the motivation is give back to the open source community, since I myself had benefitted so much from R vignettes, blogs, and Stack Overflow discussions. Another part of the motivation is to train myself to present code and ideas in a clear and understandable format, such that anyone else (or my future self) could understand what happened. 
+Ever since I discovered [r-bloggers](https://www.r-bloggers.com/) and had subsequently learnt so much from the useful articles contributed by R users all around the world, I've wanted to start a R blog myself. Part of the motivation is give back to the open source community, since I myself had benefitted so much from R vignettes, blogs, and Stack Overflow discussions. Another part of the motivation is to train myself to present code and ideas in a clear and understandable format, such that anyone else (or my future self) could understand what happened. 
 
 This isn't actually the first time I've tried to blog about R or any content with code, but on previous occasions I've felt discouraged or given up, partly because of the faff involved in getting the syntax highlighting and plots to display in the way that I want (I previously tried to blog on blogspot.com). I then heard about all this talk about blogging using RMarkdown - *what?* I decided to give it a try and was pleasantly surprised by how easy and streamlined the entire process was. I can even show ggplots!
 (Yes, it's *iris* again, groan - but hey, it works!)
