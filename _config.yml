@@ -3,24 +3,23 @@
 #
 
 # Name of your site (displayed in the header)
-name: 
+name: Blog
 
 # Short bio or description (displayed in the header)
-description: 
+description: My blogs on all things R and Data Science
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
-avatar: 
+avatar: https://avatars0.githubusercontent.com/u/17925865?s=460&amp
 
 # Your website URL (e.g. https://barryclark.github.io or https://www.barryclark.co)
 # Used for Sitemap.xml and your RSS feed
-url: 
+url: https://martinctc.github.io
 
 # If you're hosting your site at a Project repository on GitHub pages
 # (http://yourusername.github.io/repository-name)
 # and NOT your User repository (http://yourusername.github.io)
 # then add in the baseurl here, like this: "/repository-name"
-baseurl: 
-
+baseurl: https://martinctc.github.io/blog
 
 #
 # Flags below are optional
