@@ -8,6 +8,29 @@ output:                    # DO NOT CHANGE
     highlight: github      # DO NOT CHANGE
 ---
 
-This is my first ever time creating a blog post using only RMarkdown. I used a template from the package called `prettyjekyll`, which was fairly straightforward. A lot of the styling and code is borrowed from Florian Privé, where you can check out his Github account at <https://github.com/privefl>.
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+```
+
+
+Ever since I discovered [r-bloggers](https://www.r-bloggers.com/) and subsequently learnt so much from the useful articles contributed by R users all around the world, I've wanted to start a R blog myself. Part of the motivation is give back to the open source community, since I myself had benefitted so much from R vignettes, blogs, and Stack Overflow discussions. Another part of the motivation is to train myself to present code and ideas in a clear and understandable format, such that anyone else (or my future self) could understand what happened. 
+
+This isn't actually the first time I've tried to blog about R or any content with code, but on previous occasions I've felt discouraged or given up, partly because of the faff involved in getting the syntax highlighting and plots to display in the way that I want (I previously tried to blog on blogspot.com). I then heard about all this talk about blogging using RMarkdown - *what?* I decided to give it a try and was pleasantly surprised by how easy and streamlined the entire process was. I can even show ggplots!
+(Yes, it's *iris* again, groan - but hey, it works!)
+
+```{r}
+iris %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point()
+```
+
+
+If you're interested in blogging about R, I highly recommend that you give it a go. I even managed to host this on GitHub pages, which means you get free hosting, which is pretty bomb. 
+
+To get started, check out [this](https://github.com/privefl/jekyll-now-r-template) repo, which provides a template to build a lightweight, effective blog optimised for sharing R code.
+
+## Note
+
+This is my first ever time creating a blog post using only RMarkdown. I used a template from the package called `prettyjekyll`, which was fairly straightforward. A lot of the styling and the inital code was borrowed from Florian Privé, where you can check out his Github account at <https://github.com/privefl>.
 
 
