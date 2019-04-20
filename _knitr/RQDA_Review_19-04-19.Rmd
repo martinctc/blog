@@ -1,0 +1,87 @@
+---
+title: "A Short R Package Review: RQDA"
+author: "Martin Chan"
+date: "April 19, 2019"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+library(emo) # devtools::install_github("hadley/emo")
+# prettyjekyll::FormatPost("_knitr/RQDA_Review_19-04-19.Rmd")
+```
+
+### A favourite R package? 
+
+Whenever I'm asked the question of what is my *favourite* R package, I often go through this reasoning: [tidyverse](https://www.tidyverse.org/) packages, such as [dplyr](https://dplyr.tidyverse.org/) and [tidyr](https://tidyr.tidyverse.org/), are what I'd call "essentials" i.e. packages that I would always load for almost every piece of analysis in R. I love tidyverse, but when we are talking about a *favourite* package, they do not feel quite like the right candidates. The reason is because tidyverse packages are so intrinsic to my personal routine of using R that it's almost like saying "Water is my favourite drink because I can't live without it." Plus, answering that tidyverse is my favourite package feels like I'm not putting much of an effort in the answer at all! `r emo::ji("smile")`
+
+```{r meme, echo=FALSE, out.width = '40%', out.extra='style="float:right; padding:10px"'}
+knitr::include_graphics("../images/one-does-not-simply-pick-a-favourite-r-package.jpg")
+```
+
+Other candidates include useful "specialist" packages, [^1] like [tidytext](https://github.com/juliasilge/tidytext) and [tm](http://tm.r-forge.r-project.org/) for text mining, [mschart](https://github.com/ardata-fr/mschart) and [officer](https://davidgohel.github.io/officer/) for manipulating Office documents, as well as [shinydashboard](https://rstudio.github.io/shinydashboard/) and [flexdashboard](https://github.com/rstudio/flexdashboard) for creating either dynamic or static dashboard outputs. But that doesn't make the decision easy either - I love how each of these packages work so well for the purpose that they are designed for, and most of these are very well-maintained, documented, with plenty of vignettes (some have entire books written around the package - see [tidytext](https://www.tidytextmining.com/)) for users to follow through examples. You can't compare them based on "value added" either, as the value they add to a workflow does depend entirely on what you are trying to achieve in an analysis or output.
+
+The final approach that I usually take is what one could describe as a test on *emotive impact* i.e. *which package, in my experience of learning to do things with R, made the largest impression on me?* 
+
+> which package, in my experience of learning to do things with R, made the largest impression on me?
+
+Now, this question is much easier to answer, firstly because the criteria are relaxed on the performance, quality, and the use-value of the package, and secondly the focus is more around my personal experience with the package in the past. 
+
+### RQDA - Qualitative Data Analysis in R
+
+The first answer that comes to mind is a package written by Huang Ronggui called [RQDA](https://github.com/Ronggui/RQDA), which stands for *R-based Qualitative Data Analysis*. In my previous life working in market research, I had worked on a number of qualitative projects which involved conducting semi-structured interviews with customers. These interviews tend to be fairly open-ended conversations lasting from half an hour to two hours, and are importantly different from **surveys** because there are no pre-set answers to select from or even questions. As a moderator, you are supposed to allow a conversation to develop naturally, and steer it in a way through prompts so that it helps you understand the motivations and the experience of customer journeys. 
+
+From a data point-of-view, the output of these interviews come through as text transcripts (created from audio recordings) - effectively, as large bodies of unstructured text saved in Word documents. The data analyst's instinct is perhaps to run some form of word or n-gram frequency analysis, but this often fails to uncover or capture the valuable themes or contextual information that researchers are looking after. Traditionally, market researchers analyse qualitative data in a manual, not-so-systematic approach - by reading through the transcripts, highlighting themes and quotes, and almost through 'mental impression' piece together a narrative or a set of implications that arise from the analysis. It almost goes without saying that this approach isn't ideal either, as it is unscalable, prone to human error, excessively reliant on human memory, and does not lend itself to collaborative analysis.
+
+```{r rqda-gui, echo=FALSE, out.width='40%', out.extra='style="float:right; padding:10px"'}
+knitr::include_graphics("../images/rqda-gui.png")
+```
+
+Enter RQDA: a package that combines the benefits of human interpretation and systematic, computer-assisted analysis. When you run `library(RQDA)`, the package launches a GUI (using RGtk2) that allows you to import text files and manually highlight and classify chunks of text into themes (which is what market researchers do anyway when highlighting Word documents).
+
+What's amazing about RQDA is that it generates a SQLite database in the back-end (as an RQDA object), which you can then query with SQL (using [RSQlite](https://github.com/r-dbi/RSQLite/)) to answer questions like the co-occurence of themes from an interview, or whether certain themes come up more often when a respondent is a millennial versus an "empty-nest" pensioner. If you do choose to run any form of text analytics, the enables you to get much further as the thematic analysis covers off any contextual and nuanced information that a straight text mining exercise wouldn't likely to have been able to capture. Even if you don't run any text analytics, RQDA already improves on the 'informal' method of analysis by having all the quotes, themes, and classification of respondents organised in a very accessible structure. For instance, you can very easily check whether your narrative makes sense by identifying the quotes that relate to a certain theme.
+
+Other nifty features of the RQDA package include:
+- Export coded / marked-up transcripts as HTML
+- Export all codings / marked-up text as HTML
+- Automated coding through keyword match, e.g. if the paragraph contains "dietician", code to the theme "Reference to dietician"
+
+Here are some code snippets that I've used in the past, which became very handy:
+```{r eval = FALSE}
+# Extract the full transcript from the SQLite database
+RQDAQuery(sql="SELECT name, file FROM source")
+
+# Automated coding - for the keyword "hacking"
+# cid refers to the code / theme id
+codingBySearch("hacking",fid = getFileIds(), cid = 22)
+
+# Export All Codings as HTML file 
+file_prefix <- "PROJECTCODE CONTENT" # Customise file name
+cod.name <- timed_fn(file_prefix,".html")
+exportCodings(file=cod.name)
+```
+
+### Conclusion?
+
+The reason why RQDA made such a impression on me is because I came across it at as a beginner in R, and the fact that such a package existed at all to accommodate such a specific analysis need really made me realise the potential and versatility of the R community and its packages - especially when people tend to associate statistical analysis with R, and not with qualitative research. I'd say RQDA is a pretty fit-for-purpose, reasonably well-documented (could do with more vignettes), but you're unlikely to use it unless you do have to work on a sizeable qualitative project with multiple transcripts.  
+
+### Rating
+
+- **Fit-for-purpose**: 4.5/5 - You can run a full qualitative project with RQDA. From my own experience, I used RQDA to achieve everything I wanted to achieve from NVivo, another computer-assisted qualitative data analysis software (but is not open-source).
+
+- **Quality of Documentation**: 4/5 - Could benefit from more vignettes with practical examples. The [package site](http://rqda.r-forge.r-project.org/) is very detailed though. There are some old but still pretty useful YouTube videos out there which were really helpful to me when I learnt it.[^2]
+
+- **Easy to learn**: 4/5 - You can do a fair amount even if you don't do SQL queries - the GUI interface certainly helps, even if you are a beginner in R. 
+
+- **Features**: 3.5/5 - could have options to enable pretty plotting of network graphs. You do need to put in a bit more work to get out the data out for pretty visualisation.
+
+[^1]: "Specialist" as in designed for a specific area of analysis, as opposed to **dplyr**, or **data.table**, which are general packages that you would need for any kind of analysis.
+
+[^2]: Check out Mekin Caliskan's [videos](https://www.youtube.com/user/RQDAtuto) on RQDA. I've embedded his introduction to RQDA video below:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mLsyGH3ztYY" frameborder="0" allowfullscreen></iframe>
+
+
