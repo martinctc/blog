@@ -26,7 +26,7 @@ Other candidates include useful "specialist" packages[^1],  such as [tidytext](h
 
 The final approach that I usually take is what one could describe as a test on *emotive impact* i.e. *which package, in my experience of learning to do things with R, made the largest impression on me?* 
 
-> which package, in my experience of learning to do things with R, made the largest impression on me?
+> Which package, in my experience of learning to do things with R, made the largest impression on me?
 
 Now, this question is much easier to answer, firstly because the criteria are relaxed on the performance, quality, and the use-value of the package, and secondly the focus is more around my personal experience with the package in the past. 
 
