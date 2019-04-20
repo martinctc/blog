@@ -22,7 +22,7 @@ Whenever I'm asked the question of what my *favourite* R package is, I often go 
 knitr::include_graphics("../images/one-does-not-simply-pick-a-favourite-r-package.jpg")
 ```
 
-Other candidates include useful "specialist" packages, [^1] like [tidytext](https://github.com/juliasilge/tidytext) and [tm](http://tm.r-forge.r-project.org/) for text mining, [mschart](https://github.com/ardata-fr/mschart) and [officer](https://davidgohel.github.io/officer/) for manipulating Office documents, as well as [shinydashboard](https://rstudio.github.io/shinydashboard/) and [flexdashboard](https://github.com/rstudio/flexdashboard) for creating either dynamic or static dashboard outputs. But that doesn't make the decision easy either - I love how each of these packages work so well for the purpose that they are designed for, and most of these are very well-maintained, documented, with plenty of vignettes (some have entire books written around the package - see [tidytext](https://www.tidytextmining.com/)) for users to follow through examples. You can't compare them based on "value added" either, as the value they add to a workflow does depend entirely on what you are trying to achieve in an analysis or output.
+Other candidates include useful "specialist" packages[^1],  such as [tidytext](https://github.com/juliasilge/tidytext) and [tm](http://tm.r-forge.r-project.org/) for text mining, [mschart](https://github.com/ardata-fr/mschart) and [officer](https://davidgohel.github.io/officer/) for manipulating Office documents, as well as [shinydashboard](https://rstudio.github.io/shinydashboard/) and [flexdashboard](https://github.com/rstudio/flexdashboard) for creating either dynamic or static dashboard outputs. But that doesn't make the decision easy either - I love how each of these packages work so well for the purpose that they are designed for, and most of these are very well-maintained, documented, with plenty of vignettes (some have entire books written around the package - see [tidytext](https://www.tidytextmining.com/)) for users to follow through examples. You can't compare them based on "value added" either, as the value they add to a workflow does depend entirely on what you are trying to achieve in an analysis or output.
 
 The final approach that I usually take is what one could describe as a test on *emotive impact* i.e. *which package, in my experience of learning to do things with R, made the largest impression on me?* 
 
@@ -68,7 +68,7 @@ exportCodings(file=cod.name)
 
 The reason why RQDA made such a impression on me is because I came across it at as a beginner in R, and the fact that such a package existed at all to accommodate such a specific analysis need really made me realise the potential and versatility of the R community and its packages - especially when people tend to associate statistical analysis with R, and not with qualitative research. I'd say RQDA is a pretty fit-for-purpose, reasonably well-documented (could do with more vignettes), but you're unlikely to use it unless you do have to work on a sizeable qualitative project with multiple transcripts.  
 
-### Rating
+### Rating `r emo::ji("star2")`
 
 - **Fit-for-purpose**: 4.5/5 - You can run a full qualitative project with RQDA. From my own experience, I used RQDA to achieve everything I wanted to achieve from NVivo, another computer-assisted qualitative data analysis software (but is not open-source).
 
