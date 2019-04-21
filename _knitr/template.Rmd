@@ -1,0 +1,14 @@
+---
+title: "Post Title
+author: "Martin Chan"
+date: "April 13, 2019"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+# prettyjekyll::FormatPost("_knitr/First_Post_13-04-19.Rmd")
+```
