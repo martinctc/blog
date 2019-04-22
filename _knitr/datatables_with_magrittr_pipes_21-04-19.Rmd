@@ -20,49 +20,49 @@ library(data.table)
 
 ## Why ask the question?
 
-If you are fairly new to R, you might find it puzzling / intriguing that R questions on Stack Overflow tend to attract a range of solutions which all have different syntax "styles", but almost all seem to valid answers to some extent (as indicated by the number of upvotes to the solution). This is because there are three main syntax styles in the R universe:
+If you are fairly new to R, you might find it puzzling / intriguing that R questions on Stack Overflow tend to attract a range of solutions which all have different syntax "styles", but almost all seem to be valid answers to some extent (as indicated by the number of upvotes to the solution). This is because there are three main syntax styles in the R universe:
 
 ```{r baser, echo=FALSE, out.width = '20%', out.extra='style="float:right; padding:10px"'}
 knitr::include_graphics("../images/Rlogo.png")
 ```
 
-1. **base R** - This refers to a syntax style that mostly utilises functions and operators available within "base" packages, notably **base** but also **stats**. These are packages that are loaded automatically when you start up R.[^1] In the context of `iris` dataset, the use of `iris$Species` or `iris[["Species"]]` to refer to columns, or `subset(iris, Species == "setosa")` to subset/filter rows are characteristic of the base R style. My intuition says that R code written prior to 2014 (based on books and Stack Overflow solutions) are more likely to be in this style.[^2] 
+1. **base R** - This refers to a syntax style that mostly utilises functions and operators available within the basic  packages, notably **base** but also **stats**. These are packages that are loaded automatically when you start up R.[^1] In the context of `iris` dataset, the use of `iris$Species` or `iris[["Species"]]` to refer to columns, or `subset(iris, Species == "setosa")` to subset/filter rows are characteristic of the base R style. Impressionistically speaking, I'd say that R code written prior to 2014 (based on books and Stack Overflow solutions) are generally more likely to be in this style. (**dplyr** superseded **plyr** in 2014)[^2] 
 
 ```{r tidyverse, echo=FALSE, out.width = '20%', out.extra='style="float:right; padding:10px"'}
 knitr::include_graphics("../images/hex-tidyverse.png")
 ```
 
 2. **tidyverse / dplyr style** - This is a style that is increasingly becoming the 'standard' style for data analysis due to its superb readability and consistency with an ecosystem of packages e.g. "official" tidyverse packages such as **stringr** and **purrr**, but also packages written with the same principles in mind such as **tidytext**, **tidyquant**,  and **srvyr**, to name a few. The tidyverse style is based on a set of [principles](https://tidyverse.tidyverse.org/articles/manifesto.html
-) which is designed to enhance analysis through greater readability and reproducibility. The hallmark of this style is the `%>%` pipe operator (from the **magrittr** package), which chains up analysis operations in a way that enables you to "read" code in the form of "do x, then do y, then do z...". Other functions that are characteristic of this style include `mutate()`, `filter()`, and `group_by()`.
+) which is designed to enhance analysis through greater readability and reproducibility. The hallmark of this style is the `%>%` pipe operator (from the **magrittr** package), which chains up analysis operations in a way that enables you to "read" code in the form of "do x, then do y, then do z". Other functions (also called **dplyr** 'verbs' of data manipulation) that are characteristic of this style include `mutate()`, `filter()`, and `group_by()`.
 
 ```{r data.table, echo=FALSE, out.width = '20%', out.extra='style="float:right; padding:10px"'}
 knitr::include_graphics("../images/r-datatable.png")
 ```
 
 
-3. **data.table style** - Unlike the tidyverse style, the data.table style is primarily based off a single package: [data.table](https://github.com/Rdatatable/data.table/wiki). The package description for data.table puts it as: 
+3. **data.table style** - Unlike the tidyverse style, the data.table style is based off a single package: [data.table](https://github.com/Rdatatable/data.table/wiki). The package description for data.table puts it as: 
 
 > *"Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development."* 
 
-The key advantage that I value in data.table is its speed, especially when working with grouping operations that involve a large number of groups (e.g. analysis by PEOPLE groups in a VISIT/TRANSACTION level database), where my experience is that it is much faster than dplyr. Syntax-wise, it is fairly readable, perhaps somewhere in between **dplyr** and **base** (there is always an element of subjectivity in this - you read better what you are most familiar with!). 
+The key advantage that I value in data.table is its speed, especially when working with grouping operations that involve a large number of groups (e.g. analysis by PEOPLE groups in a VISIT/TRANSACTION level database), where my experience is that it is much faster than dplyr. Syntax-wise, it is fairly readable, perhaps somewhere in between **tidyverse** and **base**, where I'd say **tidyverse** is most readable, and least for **base** (Caveat: there is always an element of subjectivity in this - whatever you are most familiar with you tend to to find easier to read!). 
 
 ---
 
 Okay, now to the main point of this post. 
 
-All these three styles mentioned above have their own pros and cons, but the general convention/advice is that one should stick with a single style in the same piece of analysis, so that other people can more easily what you are doing. As a general rule, this is good practice - imagine trying to read someone else's analysis where they filter a row in three different ways! `r emo::ji("see_no_evil")`
+All these three styles mentioned above have their own pros and cons, but the general convention is that one should stick with a single style in the same piece of analysis, so that other people can more easily what you are doing, enabling easier collaboration and greater reproducibility. As a general rule, consistency of style is good practice - imagine trying to read someone else's analysis where they filter a row in three different ways! `r emo::ji("see_no_evil")`
 
 But what if I had a legitimate reason for combining these styles in my code? 
 
 ## Use Case: Combining magrittr pipes and data.table
 
-I've once worked on a piece of analysis where I used the "tidyverse" style (i.e. **dplyr** verbs + **magrittr** pipes), chiefly for the reason that it makes my code more readable. This worked fine when I was only dealing with the summarised numbers from the analysis, but when I had to group or join data from the significantly larger raw data it became agonisingly slow - to the extent that you can make cups of tea in between runs. 
+I've once worked on a piece of analysis where I used the tidyverse style (i.e. **dplyr** verbs + **magrittr** pipes), chiefly for its advantageous of being very readable and intuitive. Everything worked fine when I was only dealing with the summarised numbers from the analysis, but when I had to group or join data from the significantly larger raw data it became agonisingly slow - to the extent that you can literally make cups of tea in between runs. 
 
 `r emo::ji("coffee")` `r emo::ji("coffee")` `r emo::ji("coffee")`
 
-I then decided to switch to data.table for that specific part of the analysis, but felt somewhat uneasy with the fact that I'm now making the code more complex by introducing another "style". Then I realised that I could minimise the complexity and preserving the readability by using magrittr pipes on data.table. 
+I then decided to switch to data.table for that specific part of the analysis, but felt somewhat uneasy with the fact that I would be making the code more complex by introducing another "style". Then I realised that I could minimise the complexity and preserving the readability by using **magrittr** pipes (`%>%`) together with **data.table** operations. 
 
-Below is an example where I would take some data in an ordinary 'base' data frame, convert into a data.table object, run some analysis on it, and convert this back into a tibble object. 
+Below is an example where I would take some data in an ordinary 'base' data frame, convert into a **data.table** object, run some analysis on it, and convert this back into a "tidyverse-friendly" **tibble** object. 
 
 ```{r message=FALSE, warning=FALSE}
 library(nycflights13)
@@ -93,9 +93,19 @@ Given these circumstances, combining `%>%` and **data.table** was an approach th
 
 ## More on this debate
 
-I later discovered that quite a few others have also adopted this convention of combining `%>%`  and **data.table**: [this](https://stackoverflow.com/questions/33761872/break-data-table-chain-into-two-lines-of-code-for-readability/36873717#36873717) Stack Overflow response, [this](https://www.gl-li.com/2017/07/25/compare-data.table-pipes-and-magrittr-pipes/) blog post by G L Li, and also another [one](http://jeffreyhorner.tumblr.com/post/120109449643/no-this-is-how-you-dplyr-and-datatable) by Jeffrey Horner. It's good to know I'm not the only one! 
+I later discovered that quite a few others have also adopted this convention of combining `%>%`  and **data.table**:
 
-The wider divergence between the three syntax styles within R also is an interesting subject on its own. The question in this blog is mainly about **tidyverse** versus **data.table**, but that doesn't mean there isn't a debate around **base R**: Jozef Hajnala has a website called [case4base](https://jozefhajnala.gitlab.io/r/categories/rcase4base/), which as advertised, makes a case for using base R. But how should new users learn R? To what extent should we combine styles? When should we use which style? These are all important questions that the R community needs to think and discuss about.
+- [This](https://stackoverflow.com/questions/33761872/break-data-table-chain-into-two-lines-of-code-for-readability/36873717#36873717) Stack Overflow response
+
+- [This](https://www.gl-li.com/2017/07/25/compare-data.table-pipes-and-magrittr-pipes/) blog post by G L Li on the differences between **data.table** pipes and **magrittr** pipes
+
+- Another [blog](http://jeffreyhorner.tumblr.com/post/120109449643/no-this-is-how-you-dplyr-and-datatable) by Jeffrey Horner that talks about combining the two styles
+
+It's good to know I'm not the only one! 
+
+The wider divergence between the three syntax styles within R also is an interesting subject on its own. The question in this blog is mainly about **tidyverse** versus **data.table**, but that doesn't mean there isn't a debate around **base R**: Jozef Hajnala has a website called [case4base](https://jozefhajnala.gitlab.io/r/categories/rcase4base/), which as advertised, makes a case for using base R. 
+
+But how should new users learn R? To what extent should we combine styles? When should we use which style? These are all important questions that the R community needs to think and discuss about as the number of R users continue to grow.
 
 [^1]: See following link regarding packages that are loaded on start up: https://stat.ethz.ch/R-manual/R-patched/library/base/html/Startup.html
 [^2]: Not based on actual research, just a hunch - but a 2018 article from [David Waldron](https://www.waldrn.com/dplyr-vs-data-table/) seems to support my hunch.
