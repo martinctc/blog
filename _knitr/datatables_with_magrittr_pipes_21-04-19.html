@@ -96,12 +96,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><strong>data.table style</strong> - Unlike the tidyverse style, the data.table style is primarily based off a single package: <a href="https://github.com/Rdatatable/data.table/wiki">data.table</a>. The package description for data.table puts it as:</li>
 </ol>
 <blockquote>
-<p><em>“Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and ﬂexible syntax, for faster development.”</em></p>
+<p><em>“Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development.”</em></p>
 </blockquote>
 <p>The key advantage that I value in data.table is its speed, especially when working with grouping operations that involve a large number of groups (e.g. analysis by PEOPLE groups in a VISIT/TRANSACTION level database), where my experience is that it is much faster than dplyr. Syntax-wise, it is fairly readable, perhaps somewhere in between <strong>dplyr</strong> and <strong>base</strong> (there is always an element of subjectivity in this - you read better what you are most familiar with!).</p>
 <hr />
 <p>Okay, now to the main point of this post.</p>
-<p>All these three styles mentioned above have their own pros and cons, but the general convention/advice is that one should stick with a single style in the same piece of analysis, so that other people can more easily what you are doing. Imagine trying to read a piece of analysis where someone filters a row in three different ways (I can think of eight ways without trying too hard, actually)! 🙈</p>
+<p>All these three styles mentioned above have their own pros and cons, but the general convention/advice is that one should stick with a single style in the same piece of analysis, so that other people can more easily what you are doing. As a general rule, this is good practice - imagine trying to read someone else’s analysis where they filter a row in three different ways! 🙈</p>
 <p>But what if I had a legitimate reason for combining these styles in my code?</p>
 </div>
 <div id="use-case-combining-magrittr-pipes-and-data.table" class="section level2">

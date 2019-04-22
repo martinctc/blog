@@ -14,25 +14,25 @@ layout: post
 <div id="why-ask-the-question" class="section level2">
 <h2>Why ask the question?</h2>
 <p>If you are fairly new to R, you might find it puzzling / intriguing that R questions on Stack Overflow tend to attract a range of solutions which all have different syntax “styles”, but almost all seem to valid answers to some extent (as indicated by the number of upvotes to the solution). This is because there are three main syntax styles in the R universe:</p>
-<p><img src="{{ site.url }}{{ site.baseurl }}\images\Rlogo.png" width="20%" style="float:right; padding:10px" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/Rlogo.png" width="20%" style="float:right; padding:10px" /></p>
 <ol style="list-style-type: decimal">
 <li><strong>base R</strong> - This refers to a syntax style that mostly utilises functions and operators available within “base” packages, notably <strong>base</strong> but also <strong>stats</strong>. These are packages that are loaded automatically when you start up R.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> In the context of <code>iris</code> dataset, the use of <code>iris$Species</code> or <code>iris[[&quot;Species&quot;]]</code> to refer to columns, or <code>subset(iris, Species == &quot;setosa&quot;)</code> to subset/filter rows are characteristic of the base R style. My intuition says that R code written prior to 2014 (based on books and Stack Overflow solutions) are more likely to be in this style.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></li>
 </ol>
-<p><img src="{{ site.url }}{{ site.baseurl }}\images\hex-tidyverse.png" width="20%" style="float:right; padding:10px" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/hex-tidyverse.png" width="20%" style="float:right; padding:10px" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li><strong>tidyverse / dplyr style</strong> - This is a style that is increasingly becoming the ‘standard’ style for data analysis due to its superb readability and consistency with an ecosystem of packages e.g. “official” tidyverse packages such as <strong>stringr</strong> and <strong>purrr</strong>, but also packages written with the same principles in mind such as <strong>tidytext</strong>, <strong>tidyquant</strong>, and <strong>srvyr</strong>, to name a few. The tidyverse style is based on a set of <a href="https://tidyverse.tidyverse.org/articles/manifesto.html">principles</a> which is designed to enhance analysis through greater readability and reproducibility. The hallmark of this style is the <code>%&gt;%</code> pipe operator (from the <strong>magrittr</strong> package), which chains up analysis operations in a way that enables you to “read” code in the form of “do x, then do y, then do z…”. Other functions that are characteristic of this style include <code>mutate()</code>, <code>filter()</code>, and <code>group_by()</code>.</li>
 </ol>
-<p><img src="{{ site.url }}{{ site.baseurl }}\images\r-datatable.png" width="20%" style="float:right; padding:10px" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/r-datatable.png" width="20%" style="float:right; padding:10px" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>data.table style</strong> - Unlike the tidyverse style, the data.table style is primarily based off a single package: <a href="https://github.com/Rdatatable/data.table/wiki">data.table</a>. The package description for data.table puts it as:</li>
 </ol>
 <blockquote>
-<p><em>“Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and ﬂexible syntax, for faster development.”</em></p>
+<p><em>“Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development.”</em></p>
 </blockquote>
 <p>The key advantage that I value in data.table is its speed, especially when working with grouping operations that involve a large number of groups (e.g. analysis by PEOPLE groups in a VISIT/TRANSACTION level database), where my experience is that it is much faster than dplyr. Syntax-wise, it is fairly readable, perhaps somewhere in between <strong>dplyr</strong> and <strong>base</strong> (there is always an element of subjectivity in this - you read better what you are most familiar with!).</p>
 <hr />
 <p>Okay, now to the main point of this post.</p>
-<p>All these three styles mentioned above have their own pros and cons, but the general convention/advice is that one should stick with a single style in the same piece of analysis, so that other people can more easily what you are doing. Imagine trying to read a piece of analysis where someone filters a row in three different ways (I can think of eight ways without trying too hard, actually)! 🙈</p>
+<p>All these three styles mentioned above have their own pros and cons, but the general convention/advice is that one should stick with a single style in the same piece of analysis, so that other people can more easily what you are doing. As a general rule, this is good practice - imagine trying to read someone else’s analysis where they filter a row in three different ways! 🙈</p>
 <p>But what if I had a legitimate reason for combining these styles in my code?</p>
 </div>
 <div id="use-case-combining-magrittr-pipes-and-data.table" class="section level2">

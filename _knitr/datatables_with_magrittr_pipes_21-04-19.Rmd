@@ -2,6 +2,7 @@
 title: "Using data.table with magrittr pipes: best of both worlds"
 author: "Martin Chan"
 date: "April 21, 2019"
+preview: images/r-data.table.png
 output:                    # DO NOT CHANGE
   prettydoc::html_pretty:  # DO NOT CHANGE
     theme: cayman          # DO NOT CHANGE
@@ -41,7 +42,7 @@ knitr::include_graphics("../images/r-datatable.png")
 
 3. **data.table style** - Unlike the tidyverse style, the data.table style is primarily based off a single package: [data.table](https://github.com/Rdatatable/data.table/wiki). The package description for data.table puts it as: 
 
-> *"Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and ﬂexible syntax, for faster development."* 
+> *"Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development."* 
 
 The key advantage that I value in data.table is its speed, especially when working with grouping operations that involve a large number of groups (e.g. analysis by PEOPLE groups in a VISIT/TRANSACTION level database), where my experience is that it is much faster than dplyr. Syntax-wise, it is fairly readable, perhaps somewhere in between **dplyr** and **base** (there is always an element of subjectivity in this - you read better what you are most familiar with!). 
 
@@ -49,7 +50,7 @@ The key advantage that I value in data.table is its speed, especially when worki
 
 Okay, now to the main point of this post. 
 
-All these three styles mentioned above have their own pros and cons, but the general convention/advice is that one should stick with a single style in the same piece of analysis, so that other people can more easily what you are doing. Imagine trying to read a piece of analysis where someone filters a row in three different ways (I can think of eight ways without trying too hard, actually)! `r emo::ji("see_no_evil")`
+All these three styles mentioned above have their own pros and cons, but the general convention/advice is that one should stick with a single style in the same piece of analysis, so that other people can more easily what you are doing. As a general rule, this is good practice - imagine trying to read someone else's analysis where they filter a row in three different ways! `r emo::ji("see_no_evil")`
 
 But what if I had a legitimate reason for combining these styles in my code? 
 
