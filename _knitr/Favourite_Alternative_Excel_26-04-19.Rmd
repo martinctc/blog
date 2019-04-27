@@ -95,10 +95,8 @@ In my personal experience, the limitations of Excel dashboards come from two mai
 
 The first point is straightforward: the visualisations that you can display on an Excel dashboard are limited to the charts that are available through Microsoft Excel. Although you can do most of the things that you might want to do (bar charts, line charts, etc.), more specific features such as network graphs, faceted bar charts, sankey diagrams, and word clouds are practically impossible to create.
 
-An example here:
-
-```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
-
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# An example here:
 iris %>%
   mutate(tool_tip = paste(Sepal.Length, Sepal.Width, sep = ", ")) %>%
   ggplot(aes(x = Sepal.Width, y = Sepal.Length, colour = Species,tooltip = tool_tip, data_id = tool_tip)) +
@@ -110,8 +108,6 @@ iris %>%
 
 ggiraph::girafe(ggobj = gg) %>% return()
 ```
-
-
 
 The second point of criticism is more around the fact that Excel isn't simply designed for more complex analysis tasks, such as  grouping large number of records (even 10k+), running slightly more complex regression / classification models, or text mining tasks like analysing ngrams. This means that the data contained in the dashboard must be a summarised output created from another software / environment (e.g. R, SAS, SPSS), requiring an additional step between analysis and visualisation. Although it might sound like this is only one additional step, this has implications for **scalability**: if your task is to create 100 of these Excel dashboards, how do you reliably and quickly get the analysis you've done in a separate analysis program into Excel? Sounds like a bit of a nightmare! `r emo::ji("fearful")``r emo::ji("fearful")``r emo::ji("fearful")`
 
@@ -134,8 +130,8 @@ Effectively, this is an interactive (though not as interactive as Shiny) HTML fi
 
 As [Jonathan Ng](https://datastrategywithjonathan.com/) pointed out to me, using the [DT package](https://rstudio.github.io/DT/) within flexdashboard means you can add interactive buttons that lets the user download data as Excel, CSV, or PDFs - an incredible interactive feature through static HTML![^2] 
 
-An example here (this blog post itself is static HTML):
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# An example here (this blog post itself is static HTML):
 mtcars %>%
     DT::datatable(caption = "mtcars data table with download buttons",
                 extensions = 'Buttons',
