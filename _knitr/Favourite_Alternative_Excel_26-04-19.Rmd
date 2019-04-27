@@ -35,7 +35,7 @@ meme::meme(img = "../images/agent_smith.jpg",
            size = 3)
 ```
 
-In the context of sharing analysis or findings, and more importantly, Excel has **portability**. By this, I am referring to Excel's ability to run in a very wide range of circumstances: 
+In the context of sharing analysis or findings, Excel more importantly has **portability**. By this, I am referring to Excel's ability to run in a very wide range of circumstances: 
 
 - You can send stand-alone Excel files over email, share them with colleagues/clients over SharePoint
 
@@ -43,15 +43,13 @@ In the context of sharing analysis or findings, and more importantly, Excel has 
 
 - There is no requirement for additional installed software other than Excel
 
-- There is no need for the dashboard to communicate with a server or have access to the Internet. 
+- There is no need for the dashboard to communicate with a server
 
 Moreover, Excel files are also virtually **free** to create, as realistically you don't need to take out any *additional* licenses in order to create/host a dashboard in Excel, unlike Tableau or Power BI where there is at least some cost for a practical commercial deployment. Its ease of use and wide availability arguably also makes it easier for your team to collaborate on putting a dashboard together.
 
-Therefore...
-
 ### Advantages of Excel
 
-Excel has many advantages then:
+Therefore Excel has many advantages then:
 
 1. Accessible / Familiarity
 2. Portable
