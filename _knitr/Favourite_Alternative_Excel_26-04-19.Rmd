@@ -152,9 +152,9 @@ Let's look back at some of the points that we laid out as the strengths of an Ex
 
 3. **Virtually free**: YES - because there's no hosting needed, and R itself is free.
 
-4. **Easier for collaboration** : I'd say YES, on the condition that your team also work in R. The fact that flexdashboards are written in code means that it's easier to for two or more people to be working on the same dashboard at the same time than an Excel file. If done properly, R code is also more readable than Excel cell references. 
+4. **Easier for collaboration** : I'd say YES, on the condition that your team is also familiar with R. The fact that flexdashboards are written in code means that it's easier for two or more people to be working on the same dashboard at the same time than an Excel file. If done properly, R code is also more readable than Excel cell references. 
 
-So hands down, **flexdashboard** is my favourite alternative to Excel dashboard!
+So hands down, **flexdashboard** is my favourite alternative to Excel dashboard! 
 
 [^1]: This point is debatable, as Excel cell references are not generally considered easy-to-follow, and neither does the nature of spreadsheets make it easy for two or more people to work on the same Excel file at the same time.
 [^2]: See the video tutorial [here](https://www.youtube.com/watch?v=ux2tQqgY8Gg)

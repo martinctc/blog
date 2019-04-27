@@ -92,7 +92,7 @@ Excel dashboard image from <a href="https://www.thesmallman.com/excel-dashboard-
 <li><p><strong>Accessible / Familiarity</strong>: YES - it’s safe to assume that most computers, if not all, have internet browsers, in which the HTML dashboard will load properly. Familiarity does come down to the UX design the of the dashboard, but a flexdashboard will generally be intuitive to operate.</p></li>
 <li><p><strong>Portable</strong>: YES - you don’t need an internet connection, and static HTML files can easily be sent via email.</p></li>
 <li><p><strong>Virtually free</strong>: YES - because there’s no hosting needed, and R itself is free.</p></li>
-<li><p><strong>Easier for collaboration</strong> : I’d say YES, on the condition that your team also work in R. The fact that flexdashboards are written in code means that it’s easier to for two or more people to be working on the same dashboard at the same time than an Excel file. If done properly, R code is also more readable than Excel cell references.</p></li>
+<li><p><strong>Easier for collaboration</strong> : I’d say YES, on the condition that your team is also familiar with R. The fact that flexdashboards are written in code means that it’s easier for two or more people to be working on the same dashboard at the same time than an Excel file. If done properly, R code is also more readable than Excel cell references.</p></li>
 </ol>
 <p>So hands down, <strong>flexdashboard</strong> is my favourite alternative to Excel dashboard!</p>
 </div>
