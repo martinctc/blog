@@ -80,7 +80,7 @@ By a 'dashboard' solution however, I'm thinking in terms of a broad, but also mi
 
 One could argue that interactivity is not a requirement for a visualisation dashboard, but I do think where the user can have some control over the data that is shown (e.g. tooltips, hovering effects) does make a dashboard importantly different from say, a PowerPoint slide deck. 
 
-Under this broad definition, Excel certainly can provide a lightweight, portable, easy-to-setup dashboard solution for commercial deployment.
+Under this broad definition, Excel certainly can provide a **lightweight**, **portable**, **easy-to-setup** dashboard solution for commercial deployment.
 
 ---
 
@@ -95,22 +95,22 @@ The first point is straightforward: the visualisations that you can display on a
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 # An example here:
-iris %>%
-  mutate(tool_tip = paste(Sepal.Length, Sepal.Width, sep = ", ")) %>%
-  ggplot(aes(x = Sepal.Width, y = Sepal.Length, colour = Species,tooltip = tool_tip, data_id = tool_tip)) +
-  geom_point_interactive() +
-  facet_grid(cols = vars(Species)) +
-  ggtitle("Example of a chart which will be a pain to build in Excel",
-          subtitle = "(Especially if you want the interactivity as well)") +
-  ggthemes::theme_igray()-> gg
-
-ggiraph::girafe(ggobj = gg) %>% return()
+# iris %>%
+#   mutate(tool_tip = paste(Sepal.Length, Sepal.Width, sep = ", ")) %>%
+#   ggplot(aes(x = Sepal.Width, y = Sepal.Length, colour = Species,tooltip = tool_tip, data_id = tool_tip)) +
+#   geom_point_interactive() +
+#   facet_grid(cols = vars(Species)) +
+#   ggtitle("Example of a chart which will be a pain to build in Excel",
+#           subtitle = "(Especially if you want the interactivity as well)") +
+#   ggthemes::theme_igray()-> gg
+# 
+# ggiraph::girafe(ggobj = gg) %>% return()
 ```
 
-The second point of criticism is more around the fact that Excel isn't simply designed for more complex analysis tasks, such as  grouping large number of records (even 10k+), running slightly more complex regression / classification models, or text mining tasks like analysing ngrams. This means that the data contained in the dashboard must be a summarised output created from another software / environment (e.g. R, SAS, SPSS), requiring an additional step between analysis and visualisation. Although it might sound like this is only one additional step, this has implications for **scalability**: if your task is to create 100 of these Excel dashboards, how do you reliably and quickly get the analysis you've done in a separate analysis program into Excel? Sounds like a bit of a nightmare! `r emo::ji("fearful")``r emo::ji("fearful")``r emo::ji("fearful")`
+The second point of criticism is more around the fact that Excel isn't simply designed for more complex analysis tasks, such as  grouping large number of records (even 10k+), running slightly more complex regression / classification models, or text mining tasks like analysing ngrams. This means that the data contained in the dashboard must be a summarised output created from another software / environment (e.g. R, SAS, SPSS), requiring an additional step between analysis and visualisation. Although it might sound like this is only one additional step, this has implications for **scalability**: if your task is to create 100 of these Excel dashboards, how do you reliably and quickly get the analysis you've done in a separate analysis program into Excel? Sounds like a bit of a nightmare! `r emo::ji("fearful")`
 
 ## What's a good alternative then? `r emo::ji("thinking")`
-The ability to perform both *analysis* and *visualisation* in a single environment is probably one of the most attractive advantages of [shiny](https://shiny.rstudio.com/). The fact that it is based in R also means that it is by no means limited (effectively *unlimited*) in terms of the charting libraries available: 
+The ability to perform both *analysis* and *visualisation* in a single environment is probably one of the most attractive advantages of [Shiny](https://shiny.rstudio.com/). The fact that it is based in R also means that it is by no means limited (effectively *unlimited*) in terms of the charting libraries available: 
 
 - [ggplot2](https://ggplot2.tidyverse.org/)
 - [plotly](https://cran.r-project.org/web/packages/plotly/index.html)
@@ -124,20 +124,20 @@ I wouldn't, however, say that **Shiny** is the best alternative to Excel - given
 
 My favourite alternative actually is [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/), which is importantly different from Shiny in that it is possible to run itself as a stand-alone static HTML file that doesn't depend on communicating with a back-end server. 
 
-Effectively, this is an interactive (though not as interactive as Shiny) HTML file that opens up in a browser, that you can send via email, or host securely on SharePoint. You still have access to all the charting libraries that are available in R, as long as the libraries themselves can run without communicating to a server - plenty of examples are available on RStudio's [html widgets gallery](http://gallery.htmlwidgets.org/). All the production is done in a [RMarkdown](https://rmarkdown.rstudio.com/) document which you would use the flexdashboard package in combination with [knitr](https://yihui.name/knitr/) to create the static HTML dashboard document.
+Effectively, this is a single HTML file with interactive features (though not as *interactive* as Shiny, if that makes sense) that opens up in a browser, and which you can send via email or host securely on SharePoint. You still have access to all the charting libraries that are available in R, as long as the libraries themselves can run without communicating to a server - plenty of examples are available on RStudio's [html widgets gallery](http://gallery.htmlwidgets.org/). All the production is done in a [RMarkdown](https://rmarkdown.rstudio.com/) document which you would use the flexdashboard package in combination with [knitr](https://yihui.name/knitr/) to create the static HTML dashboard document.
 
 As [Jonathan Ng](https://datastrategywithjonathan.com/) pointed out to me, using the [DT package](https://rstudio.github.io/DT/) within flexdashboard means you can add interactive buttons that lets the user download data as Excel, CSV, or PDFs - an incredible interactive feature through static HTML![^2] 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # An example here (this blog post itself is static HTML):
-mtcars %>%
-    DT::datatable(caption = "mtcars data table with download buttons",
-                extensions = 'Buttons',
-                options = list(bLengthChange = FALSE,
-                               dom = 'Blfrtip',
-                               buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
-                               lengthMenu = list(c(10,25,50,-1),
-                                                 c(10,25,50,"All"))))
+# mtcars %>%
+#     DT::datatable(caption = "mtcars data table with download buttons",
+#                 extensions = 'Buttons',
+#                 options = list(bLengthChange = FALSE,
+#                                dom = 'Blfrtip',
+#                                buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+#                                lengthMenu = list(c(10,25,50,-1),
+#                                                  c(10,25,50,"All"))))
 ```
 
 I've also created a demo flexdashboard on my website which I aim to showcase some examples of what you can do with a static HTML dashboard. [Check it out!](https://martinctc.github.io/examples/flexdashboard_example.html) I aim to continuously update this as I explore more available HTML widgets. 
