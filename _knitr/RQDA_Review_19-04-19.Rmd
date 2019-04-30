@@ -80,7 +80,7 @@ The reason why RQDA made such a impression on me is because I came across it at 
 
 [^1]: "Specialist" as in designed for a specific area of analysis, as opposed to **dplyr**, or **data.table**, which are general packages that you would need for any kind of analysis.
 
-[^2]: Check out Mekin Caliskan's [videos](https://www.youtube.com/user/RQDAtuto) on RQDA. I've embedded his introduction to RQDA video below:
+[^2]: Check out Metin Caliskan's [videos](https://www.youtube.com/user/RQDAtuto) on RQDA. I've embedded his introduction to RQDA video below:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/mLsyGH3ztYY" frameborder="0" allowfullscreen></iframe>
 
