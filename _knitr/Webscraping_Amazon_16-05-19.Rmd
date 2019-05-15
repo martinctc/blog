@@ -34,7 +34,7 @@ The next step is to find out the ASIN (stands for Amazon Standard Identification
 For our example, let's use the seven volume paperback collection of George R R Martin's *A Song of Ice and Fire*, which has almost 2.5K reviews on Amazon.co.uk at the time of writing. We can also specify the number of review pages to scrape, where the fixed number of reviews per page is ten. In this example, the ASIN is `0007477155`, and you can find the link to the product by combining the ASIN with "https://www.amazon.co.uk/dp/":
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
-knitr::include_graphics("../images/amazon_got.png")
+knitr::include_graphics("../images/amazon_got.PNG")
 ```
 
 To my knowledge, the URL structure works the same way for Amazon US and Amazon UK - you can simply change the URL root to make this work for the different websites (replace '.co.uk' with '.com'). Whether this will continue to work in the future will be dependent on whether Amazon changes the set-up of the URLs.
@@ -140,7 +140,7 @@ lapply(page_range, function(i){
 ```
 My R console looks like this, with the progress message:
 ```{r echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
-knitr::include_graphics("../images/amazon_console.png")
+knitr::include_graphics("../images/amazon_console.PNG")
 ```
 ---
 
