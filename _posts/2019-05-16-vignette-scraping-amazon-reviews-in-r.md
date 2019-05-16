@@ -135,6 +135,6 @@ layout: post
 <a class="sourceLine" id="cb6-9" title="9"><span class="st">  </span><span class="kw">anti_join</span>(tidytext<span class="op">::</span>stop_words, <span class="dt">by =</span> <span class="st">&quot;word&quot;</span>) -&gt;<span class="st"> </span>word_tb</a>
 <a class="sourceLine" id="cb6-10" title="10"></a>
 <a class="sourceLine" id="cb6-11" title="11">wordcloud<span class="op">::</span><span class="kw">wordcloud</span>(<span class="dt">words =</span> word_tb<span class="op">$</span>word, <span class="dt">freq =</span> word_tb<span class="op">$</span>n)</a></code></pre></div>
-<p><img src="{{ site.url }}{{ site.baseurl }}/knitr_files/Webscraping_Amazon_16-05-19_files/figure-html/unnamed-chunk-8-1.png" /><!-- --></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/knitr_files/Webscraping_Amazon_16-05-19_files/figure-html/wordcloud-1.png" /><!-- --></p>
 </div>
 </section>

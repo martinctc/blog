@@ -26,7 +26,7 @@ There are many ways to do this: usage and attitude surveys, qualitative focus gr
 
 ### Getting Started `r emo::ji("rocket")`
 The first step is to load the **tidyverse** and **rvest** packages, as we’ll need them for building the webscraping function (e.g. parsing html) and for general data manipulation:
-```{r message=FALSE, warning=FALSE}
+```{r loadpackages, echo=TRUE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(rvest)
 ```
@@ -35,7 +35,7 @@ The next step is to find out the *ASIN* (stands for Amazon Standard Identificati
 
 For our example, let's use the seven volume paperback collection of George R R Martin's *A Song of Ice and Fire*, which has almost 2.5K reviews on Amazon.co.uk at the time of writing. We can also specify the number of review pages to scrape, where the fixed number of reviews per page is ten. In this example, the ASIN is `0007477155`, and you can find the link to the product by combining the ASIN with "https://www.amazon.co.uk/dp/":
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
+```{r GOT, echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
 knitr::include_graphics("../images/amazon_got.PNG")
 ```
 
@@ -63,7 +63,7 @@ In my function, I assign all the bits of extracted content (review title, review
 
 Let's call this function `scrape_amazon()`, and allow it to take in the ASIN and the page number as the two arguments:
 
-```{r message=FALSE, warning=FALSE}
+```{r scrape_amazon, message=FALSE, warning=FALSE}
 scrape_amazon <- function(ASIN, page_num){
   
   url_reviews <- paste0("https://www.amazon.co.uk/product-reviews/",ASIN,"/?pageNumber=",page_num)
@@ -94,7 +94,7 @@ scrape_amazon <- function(ASIN, page_num){
 ```
 
 You can then run this function to extract a nice, clean table of reviews:
-```{r}
+```{r headresults}
 scrape_amazon(ASIN = "0007477155", page_num = 5) %>%
   head()
 ```
@@ -115,7 +115,7 @@ There are three parts to this anti-bot-detection charade:
 
 After you've set this all up, you can use `lapply()` to loop through the page ranges:
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r loopy, echo=TRUE, message=FALSE, warning=FALSE}
 ASIN <- "0007477155" # Specify ASIN
 page_range <- 1:10 # Let's say we want to scrape pages 1 to 10
 
@@ -141,7 +141,7 @@ lapply(page_range, function(i){
 }) -> output_list
 ```
 My R console looks like this, with the progress message:
-```{r echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
+```{r console_image, echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
 knitr::include_graphics("../images/amazon_console.PNG")
 ```
 ---
@@ -150,7 +150,7 @@ knitr::include_graphics("../images/amazon_console.PNG")
 
 The analytical possibilities are quite endless: word clouds, n-gram analysis, sentiment analysis, network diagrams... and definitely a topic for a separate post. To end the post, here is a quick demo of what you can easily do with ten lines of code!
 
-```{r message=FALSE, warning=FALSE}
+```{r wordcloud, message=FALSE, warning=FALSE}
 library(tidytext)
 library(wordcloud)
 
