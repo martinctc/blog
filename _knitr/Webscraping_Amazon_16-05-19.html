@@ -105,20 +105,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section class="main-content">
 <div id="background" class="section level3">
 <h3>Background</h3>
-<p>One of the pet projects that I was working on earlier in the year is to figure out an efficient way to gain an insight into what is going on in a consumer market, e.g.:</p>
+<p>One of the pet projects that I had been working on earlier in the year was to figure out an efficient way to gain an insight into what is going on in a consumer market, e.g.:</p>
 <ul>
 <li>What do people look for when they’re buying a product?</li>
 <li>What are the typical pain points / causes of frustration in the purchase process or in a product itself?</li>
 </ul>
-<p>Amazon reviews provide an accessible yet vast data resource that does both of these things, allowing you to quickly explore what’s going on at effectively zero data collection cost. In this blog post, I’ll go through some examples of how this could all be done in R with relatively few lines of code.</p>
+<p>There are many ways to do this: usage and attitude surveys, qualitative focus groups, online bulletin-board style platform, social media mining, etc. But most of these methods take a lot of time and cost to set up, and may not be suitable if you’re trying to have a quick glimpse of what’s happening.</p>
+<p><strong>Amazon reviews</strong> provide a fast, accessible yet vast data resource that does both of these things, allowing you to quickly explore what’s going on at effectively zero data collection cost. In this blog post, I’ll go through some examples of how all this could be done in R with relatively few lines of code.</p>
 <hr />
 </div>
 <div id="getting-started" class="section level3">
-<h3>Getting Started</h3>
+<h3>Getting Started 🚀</h3>
 <p>The first step is to load the <strong>tidyverse</strong> and <strong>rvest</strong> packages, as we’ll need them for building the webscraping function (e.g. parsing html) and for general data manipulation:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(tidyverse)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(rvest)</a></code></pre></div>
-<p>The next step is to find out the ASIN (stands for Amazon Standard Identification Number) of the product that you want to extract reviews from. This is effectively a product ID, which can usually be found within the URL of the product link itself. ASINS are unique strings of 10 characters, where for books this would be the same as the ISBN number.</p>
+<p>The next step is to find out the <em>ASIN</em> (stands for Amazon Standard Identification Number) of the product that you want to extract reviews from. This is effectively a product ID, which can usually be found within the URL of the product link itself. ASINS are unique strings of 10 characters, where for books this would be the same as the ISBN number.</p>
 <p>For our example, let’s use the seven volume paperback collection of George R R Martin’s <em>A Song of Ice and Fire</em>, which has almost 2.5K reviews on Amazon.co.uk at the time of writing. We can also specify the number of review pages to scrape, where the fixed number of reviews per page is ten. In this example, the ASIN is <code>0007477155</code>, and you can find the link to the product by combining the ASIN with “<a href="https://www.amazon.co.uk/dp/" class="uri">https://www.amazon.co.uk/dp/</a>”:</p>
 <p><img src="../images/amazon_got.PNG" width="80%" /></p>
 <p>To my knowledge, the URL structure works the same way for Amazon US and Amazon UK - you can simply change the URL root to make this work for the different websites (replace ‘.co.uk’ with ‘.com’). Whether this will continue to work in the future will be dependent on whether Amazon changes the set-up of the URLs.</p>

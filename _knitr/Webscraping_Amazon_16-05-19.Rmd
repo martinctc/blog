@@ -13,23 +13,25 @@ output:                    # DO NOT CHANGE
 ```
 
 ### Background
-One of the pet projects that I was working on earlier in the year is to figure out an efficient way to gain an insight into what is going on in a consumer market, e.g.:
+One of the pet projects that I had been working on earlier in the year was to figure out an efficient way to gain an insight into what is going on in a consumer market, e.g.:
 
 *  What do people look for when they’re buying a product?
 *  What are the typical pain points / causes of frustration in the purchase process or in a product itself?
 
-Amazon reviews provide an accessible yet vast data resource that does both of these things, allowing you to quickly explore what’s going on at effectively zero data collection cost. In this blog post, I’ll go through some examples of how this could all be done in R with relatively few lines of code.
+There are many ways to do this: usage and attitude surveys, qualitative focus groups, online bulletin-board style platform, social media mining, etc. But most of these methods take a lot of time and cost to set up, and may not be suitable if you're trying to have a quick glimpse of what's happening.
+
+**Amazon reviews** provide a fast, accessible yet vast data resource that does both of these things, allowing you to quickly explore what’s going on at effectively zero data collection cost. In this blog post, I’ll go through some examples of how all this could be done in R with relatively few lines of code.
 
 ---
 
-### Getting Started
+### Getting Started `r emo::ji("rocket")`
 The first step is to load the **tidyverse** and **rvest** packages, as we’ll need them for building the webscraping function (e.g. parsing html) and for general data manipulation:
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(rvest)
 ```
 
-The next step is to find out the ASIN (stands for Amazon Standard Identification Number) of the product that you want to extract reviews from. This is effectively a product ID, which can usually be found within the URL of the product link itself. ASINS are unique strings of 10 characters, where for books this would be the same as the ISBN number. 
+The next step is to find out the *ASIN* (stands for Amazon Standard Identification Number) of the product that you want to extract reviews from. This is effectively a product ID, which can usually be found within the URL of the product link itself. ASINS are unique strings of 10 characters, where for books this would be the same as the ISBN number. 
 
 For our example, let's use the seven volume paperback collection of George R R Martin's *A Song of Ice and Fire*, which has almost 2.5K reviews on Amazon.co.uk at the time of writing. We can also specify the number of review pages to scrape, where the fixed number of reviews per page is ten. In this example, the ASIN is `0007477155`, and you can find the link to the product by combining the ASIN with "https://www.amazon.co.uk/dp/":
 
