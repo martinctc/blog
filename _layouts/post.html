@@ -20,7 +20,12 @@ layout: default
     {{ content }}
   </div>
 
-  {% include readtime.html %}
-  {% include readtime2.html %}
+  <div class="readtime-bottom">
+	Reading time: {% include readtime.html %}
+  </div>
+  
+  <div class="readtime-bottom2">
+	Reading time 2: {% include readtime2.html %}
+  </div>
   {% include disqus.html %}  
 </article>
