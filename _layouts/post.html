@@ -6,9 +6,12 @@ layout: default
   <h1>{{ page.title }}</h1>
   
   <div class="date">
-    Written on {{ page.date | date: "%B %e, %Y" }}
-	Reading time: {{% include read_time.html %}}
+    Written on {{ page.date | date: "%B %e, %Y" }}	
   </div>  
+  
+  <div class="readtime">
+	Reading time: {% include readtime.html %}
+  </div>
   <hr>
   
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
