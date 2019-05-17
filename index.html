@@ -8,8 +8,8 @@ title: My posts
 <ul class="posts">
 
   {% for post in site.posts %}
-    <li><span>{{ post.date | date_to_string }}</span> » <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-	<span><i> {% include readtime.html %} read </i></span>
+    <li><span>{{ post.date | date_to_string }}</span> » <span><i> {% include readtime.html %} read </i></span> » <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+	
 	</li>
   {% endfor %}
   
