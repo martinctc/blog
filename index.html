@@ -9,7 +9,7 @@ title: My posts
 
   {% for post in site.posts %}
     <li><span>{{ post.date | date_to_string }}</span>
-		*** {% include readtime3.html content=post.content %}
+		» {% include readtime3.html content=post.content %}
 	» <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>	
 	</li>
   {% endfor %}
