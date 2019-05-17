@@ -70,12 +70,13 @@ p {
 }
 
 a {
-  color: #B5DCFF;
-  text-decoration: none;
-	cursor: pointer;
-  &:hover, &:active {
-    color: #B5DCFF;
-  }
+    color: #383e41;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover, &:active {
+        color: #B5DCFF;
+    }
 }
 
 ul, ol {
