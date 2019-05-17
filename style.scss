@@ -32,7 +32,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $helveticaNeue;
-  color: #D3D3D3;
+  color: $white;
   font-weight: bold;
 
   line-height: 1.7;
@@ -122,11 +122,11 @@ img {
 
 // Specify the color of the selection
 ::-moz-selection {
-  color: $black;
+  color: $white;
   background: #D3D3D3;
 }
 ::selection {
-  color: $black;
+  color: $white;
   background: #D3D3D3;
 }
 
