@@ -10,7 +10,7 @@ layout: default
   </div>  
   
   <div class="readtime">
-	Reading time: {% include readtime.html %}
+	{% include readtime.html %} read
   </div>
   <hr>
   
@@ -20,12 +20,5 @@ layout: default
     {{ content }}
   </div>
 
-  <div class="readtime-bottom">
-	Reading time: {% include readtime.html %}
-  </div>
-  
-  <div class="readtime-bottom2">
-	Reading time 2: {% include readtime2.html %}
-  </div>
   {% include disqus.html %}  
 </article>
