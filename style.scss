@@ -68,7 +68,7 @@ h4 {
 p {
   margin: 15px 0;
 }
-
+// This affects links
 a {
     color: #69b8ff;
     text-decoration: none;
@@ -123,13 +123,14 @@ img {
 }
 
 // Specify the color of the selection
+// moz is for Mozilla
 ::-moz-selection {
   color: $white;
-  background: #D3D3D3;
+  background: #1d94ff;
 }
 ::selection {
   color: $white;
-  background: #D3D3D3;
+  background: #1d94ff;
 }
 
 // Nicolas Gallagher's micro clearfix hack
