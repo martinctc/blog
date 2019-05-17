@@ -61,7 +61,7 @@ h3 {
 
 h4 {
   font-size: 18px;
-  color: $gray;
+  color: #9FE4EB;
 }
 
 p {
@@ -117,7 +117,7 @@ img {
 
 .date {
   font-style: italic;
-  color: $gray;
+  color: #9FE4EB;
 }
 
 // Specify the color of the selection
@@ -202,7 +202,7 @@ img {
 
 .site-description {
   margin: -5px 0 0 0;
-  color: $gray;
+  color: #9FE4EB;
   font-size: 16px;
 
   @include mobile {
@@ -254,9 +254,9 @@ nav {
 .post {
   blockquote {
     margin: 1.8em .8em;
-    border-left: 2px solid $gray;
+    border-left: 2px solid #9FE4EB;
     padding: 0.1em 1em;
-    color: $gray;
+    color: #9FE4EB;
     font-size: 22px;
     font-style: italic;
   }
