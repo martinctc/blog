@@ -9,10 +9,11 @@ output:                    # DO NOT CHANGE
 ---
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(prettyjekyll)
 # prettyjekyll::FormatPost("_knitr/Webscraping_Amazon_16-05-19.Rmd")
 ```
 
-### Background
+## Background
 One of the pet projects that I had been working on earlier in the year was to figure out an efficient way to gain an insight into what is going on in a consumer market, e.g.:
 
 *  What do people look for when they’re buying a product?
@@ -24,7 +25,7 @@ There are many ways to do this: usage and attitude surveys, qualitative focus gr
 
 ---
 
-### Getting Started `r emo::ji("rocket")`
+## Getting Started `r emo::ji("rocket")`
 The first step is to load the **tidyverse** and **rvest** packages, as we’ll need them for building the webscraping function (e.g. parsing html) and for general data manipulation:
 ```{r loadpackages, echo=TRUE, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -43,7 +44,7 @@ To my knowledge, the URL structure works the same way for Amazon US and Amazon U
 
 ---
 
-### Writing the review scraping function
+## Writing the review scraping function
 
 The next step is to write the main workhorse function for scraping the reviews.
 
@@ -101,7 +102,7 @@ scrape_amazon(ASIN = "0007477155", page_num = 5) %>%
 
 ---
 
-### Avoiding bot detection
+## Avoiding bot detection
 
 Now that we've written the main web scraping function, we can add in some complexity: specifically, we can introduce systematic delays in between the HTML reads to avoid overloading web servers in a short space of time, which at the same time also helps avoid yourself being picked up as ‘suspicious webscraping behaviour’.
 
@@ -146,7 +147,7 @@ knitr::include_graphics("../images/amazon_console.PNG")
 ```
 ---
 
-### What do I do with the results?
+## What do I do with the results?
 
 The analytical possibilities are quite endless: word clouds, n-gram analysis, sentiment analysis, network diagrams... and definitely a topic for a separate post. To end the post, here is a quick demo of what you can easily do with ten lines of code!
 

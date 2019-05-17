@@ -1,0 +1,23 @@
+---
+title: "Vignette: Dealing with SPSS files in R"
+author: "Martin Chan"
+date: "April 18, 2019"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+library(haven)
+library(surveytoolbox)
+library(sjlabelled)
+library(labelled)
+# prettyjekyll::FormatPost("_knitr/First_Post_13-04-19.Rmd")
+```
+
+```{r message=FALSE, warning=FALSE, include=TRUE}
+
+```
+

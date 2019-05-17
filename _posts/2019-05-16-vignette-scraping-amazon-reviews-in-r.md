@@ -8,8 +8,8 @@ layout: post
 
 
 <section class="main-content">
-<div id="background" class="section level3">
-<h3>Background</h3>
+<div id="background" class="section level2">
+<h2>Background</h2>
 <p>One of the pet projects that I had been working on earlier in the year was to figure out an efficient way to gain an insight into what is going on in a consumer market, e.g.:</p>
 <ul>
 <li>What do people look for when they’re buying a product?</li>
@@ -19,21 +19,19 @@ layout: post
 <p><strong>Amazon reviews</strong> provide a fast, accessible yet vast data resource that does both of these things, allowing you to quickly explore what’s going on at effectively zero data collection cost. In this blog post, I’ll go through some examples of how all this could be done in R with relatively few lines of code.</p>
 <hr />
 </div>
-<div id="getting-started" class="section level3">
-<h3>Getting Started 🚀</h3>
+<div id="getting-started" class="section level2">
+<h2>Getting Started 🚀</h2>
 <p>The first step is to load the <strong>tidyverse</strong> and <strong>rvest</strong> packages, as we’ll need them for building the webscraping function (e.g. parsing html) and for general data manipulation:</p>
-
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(tidyverse)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(rvest)</a></code></pre></div>
-
 <p>The next step is to find out the <em>ASIN</em> (stands for Amazon Standard Identification Number) of the product that you want to extract reviews from. This is effectively a product ID, which can usually be found within the URL of the product link itself. ASINS are unique strings of 10 characters, where for books this would be the same as the ISBN number.</p>
 <p>For our example, let’s use the seven volume paperback collection of George R R Martin’s <em>A Song of Ice and Fire</em>, which has almost 2.5K reviews on Amazon.co.uk at the time of writing. We can also specify the number of review pages to scrape, where the fixed number of reviews per page is ten. In this example, the ASIN is <code>0007477155</code>, and you can find the link to the product by combining the ASIN with “<a href="https://www.amazon.co.uk/dp/" class="uri">https://www.amazon.co.uk/dp/</a>”:</p>
 <p><img src="{{ site.url }}{{ site.baseurl }}\images\amazon_got.PNG" width="80%" /></p>
 <p>To my knowledge, the URL structure works the same way for Amazon US and Amazon UK - you can simply change the URL root to make this work for the different websites (replace ‘.co.uk’ with ‘.com’). Whether this will continue to work in the future will be dependent on whether Amazon changes the set-up of the URLs.</p>
 <hr />
 </div>
-<div id="writing-the-review-scraping-function" class="section level3">
-<h3>Writing the review scraping function</h3>
+<div id="writing-the-review-scraping-function" class="section level2">
+<h2>Writing the review scraping function</h2>
 <p>The next step is to write the main workhorse function for scraping the reviews.</p>
 <p>In essence, what we are trying to achieve is to download the HTML content from the Amazon review page, and then use various html parsing and selector functions to organise the downloaded content into an easily manipulable format.</p>
 <p>The <code>read_html()</code> function from the <strong>xml2</strong> package reads the HTML content from a given URL, which you can assign to an object in R (so you don’t have to keep re-downloading the website) and figure out how to extract content from the object.</p>
@@ -87,8 +85,8 @@ layout: post
 ## 6 &quot;Arrived quickly and well ~ &quot;Last minute present, eve~ 5.0 out of ~     5</code></pre>
 <hr />
 </div>
-<div id="avoiding-bot-detection" class="section level3">
-<h3>Avoiding bot detection</h3>
+<div id="avoiding-bot-detection" class="section level2">
+<h2>Avoiding bot detection</h2>
 <p>Now that we’ve written the main web scraping function, we can add in some complexity: specifically, we can introduce systematic delays in between the HTML reads to avoid overloading web servers in a short space of time, which at the same time also helps avoid yourself being picked up as ‘suspicious webscraping behaviour’.</p>
 <p>There are three parts to this anti-bot-detection charade:</p>
 <ol style="list-style-type: decimal">
@@ -123,8 +121,8 @@ layout: post
 <a class="sourceLine" id="cb5-23" title="23">}) -&gt;<span class="st"> </span>output_list</a></code></pre></div>
 <p>My R console looks like this, with the progress message: <img src="{{ site.url }}{{ site.baseurl }}\images\amazon_console.PNG" width="80%" /> —</p>
 </div>
-<div id="what-do-i-do-with-the-results" class="section level3">
-<h3>What do I do with the results?</h3>
+<div id="what-do-i-do-with-the-results" class="section level2">
+<h2>What do I do with the results?</h2>
 <p>The analytical possibilities are quite endless: word clouds, n-gram analysis, sentiment analysis, network diagrams… and definitely a topic for a separate post. To end the post, here is a quick demo of what you can easily do with ten lines of code!</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">library</span>(tidytext)</a>
 <a class="sourceLine" id="cb6-2" title="2"><span class="kw">library</span>(wordcloud)</a>
