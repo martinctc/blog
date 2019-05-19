@@ -17,13 +17,15 @@ layout: post
 </ul>
 <p>There are many ways to do this: usage and attitude surveys, qualitative focus groups, online bulletin-board style platform, social media mining, etc. But most of these methods take a lot of time and cost to set up, and may not be suitable if you’re trying to have a quick glimpse of what’s happening.</p>
 <p><strong>Amazon reviews</strong> provide a fast, accessible yet vast data resource that does both of these things, allowing you to quickly explore what’s going on at effectively zero data collection cost. In this blog post, I’ll go through some examples of how all this could be done in R with relatively few lines of code.</p>
-<hr />
+</div>
+<div id="note-as-a-data-collection-activity-web-scraping-may-have-legal-implications-depending-on-your-country.-for-the-uk-as-a-general-rule-anything-you-can-legally-web-scrape-anything-out-there-that-is-in-the-public-domain-but-it-is-recommended-that-you-obtain-the-site-owners-permission-if-you-are-reporting-on-the-data-or-using-the-data-for-commercial-use-see-this-post-for-a-more-in-depth-discussion" class="section level2">
+<h2><strong>Note</strong>: As a data collection activity, web-scraping may have legal implications depending on your country. For the UK, as a general rule anything you can legally web-scrape anything out there that is in the public domain, but it is recommended that you obtain the site owner’s permission if you are reporting on the data or using the data for commercial use (See this <a href="https://benbernardblog.com/web-scraping-and-crawling-are-perfectly-legal-right/">post</a> for a more in-depth discussion)</h2>
 </div>
 <div id="getting-started" class="section level2">
 <h2>Getting Started 🚀</h2>
 <p>The first step is to load the <strong>tidyverse</strong> and <strong>rvest</strong> packages, as we’ll need them for building the webscraping function (e.g. parsing html) and for general data manipulation:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(tidyverse)</span>
-<span class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(rvest)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(rvest)</a></code></pre></div>
 <p>The next step is to find out the <em>ASIN</em> (stands for Amazon Standard Identification Number) of the product that you want to extract reviews from. This is effectively a product ID, which can usually be found within the URL of the product link itself. ASINS are unique strings of 10 characters, where for books this would be the same as the ISBN number.</p>
 <p>For our example, let’s use the seven volume paperback collection of George R R Martin’s <em>A Song of Ice and Fire</em>, which has almost 2.5K reviews on Amazon.co.uk at the time of writing. We can also specify the number of review pages to scrape, where the fixed number of reviews per page is ten. In this example, the ASIN is <code>0007477155</code>, and you can find the link to the product by combining the ASIN with “<a href="https://www.amazon.co.uk/dp/" class="uri">https://www.amazon.co.uk/dp/</a>”:</p>
 <p><img src="{{ site.url }}{{ site.baseurl }}\images\amazon_got.PNG" width="80%" /></p>
@@ -78,11 +80,11 @@ layout: post
 ##   review_title                review_text                review_star   page
 ##   &lt;chr&gt;                       &lt;chr&gt;                      &lt;chr&gt;        &lt;dbl&gt;
 ## 1 &quot;Fantastic!\n        &quot;      &quot;Absolutely loved the ser~ 5.0 out of ~     5
-## 2 &quot;Epic!\n        &quot;           &quot;I don&#39;t normally read mu~ 4.0 out of ~     5
-## 3 &quot;At 2,000 pages plus I am ~ &quot;I have two confessions t~ 4.0 out of ~     5
-## 4 &quot;Great value for a good co~ &quot;I bought &#39;Game of Throne~ 5.0 out of ~     5
-## 5 &quot;everybody who has read or~ &quot;Well, everybody who has ~ 5.0 out of ~     5
-## 6 &quot;Arrived quickly and well ~ &quot;Last minute present, eve~ 5.0 out of ~     5</code></pre>
+## 2 &quot;Brilliant audio books\n  ~ &quot;Delivered well packaged ~ 5.0 out of ~     5
+## 3 &quot;Epic!\n        &quot;           &quot;I don&#39;t normally read mu~ 4.0 out of ~     5
+## 4 &quot;At 2,000 pages plus I am ~ &quot;I have two confessions t~ 4.0 out of ~     5
+## 5 &quot;Great value for a good co~ &quot;I bought &#39;Game of Throne~ 5.0 out of ~     5
+## 6 &quot;everybody who has read or~ &quot;Well, everybody who has ~ 5.0 out of ~     5</code></pre>
 <hr />
 </div>
 <div id="avoiding-bot-detection" class="section level2">

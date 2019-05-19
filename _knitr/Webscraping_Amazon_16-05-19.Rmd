@@ -23,6 +23,7 @@ There are many ways to do this: usage and attitude surveys, qualitative focus gr
 
 **Amazon reviews** provide a fast, accessible yet vast data resource that does both of these things, allowing you to quickly explore what’s going on at effectively zero data collection cost. In this blog post, I’ll go through some examples of how all this could be done in R with relatively few lines of code.
 
+**Note**: As a data collection activity, web-scraping may have legal implications depending on your country. For the UK, as a general rule anything you can legally web-scrape anything out there that is in the public domain, but it is recommended that you obtain the site owner's permission if you are reporting on the data or using the data for commercial use (See this [post](https://benbernardblog.com/web-scraping-and-crawling-are-perfectly-legal-right/) for a more in-depth discussion)
 ---
 
 ## Getting Started `r emo::ji("rocket")`
