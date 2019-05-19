@@ -1,5 +1,5 @@
 ---
-title: "Vignette: Dealing with SPSS labels in R"
+title: "Vignette: Dealing with SPSS© labels in R"
 author: "Martin Chan"
 date: "May 18, 2019"
 output:                    # DO NOT CHANGE
@@ -10,14 +10,27 @@ output:                    # DO NOT CHANGE
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(prettyjekyll)
+library(tidyverse)
 # prettyjekyll::FormatPost("_knitr/First_Post_13-04-19.Rmd")
 ```
 
 ## Background
 
-As someone who works with survey data most of the time, I'm always on the look out for new and better ways to improve my survey analysis workflow in R. Funnily enough, I didn't think R was at all intuitive or easy to work with survey data when I was first starting out to use R. Rather painful, if I'm completely honest!
+As survey data is pretty much unavoidable in my work, I'm always on the look out for new and better ways to improve my survey analysis workflow in R. Funnily enough, when I was first starting out to use R I didn't think R was at all intuitive or easy to work with survey data. Rather painful, if I'm completely honest!
 
-One of the big reasons was because most survey data cannot really be analysed independently of the **variable** (e.g. *Q1. What is your gender?*) and **value labels** (e.g. 1 = **Male**, 2 = **Female**, 3 = **Other**, ...), and the base **data frame** in R does not easily lend itself to work easily with these labels. A lot of merging, sorting, recoding etc. therefore is then necessary in order to turn the analysis into neat output contingency tables that you typically get via other specialised survey analysis software, like SPSS or Q. Another big reason was of course due to my own ignorance at the time of all the different methods and packages out there which would otherwise make a lot of this easier. 
+One of the big reasons was labels. Most survey data cannot be analysed independently of the **variable** (e.g. *Q1. What is your gender?*) and **value labels** (e.g. 1 = **Male**, 2 = **Female**, 3 = **Other**, ...) - which is true in the case of **categorical variables**, but even for ordinal Likert scale variables like "On a scale of 1 to 10, how much do you agree with...", the meaning of the value is especially contingent on the nuanced wording of the agree-disagree statement; respondents with a different classification within the survey (e.g. "working professional" vs "retirees") may get a statement that is worded slightly differently. 
+
+The base **data frame** in R does not easily lend itself to work easily with these labels. A lot of merging, sorting, recoding etc. therefore is then necessary in order to turn the analysis into neat output contingency tables that you typically get via other specialised survey analysis software, like SPSS or [Q](https://www.qresearchsoftware.com/), for example:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+tibble(`Q10 Top 2 Box Agree` = c("Coding R is one of my hobbies",
+                                 "I don't like to spend time in front of the computer on weekends",
+                                 "I would be inclined to quit my job if I couldn't use R for data analysis"),
+       `R Users Segment` = c("88.1%","40.5%","70.1%"),
+       `Python Users Segment` = c("60.0%","39.1%","40.5%")) %>% knitr::kable()
+```
+
+Of course, another big reason was my own ignorance at the time of all the different methods and packages available out there, which would otherwise make a lot of this easier. 
 
 This post provides a tour of the various functions (from different packages) that I wish I had known at the time. Despite the title, it's not just about **SPSS**: there are plenty of other formats (e.g. SAS files) out there which carry variable and value labels, but I think this title is justified because:
 
@@ -37,16 +50,31 @@ library(labelled)
 library(surveytoolbox) # install with devtools::install_github("martinctc/surveytoolbox")
 ```
 
-Since all I really needed is just an open-source, simple, and accessible SPSS / .sav dataset with variable and value labels that I could use for examples, I simply went online and found the first thing that matched these criteria. Not the most exciting - it's the **1991 General Social Survey**, which is nationally representative sample of adults in the United States. You can download the SAV file from the ARDA site [here](http://www.thearda.com/Archive/Files/Downloads/GSS1991_DL2.asp).
+Since all I really needed is just an open-source, simple, and accessible SPSS / .sav dataset with variable and value labels that I could use for examples, I simply went online and found the first thing that matched these criteria. Not the most exciting - it's the **1991 General Social Survey**, which is a nationally representative sample of adults in the United States. You can download the SAV file from the ARDA site [here](http://www.thearda.com/Archive/Files/Downloads/GSS1991_DL2.asp).
 
-`haven::read_sav()` is my favourite way of loading in SPSS files. In my experience, it rarely has any problems and is generally fast enough. There are other alternatives such as `sjlabelled::read_spss()` and `foreign::read.spss()`, which I don't think are practically very different - you can pick a favourite and have these available in your backpocket in case one fails.
+`haven::read_sav()` is my favourite way of loading in SPSS files. In my experience, it rarely has any problems and is generally fast enough; it is also part of the [tidyverse](https://haven.tidyverse.org/). There are other alternatives such as `sjlabelled::read_spss()` and `foreign::read.spss()`, but **haven** is my recommendation - you can pick a favourite and have these available in your backpocket.[^1] Note that `foreign::read.spss()` returns a list rather than a data frame or a tibble, which is less ideal.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-source_data <- haven::read_sav("../datasets/General Social Survey_1991.SAV")
+file_path <- "../datasets/General Social Survey_1991.SAV"
+
+source_data_hv <- haven::read_sav(file_path)
+source_data_sj <- sjlabelled::read_spss(file_path)
+source_data_fo <- foreign::read.spss(file_path)
 ```
 
 Running `glimpse()` on the first twenty rows show that many variables are of the **labelled double** class - meaning that these variables would have labels associated with the numeric values they hold. The numbers alone us tell us nothing about what they represent, as these are likely to be categorical variables "in reality".
+
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-source_data %>% head(20) %>% glimpse()
+source_data_hv %>% # File read in using `haven::read_sav()`
+  .[,1:20] %>% # First 20 columns
+  glimpse() 
 ```
 
+Note that `haven::read_sav()` reads these labelled variables in as a class called `haven_labelled`, whilst `sjlabelled::read_spss()` would read these in as numeric variables cotaining label attributes:
+```{r}
+source_data_hv$MARITAL %>% class()
+source_data_sj$MARITAL %>% class()
+```
+
+
+[^1]: See [this](https://www.r-bloggers.com/working-with-spss-data-in-r/) blog post for a more in-depth discusssion on the differences 
