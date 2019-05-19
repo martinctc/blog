@@ -1,5 +1,5 @@
 ---
-title: "Vignette: Dealing with SPSS© labels in R"
+title: "Vignette: Dealing with SPSS labels in R"
 author: "Martin Chan"
 date: "May 18, 2019"
 output:                    # DO NOT CHANGE
@@ -11,7 +11,8 @@ output:                    # DO NOT CHANGE
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(prettyjekyll)
 library(tidyverse)
-# prettyjekyll::FormatPost("_knitr/First_Post_13-04-19.Rmd")
+# prettyjekyll::FormatPost("_knitr/SPSS_Labels_in_R_18-05-19.Rmd")
+# servr::jekyll("../blog")
 ```
 
 ## Background
@@ -27,7 +28,7 @@ tibble(`Q10 Top 2 Box Agree` = c("Coding R is one of my hobbies",
                                  "I don't like to spend time in front of the computer on weekends",
                                  "I would be inclined to quit my job if I couldn't use R for data analysis"),
        `R Users Segment` = c("88.1%","40.5%","70.1%"),
-       `Python Users Segment` = c("60.0%","39.1%","40.5%")) %>% knitr::kable()
+       `Python Users Segment` = c("60.0%","39.1%","40.5%"))
 ```
 
 Of course, another big reason was my own ignorance at the time of all the different methods and packages available out there, which would otherwise make a lot of this easier. 
@@ -54,7 +55,7 @@ Since all I really needed is just an open-source, simple, and accessible SPSS / 
 
 `haven::read_sav()` is my favourite way of loading in SPSS files. In my experience, it rarely has any problems and is generally fast enough; it is also part of the [tidyverse](https://haven.tidyverse.org/). There are other alternatives such as `sjlabelled::read_spss()` and `foreign::read.spss()`, but **haven** is my recommendation - you can pick a favourite and have these available in your backpocket.[^1] Note that `foreign::read.spss()` returns a list rather than a data frame or a tibble, which is less ideal.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
 file_path <- "../datasets/General Social Survey_1991.SAV"
 
 source_data_hv <- haven::read_sav(file_path)
@@ -64,7 +65,7 @@ source_data_fo <- foreign::read.spss(file_path)
 
 Running `glimpse()` on the first twenty rows show that many variables are of the **labelled double** class - meaning that these variables would have labels associated with the numeric values they hold. The numbers alone us tell us nothing about what they represent, as these are likely to be categorical variables "in reality".
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r echo=TRUE, results = "hide", message=FALSE, warning=FALSE}
 source_data_hv %>% # File read in using `haven::read_sav()`
   .[,1:20] %>% # First 20 columns
   glimpse() 
@@ -75,6 +76,18 @@ Note that `haven::read_sav()` reads these labelled variables in as a class calle
 source_data_hv$MARITAL %>% class()
 source_data_sj$MARITAL %>% class()
 ```
+
+Running `attr()` shows that both methods of reading the SPSS file will return variables with labels attributes:
+```{r}
+source_data_hv$MARITAL %>% attr('labels')
+source_data_sj$MARITAL %>% attr('labels')
+```
+
+
+## Exploring the dataset
+
+Before you perform any analysis it's necessary to first explore the data, which is slightly tric
+
 
 
 [^1]: See [this](https://www.r-bloggers.com/working-with-spss-data-in-r/) blog post for a more in-depth discusssion on the differences 

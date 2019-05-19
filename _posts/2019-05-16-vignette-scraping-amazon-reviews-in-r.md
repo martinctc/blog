@@ -44,39 +44,42 @@ library</span>(rvest)</code></pre></div>
 <p>The trick is to use a combination of <code>html_nodes()</code> and <code>html_text()</code> from the <strong>rvest</strong> package to lock onto the content that you need (The <strong>rvest</strong> package recommends <a href="http://flukeout.github.io/">this</a> really cool site for learning how to use CSS selectors).</p>
 <p>In my function, I assign all the bits of extracted content (review title, review body text, and star rating) into individual objects, and combine them into a tidy tibble to make it easy for data analysis.</p>
 <p>Let’s call this function <code>scrape_amazon()</code>, and allow it to take in the ASIN and the page number as the two arguments:</p>
+
 <div class="sourceCode" id="cb2">
 <pre class="sourceCode r">
 <code class="sourceCode r">
-<a class="sourceLine" id="cb2-1" title="1">scrape_amazon &lt;-<span class="st"> </span><span class="cf">function</span>(ASIN, page_num){</a>
-<a class="sourceLine" id="cb2-2" title="2">  </a>
-<a class="sourceLine" id="cb2-3" title="3">  url_reviews &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;https://www.amazon.co.uk/product-reviews/&quot;</span>,ASIN,<span class="st">&quot;/?pageNumber=&quot;</span>,page_num)</a>
-<a class="sourceLine" id="cb2-4" title="4">  </a>
-<a class="sourceLine" id="cb2-5" title="5">  doc &lt;-<span class="st"> </span><span class="kw">read_html</span>(url_reviews) <span class="co"># Assign results to `doc`</span></a>
-<a class="sourceLine" id="cb2-6" title="6">  </a>
-<a class="sourceLine" id="cb2-7" title="7">  <span class="co"># Review Title</span></a>
-<a class="sourceLine" id="cb2-8" title="8">  doc <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="st">    </span><span class="kw">html_nodes</span>(<span class="st">&quot;[class=&#39;a-size-base a-link-normal review-title a-color-base review-title-content a-text-bold&#39;]&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="st">    </span><span class="kw">html_text</span>() -&gt;<span class="st"> </span>review_title</a>
-<a class="sourceLine" id="cb2-11" title="11">  </a>
-<a class="sourceLine" id="cb2-12" title="12">  <span class="co"># Review Text</span></a>
-<a class="sourceLine" id="cb2-13" title="13">  doc <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-14" title="14"><span class="st">    </span><span class="kw">html_nodes</span>(<span class="st">&quot;[class=&#39;a-size-base review-text review-text-content&#39;]&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-15" title="15"><span class="st">    </span><span class="kw">html_text</span>() -&gt;<span class="st"> </span>review_text</a>
-<a class="sourceLine" id="cb2-16" title="16">  </a>
-<a class="sourceLine" id="cb2-17" title="17">  <span class="co"># Number of stars in review</span></a>
-<a class="sourceLine" id="cb2-18" title="18">  doc <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-19" title="19"><span class="st">    </span><span class="kw">html_nodes</span>(<span class="st">&quot;[data-hook=&#39;review-star-rating&#39;]&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-20" title="20"><span class="st">    </span><span class="kw">html_text</span>() -&gt;<span class="st"> </span>review_star</a>
-<a class="sourceLine" id="cb2-21" title="21">  </a>
-<a class="sourceLine" id="cb2-22" title="22">  <span class="co"># Return a tibble</span></a>
-<a class="sourceLine" id="cb2-23" title="23">  <span class="kw">tibble</span>(review_title,</a>
-<a class="sourceLine" id="cb2-24" title="24">         review_text,</a>
-<a class="sourceLine" id="cb2-25" title="25">         review_star,</a>
-<a class="sourceLine" id="cb2-26" title="26">         <span class="dt">page =</span> page_num) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">return</span>()</a>
-<a class="sourceLine" id="cb2-27" title="27">}</a></code></pre></div>
+<span class="sourceLine" id="cb2-1" title="1">scrape_amazon &lt;-<span class="st"> </span><span class="cf">function</span>(ASIN, page_num){</span>
+<span class="sourceLine" id="cb2-2" title="2">  </span>
+<span class="sourceLine" id="cb2-3" title="3">  url_reviews &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;https://www.amazon.co.uk/product-reviews/&quot;</span>,ASIN,<span class="st">&quot;/?pageNumber=&quot;</span>,page_num)</span>
+<span class="sourceLine" id="cb2-4" title="4">  </span>
+<span class="sourceLine" id="cb2-5" title="5">  doc &lt;-<span class="st"> </span><span class="kw">read_html</span>(url_reviews) <span class="co"># Assign results to `doc`</span></span>
+<span class="sourceLine" id="cb2-6" title="6">  </span>
+<span class="sourceLine" id="cb2-7" title="7">  <span class="co"># Review Title</span></span>
+<span class="sourceLine" id="cb2-8" title="8">  doc <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span class="sourceLine" id="cb2-9" title="9"><span class="st">    </span><span class="kw">html_nodes</span>(<span class="st">&quot;[class=&#39;a-size-base a-link-normal review-title a-color-base review-title-content a-text-bold&#39;]&quot;</span>) <span class="op">%&gt;%</span></span>
+<span class="sourceLine" id="cb2-10" title="10"><span class="st">    </span><span class="kw">html_text</span>() -&gt;<span class="st"> </span>review_title</span>
+<span class="sourceLine" id="cb2-11" title="11">  </span>
+<span class="sourceLine" id="cb2-12" title="12">  <span class="co"># Review Text</span></span>
+<span class="sourceLine" id="cb2-13" title="13">  doc <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span class="sourceLine" id="cb2-14" title="14"><span class="st">    </span><span class="kw">html_nodes</span>(<span class="st">&quot;[class=&#39;a-size-base review-text review-text-content&#39;]&quot;</span>) <span class="op">%&gt;%</span></span>
+<span class="sourceLine" id="cb2-15" title="15"><span class="st">    </span><span class="kw">html_text</span>() -&gt;<span class="st"> </span>review_text</span>
+<span class="sourceLine" id="cb2-16" title="16">  </span>
+<span class="sourceLine" id="cb2-17" title="17">  <span class="co"># Number of stars in review</span></span>
+<span class="sourceLine" id="cb2-18" title="18">  doc <span class="op">%&gt;%</span></span>
+<span class="sourceLine" id="cb2-19" title="19"><span class="st">    </span><span class="kw">html_nodes</span>(<span class="st">&quot;[data-hook=&#39;review-star-rating&#39;]&quot;</span>) <span class="op">%&gt;%</span></span>
+<span class="sourceLine" id="cb2-20" title="20"><span class="st">    </span><span class="kw">html_text</span>() -&gt;<span class="st"> </span>review_star</span>
+<span class="sourceLine" id="cb2-21" title="21">  </span>
+<span class="sourceLine" id="cb2-22" title="22">  <span class="co"># Return a tibble</span></span>
+<span class="sourceLine" id="cb2-23" title="23">  <span class="kw">tibble</span>(review_title,</span>
+<span class="sourceLine" id="cb2-24" title="24">         review_text,</span>
+<span class="sourceLine" id="cb2-25" title="25">         review_star,</span>
+<span class="sourceLine" id="cb2-26" title="26">         <span class="dt">page =</span> page_num) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">return</span>()</span>
+<span class="sourceLine" id="cb2-27" title="27">}</span></code></pre></div>
 <p>You can then run this function to extract a nice, clean table of reviews:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">scrape_amazon</span>(<span class="dt">ASIN =</span> <span class="st">&quot;0007477155&quot;</span>, <span class="dt">page_num =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span class="sourceLine" id="cb3-1" title="1"><span class="kw">scrape_amazon</span>(<span class="dt">ASIN =</span> <span class="st">&quot;0007477155&quot;</span>, <span class="dt">page_num =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span></span>
+<span class="sourceLine" id="cb3-2" title="2"><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
+
+
 <pre><code>## # A tibble: 6 x 4
 ##   review_title                review_text                review_star   page
 ##   &lt;chr&gt;                       &lt;chr&gt;                      &lt;chr&gt;        &lt;dbl&gt;
