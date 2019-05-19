@@ -25,6 +25,7 @@ There are many ways to do this: usage and attitude surveys, qualitative focus gr
 
 **Note** : 
 As a data collection activity, web-scraping may have legal implications depending on your country. For the UK, as a general rule you can legally web-scrape anything out there that is in the public domain, but it is recommended that you obtain the site owner's permission if you are reporting on the data or using the data for commercial use (See this [post](https://benbernardblog.com/web-scraping-and-crawling-are-perfectly-legal-right/) for a more in-depth discussion)
+
    
 ---
 

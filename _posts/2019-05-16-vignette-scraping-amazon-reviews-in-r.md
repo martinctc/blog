@@ -6,7 +6,6 @@ date: "May 16, 2019"
 layout: post
 ---
 
-
 <section class="main-content">
 <div id="background" class="section level2">
 <h2>Background</h2>
@@ -23,7 +22,8 @@ layout: post
 <div id="getting-started" class="section level2">
 <h2>Getting Started 🚀</h2>
 <p>The first step is to load the <strong>tidyverse</strong> and <strong>rvest</strong> packages, as we’ll need them for building the webscraping function (e.g. parsing html) and for general data manipulation:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)<span class="kw">library</span>(rvest)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)<span class="kw">
+library</span>(rvest)</code></pre></div>
 <p>The next step is to find out the <em>ASIN</em> (stands for Amazon Standard Identification Number) of the product that you want to extract reviews from. This is effectively a product ID, which can usually be found within the URL of the product link itself. ASINS are unique strings of 10 characters, where for books this would be the same as the ISBN number.</p>
 <p>For our example, let’s use the seven volume paperback collection of George R R Martin’s <em>A Song of Ice and Fire</em>, which has almost 2.5K reviews on Amazon.co.uk at the time of writing. We can also specify the number of review pages to scrape, where the fixed number of reviews per page is ten. In this example, the ASIN is <code>0007477155</code>, and you can find the link to the product by combining the ASIN with “<a href="https://www.amazon.co.uk/dp/" class="uri">https://www.amazon.co.uk/dp/</a>”:</p>
 <p><img src="{{ site.url }}{{ site.baseurl }}\images\amazon_got.PNG" width="80%" /></p>
@@ -44,7 +44,10 @@ layout: post
 <p>The trick is to use a combination of <code>html_nodes()</code> and <code>html_text()</code> from the <strong>rvest</strong> package to lock onto the content that you need (The <strong>rvest</strong> package recommends <a href="http://flukeout.github.io/">this</a> really cool site for learning how to use CSS selectors).</p>
 <p>In my function, I assign all the bits of extracted content (review title, review body text, and star rating) into individual objects, and combine them into a tidy tibble to make it easy for data analysis.</p>
 <p>Let’s call this function <code>scrape_amazon()</code>, and allow it to take in the ASIN and the page number as the two arguments:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">scrape_amazon &lt;-<span class="st"> </span><span class="cf">function</span>(ASIN, page_num){</a>
+<div class="sourceCode" id="cb2">
+<pre class="sourceCode r">
+<code class="sourceCode r">
+<a class="sourceLine" id="cb2-1" title="1">scrape_amazon &lt;-<span class="st"> </span><span class="cf">function</span>(ASIN, page_num){</a>
 <a class="sourceLine" id="cb2-2" title="2">  </a>
 <a class="sourceLine" id="cb2-3" title="3">  url_reviews &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;https://www.amazon.co.uk/product-reviews/&quot;</span>,ASIN,<span class="st">&quot;/?pageNumber=&quot;</span>,page_num)</a>
 <a class="sourceLine" id="cb2-4" title="4">  </a>
