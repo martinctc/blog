@@ -19,7 +19,7 @@ library(tidyverse)
 
 As survey data is pretty much unavoidable in my work, I'm always on the look out for new and better ways to improve my survey analysis workflow in R. Funnily enough, when I was first starting out to use R I didn't think R was at all intuitive or easy to work with survey data. Rather painful, if I'm completely honest!
 
-One of the big reasons was labels. Most survey data cannot be analysed independently of the **variable** (e.g. *Q1. What is your gender?*) and **value labels** (e.g. 1 = **Male**, 2 = **Female**, 3 = **Other**, ...) - which is true in the case of **categorical variables**, but even for ordinal Likert scale variables like "On a scale of 1 to 10, how much do you agree with...", the meaning of the value is especially contingent on the nuanced wording of the agree-disagree statement; respondents with a different classification within the survey (e.g. "working professional" vs "retirees") may get a statement that is worded slightly differently. 
+One of the big reasons was due to survey labels. Most survey data cannot be analysed independently of the **variable** (e.g. *Q1. What is your gender?*) and **value labels** (e.g. 1 = **Male**, 2 = **Female**, 3 = **Other**, ...) - which is true in the case of **categorical variables**, but even for ordinal Likert scale variables like "On a scale of 1 to 10, how much do you agree with...", the meaning of the value is highly dependent on the nuanced wording of the agree-disagree statement; respondents with a different classification within the survey (e.g. "working professional" vs "retirees") may get a statement that is worded slightly differently. 
 
 The base **data frame** in R does not easily lend itself to work easily with these labels. A lot of merging, sorting, recoding etc. therefore is then necessary in order to turn the analysis into neat output contingency tables that you typically get via other specialised survey analysis software, like SPSS or [Q](https://www.qresearchsoftware.com/), for example:
 
@@ -31,7 +31,7 @@ tibble(`Q10 Top 2 Box Agree` = c("Coding R is one of my hobbies",
        `Python Users Segment` = c("60.0%","39.1%","40.5%"))
 ```
 
-Of course, another big reason was my own ignorance at the time of all the different methods and packages available out there, which would otherwise make a lot of this easier. 
+Of course, another big reason was my own ignorance of all the different methods and packages available out there at the time, which would have otherwise made a lot of this easier. 
 
 This post provides a tour of the various functions (from different packages) that I wish I had known at the time. Despite the title, it's not just about **SPSS**: there are plenty of other formats (e.g. SAS files) out there which carry variable and value labels, but I think this title is justified because:
 
@@ -51,7 +51,7 @@ library(labelled)
 library(surveytoolbox) # install with devtools::install_github("martinctc/surveytoolbox")
 ```
 
-Since all I really needed is just an open-source, simple, and accessible SPSS / .sav dataset with variable and value labels that I could use for examples, I simply went online and found the first thing that matched these criteria. Not the most exciting - it's the **1991 General Social Survey**, which is a nationally representative sample of adults in the United States. You can download the SAV file from the ARDA site [here](http://www.thearda.com/Archive/Files/Downloads/GSS1991_DL2.asp).
+Since all I really needed is just an open-source, simple, and accessible SPSS / .sav dataset with variable and value labels that I could use for examples, I simply went online and found the first dataset that matched these criteria. Not the most exciting - it's the **1991 General Social Survey**, which is a nationally representative sample of adults in the United States. You can download the SAV file from the ARDA site [here](http://www.thearda.com/Archive/Files/Downloads/GSS1991_DL2.asp).
 
 `haven::read_sav()` is my favourite way of loading in SPSS files. In my experience, it rarely has any problems and is generally fast enough; it is also part of the [tidyverse](https://haven.tidyverse.org/). There are other alternatives such as `sjlabelled::read_spss()` and `foreign::read.spss()`, but **haven** is my recommendation - you can pick a favourite and have these available in your backpocket.[^1] Note that `foreign::read.spss()` returns a list rather than a data frame or a tibble, which is less ideal.
 
@@ -83,10 +83,19 @@ source_data_hv$MARITAL %>% attr('labels')
 source_data_sj$MARITAL %>% attr('labels')
 ```
 
-
 ## Exploring the dataset
 
-Before you perform any analysis it's necessary to first explore the data, which is slightly tric
+Before you perform any analysis it's necessary to first explore what variables and variable codes (value labels) are available in the data, which is needed if you do not have the original questionnaire. Here are several of my favourite functions:
+
+1. `sjPlot::view_df()`
+2. `surveytoolbox::data_dict()`
+3. `surveytoolbox::varl_tb()`
+
+The `view_df()` function from the **sjPlot** package 
+
+
+
+
 
 
 
