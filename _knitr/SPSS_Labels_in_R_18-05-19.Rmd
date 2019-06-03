@@ -1,7 +1,7 @@
 ---
 title: "Vignette: Dealing with SPSS labels in R"
 author: "Martin Chan"
-date: "May 18, 2019"
+date: "June 5, 2019"
 output:                    # DO NOT CHANGE
   prettydoc::html_pretty:  # DO NOT CHANGE
     theme: cayman          # DO NOT CHANGE
@@ -71,19 +71,36 @@ source_data_hv %>% # File read in using `haven::read_sav()`
   glimpse() 
 ```
 
-Note that `haven::read_sav()` reads these labelled variables in as a class called `haven_labelled`, whilst `sjlabelled::read_spss()` would read these in as numeric variables cotaining label attributes:
+Note that `haven::read_sav()` reads these labelled variables in as a class called `haven_labelled`, whilst `sjlabelled::read_spss()` would read these in as numeric variables cotaining label attributes.
+
+Using **haven**:
 ```{r}
 source_data_hv$MARITAL %>% class()
+
+```
+Using **sjlabelled**:
+```{r}
 source_data_sj$MARITAL %>% class()
 ```
 
-Running `attr()` shows that both methods of reading the SPSS file will return variables with labels attributes:
+
+Running `attr()` whilst specifying "labels" shows that both methods of reading the SPSS file return variables that contain value label attributes. Note that specifying "label**s**" (with an s) typically returns value labels, whereas "label" (no s) would return the variable labels. 
+
+Using **haven**:
 ```{r}
 source_data_hv$MARITAL %>% attr('labels')
+
+```
+
+Using **sjlabelled**:
+```{r}
 source_data_sj$MARITAL %>% attr('labels')
 ```
 
+
 ## Exploring the dataset
+
+For the subsequent examples, I shall use the tibble read in with **haven** for simplicity.
 
 Before you perform any analysis it's necessary to first explore what variables and variable codes (value labels) are available in the data, which is needed if you do not have the original questionnaire. Here are several of my favourite functions:
 
@@ -91,7 +108,24 @@ Before you perform any analysis it's necessary to first explore what variables a
 2. `surveytoolbox::data_dict()`
 3. `surveytoolbox::varl_tb()`
 
-The `view_df()` function from the **sjPlot** package 
+```{r eval=FALSE}
+source_data_hv %>% sjPlot::view_df()
+```
+
+The `view_df()` function from the **sjPlot** package returns a pretty HTML document that, by default, contains a table that details the following for all the variables in the data:
+
+- Variable name
+- Variable label
+- Value range / Values
+- Value labels
+
+Check out this link to see an example of what's generated with the function:
+
+[LINK](https://martinctc.github.io/blog/_knitr/sjPlot_view_df.html)
+
+
+
+
 
 
 
