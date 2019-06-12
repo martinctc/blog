@@ -1,7 +1,7 @@
 ---
-title: "Vignette: Dealing with SPSS labels in R"
+title: "Working with SPSS labels in R"
 author: "Martin Chan"
-date: "June 8, 2019"
+date: "June 13, 2019"
 output:                    # DO NOT CHANGE
   prettydoc::html_pretty:  # DO NOT CHANGE
     theme: cayman          # DO NOT CHANGE
@@ -15,30 +15,33 @@ library(tidyverse)
 # servr::jekyll("../blog")
 ```
 
-## tl;dr `r emo::ji("smile")`
-This post provides an overview of functions for dealing with survey data labels that I wish I'd known when I was starting out analysing SPSS data in R. Some of these functions are from my own package (GitHub only) [surveytoolbox](https://nicedoc.io/martinctc/surveytoolbox) which is a collection of R functions I frequently use when analysing survey data.
+## TL;DR `r emo::ji("open_book")`
+This post provides an overview of R functions for dealing with survey data labels, particularly ones that I wish I'd known when I first started out analysing survey data in R (primarily stored in SPSS data files). Some of these functions come from [surveytoolbox](https://nicedoc.io/martinctc/surveytoolbox), a package I'm developing (GitHub only)  which contains a collection of my favourite / most frequently used R functions for analysing survey data. I also highly recommend checking out [labelled](http://larmarange.github.io/labelled/), [sjlabelled](https://strengejacke.github.io/sjlabelled/), and of course tidyverse's own [haven](https://haven.tidyverse.org/) package `r emo::ji("package")`.
+
+```{r survey-meme, echo=FALSE, message=FALSE, warning=FALSE, out.width='50%'}
+knitr::include_graphics("../images/another-survey.jpg")
+```
 
 ---
 
 ## Background
 
-As a significant proportion of my analysis involves survey data, I'm always on the look out for new and better ways to improve my survey analysis workflow in R. Funnily enough, when I was first starting out to use R I didn't think R was at all intuitive or easy to work with survey data. Rather painful if I'm completely honest!
+Since a significant proportion of my typical analysis projects involves survey data, I'm always on the look out for new and better ways to improve my R analysis workflows for surveys. Funnily enough, when I first started out to use R a couple of years ago, I didn't think R was at all intuitive or easy to work with survey data. Rather painful if I'm completely honest!
 
-One of the big reasons for this "pain" was due to survey labels. 
+One of the big reasons for this "pain" was due to survey labels.[^1] 
 
-Survey data generally cannot be analysed independently of the **variable** (e.g. *Q1. What is your gender?*) and **value labels** (e.g. 1 = **Male**, 2 = **Female**, 3 = **Other**, ...), which is true in the case of **categorical variables**.  
+Survey data generally cannot be analysed independently of the **variable labels** (e.g. *Q1. What is your gender?*) and **value labels** (e.g. 1 = **Male**, 2 = **Female**, 3 = **Other**, ...), which is true in the case of **categorical variables**.  
 
 Even for ordinal Likert scale variables such as "*On a scale of 1 to 10, how much do you agree with...*", the meaning of the value is highly dependent on the nuanced wording of the agree-disagree statement. For instance:
 
-1. Respondents with a different classification within the survey (e.g. "working professional" vs "retirees") may also have answered a statement that is worded slightly differently but their responses are reflected using a single variable in the data: for instance, working professionals may be asked about their satisfaction with their current employer in the survey, and retirees asked about their previous employer. 
-
+1. Respondents with a different classification within the survey (e.g. "full-time employees" vs "retirees") may also have answered a statement that is worded slightly differently but their responses are reflected using a single variable in the data: for instance, employees may be asked about their satisfaction with their current employer in the survey, and retirees asked about their previous employer. 
 2. In my talk at the [EARL conference](https://martinctc.github.io/downloads/EARL%202018%20-%20Swiss%20Army%20Knife%20for%20Market%20Research%20-%20Martin%20Chan%20-%2010%20September%202018.pdf#) last year, I also discussed a specific type of trade-off agreement question where any interpretation of the data is particularly sensitive to the value labels:
 
 ```{r earl-slide, echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
 knitr::include_graphics("../images/trade-off-survey.PNG")
 ```
 
-My experience was that the base **data frame** in R does not easily lend itself to work easily with these labels. A lot of merging, sorting, recoding etc. therefore is then necessary in order to turn the analysis into neat output contingency tables that you typically get via other specialised survey analysis software, like SPSS or [Q](https://www.qresearchsoftware.com/). Here's an example (with completely made up numbers) of what I would typically need to produce as an output:
+My experience was that the base **data frame** in R does not easily lend itself to work easily with these labels. A lot of merging, sorting, recoding etc. therefore is then necessary in order to turn the analysis into neat output contingency tables that you typically get via other specialist survey analysis software, like SPSS or [Q](https://www.qresearchsoftware.com/). Here's an example (with completely made up numbers) of what I would typically need to produce as an output:
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tibble(`Q10 Top 2 Box Agree` = c("Coding R is one of my hobbies",
@@ -54,8 +57,8 @@ Of course, another big reason was my own ignorance of all the different methods 
 This post provides a tour of the various functions (from different packages) that I wish I had known at the time. Despite the title, it's not just about **SPSS**: there are plenty of other formats (e.g. SAS files) out there which carry variable and value labels, but I think this title is justified because:
 
 1. Most people starting out on survey data analysis will tend to first come across SPSS files (.sav) 
-2. It's still one of the most popular data formats for survey data
-3. It's a SPSS file that I will use as a demo in this post (perhaps not a compelling reason, but still a reason)
+2. SPSS is still one of the most popular data formats for survey data
+3. It's a SPSS file that I will use as a demo in this post - and the importing functions which I will briefly go through are SPSS-specific
 
 ---
 
@@ -71,9 +74,15 @@ library(labelled)
 library(surveytoolbox) # install with devtools::install_github("martinctc/surveytoolbox")
 ```
 
-Since all I really needed is just an open-source, simple, and accessible SPSS / .sav dataset with variable and value labels that I could use for examples, I simply went online and found the first dataset that matched these criteria. Not the most exciting - it's the **1991 General Social Survey**, which is a nationally representative sample of adults in the United States. You can download the SAV file from the ARDA site [here](http://www.thearda.com/Archive/Files/Downloads/GSS1991_DL2.asp).
+Since all I really needed is just an open-source, simple, and accessible SPSS / .sav dataset with variable and value labels that I could use for examples, I simply went online and found the first dataset that ticked these boxes. Not the most exciting - it's the **1991 General Social Survey**, which is a nationally representative sample of adults in the United States. You can download the SAV file from the ARDA site [here](http://www.thearda.com/Archive/Files/Downloads/GSS1991_DL2.asp).
 
-`haven::read_sav()` is my favourite way of loading in SPSS files. In my experience, it rarely has any problems and is generally fast enough; it is also part of the [tidyverse](https://haven.tidyverse.org/). There are other alternatives such as `sjlabelled::read_spss()` and `foreign::read.spss()`, but **haven** is my recommendation - you can pick a favourite and have these available in your backpocket.[^2] Note that `foreign::read.spss()` returns a list rather than a data frame or a tibble, which for me is less ideal for analysis.
+`haven::read_sav()` is my favourite way of loading in SPSS files. In my experience, it rarely has any problems and is generally fast enough; it is also part of the [tidyverse](https://haven.tidyverse.org/). There are other alternatives such as `sjlabelled::read_spss()` and `foreign::read.spss()`, but **haven** is my personal recommendation - you can pick a favourite and have these available in your backpocket.[^2] Two points to note:
+
+1. `foreign::read.spss()` returns a list rather than a data frame or a tibble, which for me is less ideal for analysis.
+
+2. Another method for importing SPSS files is [rio's](https://github.com/leeper/rio) `import()` function. I understand that this is just a wrapper around **haven's** `read_sav()` function, so I won't discuss this method here.
+
+Let's load in the same SPSS file, using the different methods:
 
 ```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
 file_path <- "../datasets/General Social Survey_1991.SAV"
@@ -83,7 +92,7 @@ source_data_sj <- sjlabelled::read_spss(file_path)
 source_data_fo <- foreign::read.spss(file_path)
 ```
 
-Running `glimpse()` on the first twenty rows show that many variables are of the **labelled double** class (where it shows `<dbl+lbl>`) - meaning that these variables would have labels associated with the numeric values they hold. The numbers alone us tell us nothing about what they represent, as these are likely to be categorical variables "in reality".
+Running `glimpse()` on the first twenty rows of the imported data show that many variables are of the **labelled double** class (where it shows `<dbl+lbl>`) - meaning that these variables would have labels associated with the numeric values they hold. The numeric values alone us tell us nothing about what they represent, as these are likely to be categorical variables "in reality".
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 source_data_hv %>% # File read in using `haven::read_sav()`
@@ -91,25 +100,22 @@ source_data_hv %>% # File read in using `haven::read_sav()`
   glimpse() 
 ```
 
-Note that `haven::read_sav()` reads these labelled variables in as a class called `haven_labelled`, whilst `sjlabelled::read_spss()` would read these in as numeric variables cotaining label attributes.
+Note that `haven::read_sav()` reads these labelled variables in as a class called `haven_labelled`, whilst `sjlabelled::read_spss()` would read these in as numeric variables containing label attributes. You can check this by running `class()` on one of the labelled variables.
 
 Using **haven**:
 ```{r}
 source_data_hv$MARITAL %>% class()
-
 ```
 Using **sjlabelled**:
 ```{r}
 source_data_sj$MARITAL %>% class()
 ```
 
-
 Running `attr()` whilst specifying "labels" shows that both methods of reading the SPSS file return variables that contain value label attributes. Note that specifying "label**s**" (with an *s*) typically returns value labels, whereas "label" (no *s*) would return the variable labels. 
 
 Viewing **value** labels for data imported using **haven**:
 ```{r}
 source_data_hv$MARITAL %>% attr('labels')
-
 ```
 
 Viewing **value** labels for data imported using **sjlabelled**:
@@ -130,17 +136,27 @@ source_data_sj$MARITAL %>% attr('label')
 
 As you can see, there are no differences in the labels returned whether the data is imported using **haven** or **sjlabelled**.
 
+It's also worth noting that various different packages have similar methods for extracting variable and value labels - which practically do the same thing:
+```{r}
+list(
+  "labelled::var_label()" = source_data_sj$MARITAL %>% labelled::var_label(),
+  "sjlabelled::get_label()" = source_data_sj$MARITAL %>% sjlabelled::get_label(),
+  "attr()" = source_data_sj$MARITAL %>% attr(which = "label")
+)
+```
+
 ---
 
 ## Exploring the dataset
 
-For the subsequent examples, I shall use the tibble read in with **haven** for simplicity.
+For the subsequent examples, I'll only reference the tibble returned with **haven::read_sav()** for simplicity.
 
-Before you perform any analysis it's necessary to first explore what variables and variable codes (value labels) are available in the data, which is needed if you do not have the original questionnaire. Here are several of my favourite functions:
+Before you perform any analysis, it's necessary to first explore what variables and variable codes (value labels) are available in the data, which is needed if you do not have the original questionnaire. Here are several of my favourite functions:
 
 1. `sjPlot::view_df()`
 2. `surveytoolbox::varl_tb()`
 3. `surveytoolbox::extract_vallab()`
+4. `labelled::look_for()`
 
 ```{r eval=FALSE}
 source_data_hv %>% sjPlot::view_df()
@@ -160,7 +176,7 @@ knitr::include_graphics("../images/view_df-example.PNG")
 
 Check out this link to see a full example of what's generated with the function:
 
-[Click here](https://martinctc.github.io/blog/_knitr/sjPlot_view_df.html)
+[Click here](https://martinctc.github.io/blog/examples/sjPlot_view_df.html)
 
 The documentation for `view_df()` also states that you can show percentages and frequencies for each variable, which is a pretty nifty feature for exploring a dataset.
 
@@ -188,22 +204,35 @@ source_data_hv %>%
 
 You can then use the output from `extract_vallab()` for joining / editing labels with analysis outputs if needed.
 
+But what if you're not sure about the exact variable names, but you know roughly what's in the variable label (typically, survey question text)? `labelled::look_for()` provides a pipe-optimised method that allows you to search into both variable names and variable label descriptions. Say for instance we want to identify a variable relating to *household income deficit*, where "income deficit" are the keywords. The `look_for()` function then returns a data frame with a "variable" column and a "label" column:
+
+```{r}
+source_data_hv %>%
+  labelled::look_for("income deficit")
+```
+
+You can then very easily browse the value labels of `INCDEF` with `surveytoolbox::extract_vallab()`:
+
+```{r}
+source_data_hv %>%
+  surveytoolbox::extract_vallab("INCDEF")
+```
+
+
 ---
 
-## To be continued..?
+## To be continued..!
 
-Big subject
+Working with survey data labels is itself a pretty big subject (surprisingly), and this post has only very much just touched the surface. For instance, **factors** is another subject that deserves exploration, as they are the standard R class for working with categorical data. A quick Google search will reveal more packages that allow you to deal with labels, such as [expss](https://gdemin.github.io/expss/) - which I've not used before, but it's a valuable exercise to compare and benchmark these different methods on consistency, versatility, and speed. There will (probably) be a part 2 to this post!
 
-Only touched the surface
+The good and bad thing about R is there are often many ways to do a similar thing (see this [discussion](https://martinctc.github.io/blog/using-data.table-with-magrittr-pipes-best-of-both-worlds/)), and therefore it's often useful to compare and contrast functions from different packages that do similar things. The functions discussed in this post is what I've personally found to work well with my own workflow / code, and by no means is this an exhaustive, comprehensive survey of methods! I very much would like to hear any comments / feedback that you have with either the content on this blog or with the [surveytoolbox](https://nicedoc.io/martinctc/surveytoolbox) package. Thank you!
 
-Many ways to do a similar thing, but this is what I found to work well with my workflow / code
-
-Welcome any comments / feedback
-
-Hope to write more about other methods in Part 2
+Additional footnote about why it took me slightly longer to write this post[^3].
 
 ---
 
 [^1]: In this post, the focus of the dicussion would be more on labelled vectors than *factors*; in line with the principle listed in **haven**'s [documentation on the labelled function](https://haven.tidyverse.org/reference/labelled.html), the best practice is to analyse the data using a standard R class, but knowing how to deal with labels is useful at the importing / data checking stage.
 
 [^2]: See [this](https://www.r-bloggers.com/working-with-spss-data-in-r/) blog post for a more in-depth discussion on the differences 
+
+[^3]: I had planned to finish this post earlier in the week, but distressing news from my home city Hong Kong has diverted my attention. A million Hong Kongers had been peacefully protesting against a bill which will enable extradition to mainland China, which has a record of [questionable judicial processes](https://www.bbc.com/news/world-asia-34782266). In the last 1-2 days, this peaceful process has turned violent with the government first declaring the protest as a riot based on a small minority of resistance, then with the [police injuring defenseless citizens with rubber bullet and tear gas rounds](https://twitter.com/racsiw5/status/1138873714601353217), with students amongst the victims. I want to express support for those are still peacefully resisting on the streets as I write, and to hopefully raise awareness of what is happening in Hong Kong to everyone around the world. Please check out this [explainer](https://www.theguardian.com/world/2019/jun/10/what-are-the-hong-kong-protests-about-explainer) by the Guardian to find out more.
