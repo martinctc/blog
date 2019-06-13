@@ -1,112 +1,17 @@
-<!DOCTYPE html>
+---
+title: "Working with SPSS labels in R"
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<meta name="author" content="Martin Chan" />
-
-<meta name="date" content="2019-06-13" />
-
-<title>Working with SPSS labels in R</title>
-
-
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
-
-
-
-<link rel="stylesheet" href="SPSS_Labels_in_R_18-05-19_files/style.css" type="text/css" />
-
-</head>
-
-<body>
-
-
-
-
-<section class="page-header">
-<h1 class="title toc-ignore project-name">Working with SPSS labels in R</h1>
-<h4 class="author project-author">Martin Chan</h4>
-<h4 class="date project-date">June 13, 2019</h4>
-</section>
-
+author: "Martin Chan"
+date: "June 13, 2019"
+layout: post
+---
 
 
 <section class="main-content">
 <div id="tldr" class="section level2">
 <h2>TL;DR 📖</h2>
 <p>This post provides an overview of R functions for dealing with survey data labels, particularly ones that I wish I’d known when I first started out analysing survey data in R (primarily stored in SPSS data files). Some of these functions come from <a href="https://nicedoc.io/martinctc/surveytoolbox">surveytoolbox</a>, a package I’m developing (GitHub only) which contains a collection of my favourite / most frequently used R functions for analysing survey data. I also highly recommend checking out <a href="http://larmarange.github.io/labelled/">labelled</a>, <a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a>, and of course tidyverse’s own <a href="https://haven.tidyverse.org/">haven</a> package 📦.</p>
-<p><img src="../images/another-survey.jpg" width="50%" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}\images\another-survey.jpg" width="50%" /></p>
 <hr />
 </div>
 <div id="background" class="section level2">
@@ -119,7 +24,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Respondents with a different classification within the survey (e.g. “full-time employees” vs “retirees”) may also have answered a statement that is worded slightly differently but their responses are reflected using a single variable in the data: for instance, employees may be asked about their satisfaction with their current employer in the survey, and retirees asked about their previous employer.</li>
 <li>In my talk at the <a href="https://martinctc.github.io/downloads/EARL%202018%20-%20Swiss%20Army%20Knife%20for%20Market%20Research%20-%20Martin%20Chan%20-%2010%20September%202018.pdf#">EARL conference</a> last year, I also discussed a specific type of trade-off agreement question where any interpretation of the data is particularly sensitive to the value labels:</li>
 </ol>
-<p><img src="../images/trade-off-survey.PNG" width="80%" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}\images\trade-off-survey.PNG" width="80%" /></p>
 <p>My experience was that the base <strong>data frame</strong> in R does not easily lend itself to work easily with these labels. A lot of merging, sorting, recoding etc. therefore is then necessary in order to turn the analysis into neat output contingency tables that you typically get via other specialist survey analysis software, like SPSS or <a href="https://www.qresearchsoftware.com/">Q</a>. Here’s an example (with completely made up numbers) of what I would typically need to produce as an output:</p>
 <pre><code>## # A tibble: 3 x 3
 ##   `Q10 Top 2 Box Agree`                 `R Users Segmen~ `Python Users Seg~
@@ -241,7 +146,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Value range / Values</li>
 <li>Value labels</li>
 </ul>
-<p>Here’s a screenshot of the generated document: <img src="../images/view_df-example.PNG" width="80%" /></p>
+<p>Here’s a screenshot of the generated document: <img src="{{ site.url }}{{ site.baseurl }}\images\view_df-example.PNG" width="80%" /></p>
 <p>Check out this link to see a full example of what’s generated with the function:</p>
 <p><a href="https://martinctc.github.io/examples/sjPlot_view_df.html">Click here</a></p>
 <p>The documentation for <code>view_df()</code> also states that you can show percentages and frequencies for each variable, which is a pretty nifty feature for exploring a dataset.</p>
@@ -339,18 +244,3 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 </div>
 </section>
-
-
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
-
-</body>
-</html>

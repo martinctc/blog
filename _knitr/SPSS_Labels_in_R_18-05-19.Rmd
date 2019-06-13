@@ -48,8 +48,7 @@ tibble(`Q10 Top 2 Box Agree` = c("Coding R is one of my hobbies",
                                  "I don't like to spend time in front of the computer on weekends",
                                  "I would be inclined to quit my job if I couldn't use R for data analysis"),
        `R Users Segment` = c("88.1%","40.5%","70.1%"),
-       `Python Users Segment` = c("60.0%","39.1%","40.5%")) %>%
-  knitr::kable()
+       `Python Users Segment` = c("60.0%","39.1%","40.5%"))
 ```
 
 Of course, another big reason was my own ignorance of all the different methods and packages available out there at the time, which would have otherwise made a lot of this easier! `r emo::ji("stuck_out_tongue")`
@@ -147,7 +146,7 @@ list(
 
 ---
 
-## Exploring the dataset
+## Exploring labels in the dataset `r emo::ji("mag_right")`
 
 For the subsequent examples, I'll only reference the tibble returned with **haven::read_sav()** for simplicity.
 
@@ -161,6 +160,8 @@ Before you perform any analysis, it's necessary to first explore what variables 
 ```{r eval=FALSE}
 source_data_hv %>% sjPlot::view_df()
 ```
+
+### `sjPlot::view_df()`
 
 The `view_df()` function from the **sjPlot** package returns a pretty HTML document that, by default, contains a table that details the following for all the variables in the data:
 
@@ -176,9 +177,11 @@ knitr::include_graphics("../images/view_df-example.PNG")
 
 Check out this link to see a full example of what's generated with the function:
 
-[Click here](https://martinctc.github.io/blog/examples/sjPlot_view_df.html)
+[Click here](https://martinctc.github.io/examples/sjPlot_view_df.html)
 
 The documentation for `view_df()` also states that you can show percentages and frequencies for each variable, which is a pretty nifty feature for exploring a dataset.
+
+### `surveytoolbox::varl_tb()`
 
 But what if you wished to extract individual labels for further formatting / analysis?
 
@@ -195,6 +198,8 @@ source_data_hv %>%
 
 The additional benefit of this function is that this is all magrittr-pipe optimised, so this fits perfectly with a dplyr-oriented workflow. 
 
+### `surveytoolbox::extract_vallab()`
+
 If you're interested in extracting individual value labels, another method is available within **surveytoolbox** through `extract_vallab()`. This is easy: simply enter the variable name as the second argument (as a string):
 
 ```{r}
@@ -203,6 +208,8 @@ source_data_hv %>%
 ```
 
 You can then use the output from `extract_vallab()` for joining / editing labels with analysis outputs if needed.
+
+### `labelled::look_for()`
 
 But what if you're not sure about the exact variable names, but you know roughly what's in the variable label (typically, survey question text)? `labelled::look_for()` provides a pipe-optimised method that allows you to search into both variable names and variable label descriptions. Say for instance we want to identify a variable relating to *household income deficit*, where "income deficit" are the keywords. The `look_for()` function then returns a data frame with a "variable" column and a "label" column:
 
@@ -223,16 +230,17 @@ source_data_hv %>%
 
 ## To be continued..!
 
-Working with survey data labels is itself a pretty big subject (surprisingly), and this post has only very much just touched the surface. For instance, **factors** is another subject that deserves exploration, as they are the standard R class for working with categorical data. A quick Google search will reveal more packages that allow you to deal with labels, such as [expss](https://gdemin.github.io/expss/) - which I've not used before, but it's a valuable exercise to compare and benchmark these different methods on consistency, versatility, and speed. There will (probably) be a part 2 to this post!
+Working with survey data labels is itself a pretty big subject (surprisingly), and this post has only very much just scraped the surface. For instance, **factors** is another subject that deserves exploration, as they are the standard R class for working with categorical data. A quick Google search will reveal more packages that allow you to deal with labels, such as [expss](https://gdemin.github.io/expss/), which I haven't used before. It's typically a valuable exercise anyway to compare and benchmark different methods on consistency, versatility, and speed - as this will inform you on which method will likely work best for your workflow. Therefore there will (probably) be a part 2 to this post!
 
-The good and bad thing about R is there are often many ways to do a similar thing (see this [discussion](https://martinctc.github.io/blog/using-data.table-with-magrittr-pipes-best-of-both-worlds/)), and therefore it's often useful to compare and contrast functions from different packages that do similar things. The functions discussed in this post is what I've personally found to work well with my own workflow / code, and by no means is this an exhaustive, comprehensive survey of methods! I very much would like to hear any comments / feedback that you have with either the content on this blog or with the [surveytoolbox](https://nicedoc.io/martinctc/surveytoolbox) package. Thank you!
+The good and bad thing about R is there are often many ways to do a similar thing (see this [discussion](https://martinctc.github.io/blog/using-data.table-with-magrittr-pipes-best-of-both-worlds/)), and therefore it's often useful to compare and contrast functions from different packages that do similar things. The functions discussed in this post is what I've personally found to work well with my own workflow / code, and by no means is this an exhaustive, comprehensive survey of methods! 
 
-Additional footnote about why it took me slightly longer to write this post[^3].
+I very much would like to hear any comments / feedback that you have with either the content on this blog or with the [surveytoolbox](https://nicedoc.io/martinctc/surveytoolbox) package. Thank you!
 
----
+If you've got some spare time, please have a read of this additional footnote [^3] on why it took me slightly longer to publish this post.
+
 
 [^1]: In this post, the focus of the dicussion would be more on labelled vectors than *factors*; in line with the principle listed in **haven**'s [documentation on the labelled function](https://haven.tidyverse.org/reference/labelled.html), the best practice is to analyse the data using a standard R class, but knowing how to deal with labels is useful at the importing / data checking stage.
 
 [^2]: See [this](https://www.r-bloggers.com/working-with-spss-data-in-r/) blog post for a more in-depth discussion on the differences 
 
-[^3]: I had planned to finish this post earlier in the week, but distressing news from my home city Hong Kong has diverted my attention. A million Hong Kongers had been peacefully protesting against a bill which will enable extradition to mainland China, which has a record of [questionable judicial processes](https://www.bbc.com/news/world-asia-34782266). In the last 1-2 days, this peaceful process has turned violent with the government first declaring the protest as a riot based on a small minority of resistance, then with the [police injuring defenseless citizens with rubber bullet and tear gas rounds](https://twitter.com/racsiw5/status/1138873714601353217), with students amongst the victims. I want to express support for those are still peacefully resisting on the streets as I write, and to hopefully raise awareness of what is happening in Hong Kong to everyone around the world. Please check out this [explainer](https://www.theguardian.com/world/2019/jun/10/what-are-the-hong-kong-protests-about-explainer) by the Guardian to find out more.
+[^3]: I had planned to finish this post earlier in the week, but distressing news from my home city Hong Kong has diverted my attention. In the past week, a million Hong Kongers had been peacefully protesting against a bill which will enable extradition to mainland China, which has a record of [questionable judicial processes](https://www.bbc.com/news/world-asia-34782266). In the last 1-2 days, this peaceful process has turned violent with the government first declaring the protest as a 'riot' based on a small minority of resistance, then with the [police injuring defenseless citizens with rubber bullet and tear gas rounds](https://twitter.com/racsiw5/status/1138873714601353217), with students and people I know amongst the victims. I want to express support for those are still peacefully resisting on the streets as I write, and to hopefully raise awareness of what is happening in Hong Kong to everyone around the world. Please check out this [explainer](https://www.theguardian.com/world/2019/jun/10/what-are-the-hong-kong-protests-about-explainer) by the Guardian to find out more.
