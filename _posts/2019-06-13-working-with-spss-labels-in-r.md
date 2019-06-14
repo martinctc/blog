@@ -11,7 +11,7 @@ layout: post
 <div id="tldr" class="section level2">
 <h2>TL;DR 📖</h2>
 <p>This post provides an overview of R functions for dealing with survey data labels, particularly ones that I wish I’d known when I first started out analysing survey data in R (primarily stored in SPSS data files). Some of these functions come from <a href="https://nicedoc.io/martinctc/surveytoolbox">surveytoolbox</a>, a package I’m developing (GitHub only) which contains a collection of my favourite / most frequently used R functions for analysing survey data. I also highly recommend checking out <a href="http://larmarange.github.io/labelled/">labelled</a>, <a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a>, and of course tidyverse’s own <a href="https://haven.tidyverse.org/">haven</a> package 📦.</p>
-<p><img src="{{ site.url }}{{ site.baseurl }}\images\another-survey.jpg" width="50%" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/another-survey.jpg" width="50%" /></p>
 <hr />
 </div>
 <div id="background" class="section level2">
@@ -24,7 +24,7 @@ layout: post
 <li>Respondents with a different classification within the survey (e.g. “full-time employees” vs “retirees”) may also have answered a statement that is worded slightly differently but their responses are reflected using a single variable in the data: for instance, employees may be asked about their satisfaction with their current employer in the survey, and retirees asked about their previous employer.</li>
 <li>In my talk at the <a href="https://martinctc.github.io/downloads/EARL%202018%20-%20Swiss%20Army%20Knife%20for%20Market%20Research%20-%20Martin%20Chan%20-%2010%20September%202018.pdf#">EARL conference</a> last year, I also discussed a specific type of trade-off agreement question where any interpretation of the data is particularly sensitive to the value labels:</li>
 </ol>
-<p><img src="{{ site.url }}{{ site.baseurl }}\images\trade-off-survey.PNG" width="80%" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/trade-off-survey.PNG" width="80%" /></p>
 <p>My experience was that the base <strong>data frame</strong> in R does not easily lend itself to work easily with these labels. A lot of merging, sorting, recoding etc. therefore is then necessary in order to turn the analysis into neat output contingency tables that you typically get via other specialist survey analysis software, like SPSS or <a href="https://www.qresearchsoftware.com/">Q</a>. Here’s an example (with completely made up numbers) of what I would typically need to produce as an output:</p>
 <pre><code>## # A tibble: 3 x 3
 ##   `Q10 Top 2 Box Agree`                 `R Users Segmen~ `Python Users Seg~
@@ -146,7 +146,7 @@ layout: post
 <li>Value range / Values</li>
 <li>Value labels</li>
 </ul>
-<p>Here’s a screenshot of the generated document: <img src="{{ site.url }}{{ site.baseurl }}\images\view_df-example.PNG" width="80%" /></p>
+<p>Here’s a screenshot of the generated document: <img src="{{ site.url }}{{ site.baseurl }}/images/view_df-example.PNG" width="80%" /></p>
 <p>Check out this link to see a full example of what’s generated with the function:</p>
 <p><a href="https://martinctc.github.io/examples/sjPlot_view_df.html">Click here</a></p>
 <p>The documentation for <code>view_df()</code> also states that you can show percentages and frequencies for each variable, which is a pretty nifty feature for exploring a dataset.</p>
