@@ -10,7 +10,7 @@ layout: post
 <section class="main-content">
 <div id="tldr" class="section level2">
 <h2>TL;DR 📖</h2>
-<p>This post provides an overview of R functions for dealing with survey data labels, particularly ones that I wish I’d known when I first started out analysing survey data in R (primarily stored in SPSS data files). Some of these functions come from <a href="https://nicedoc.io/martinctc/surveytoolbox">surveytoolbox</a>, a package I’m developing (GitHub only) which contains a collection of my favourite / most frequently used R functions for analysing survey data. I also highly recommend checking out <a href="http://larmarange.github.io/labelled/">labelled</a>, <a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a>, and of course tidyverse’s own <a href="https://haven.tidyverse.org/">haven</a> package 📦.</p>
+<p>This post provides an overview of R functions for dealing with survey data labels, particularly ones that I wish I’d known when I first started out analysing survey data in R. Some of these functions come from <a href="https://nicedoc.io/martinctc/surveytoolbox">surveytoolbox</a>, a package I’m developing (GitHub only) which contains a collection of my favourite / most frequently used R functions for analysing survey data. I also highly recommend checking out <a href="http://larmarange.github.io/labelled/">labelled</a>, <a href="https://strengejacke.github.io/sjlabelled/">sjlabelled</a>, and of course tidyverse’s own <a href="https://haven.tidyverse.org/">haven</a> package 📦.</p>
 <p><img src="{{ site.url }}{{ site.baseurl }}/images/another-survey.jpg" width="50%" /></p>
 <hr />
 </div>
