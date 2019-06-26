@@ -113,11 +113,51 @@ For reading files in, you'll need to decide on *how* you want them to be read in
 
 The first option is best if you are unlikely to run similar operations on all the data frames at the same time. You may for instance want to do this if the data sets that you are reading in are vastly different from each other, and that you are likely to manipulate them separately.
 
-The second option will be best if you are likely to manipulate all the data frames at the same time, where for instance you may run on the list of data frames `purrr::map()` with `drop_na()` as an argument to remove missing values for all of the data frames at the same time. The benefit of reading your multiple data sets into a list is that you will have a much cleaner "workspace" (Global Environment), but accessing individual data frames will require you to go into a list and pick out the right member of the list (e.g. `list_of_dfs[3]`).
+The second option will be best if you are likely to manipulate all the data frames at the same time, where for instance you may run on the list of data frames `purrr::map()` with `drop_na()` as an argument to remove missing values for all of the data frames at the same time. The benefit of reading your multiple data sets into a list is that you will have a much cleaner workspace (Global Environment). However, accessing individual data frames will require you to go into a list and pick out the right member of the list (e.g. doing something like `list_of_dfs[3]`).
 
+### Method 1A: Read all sheets in Excel into Global Environment
+
+So let's begin! This method will read all the sheets within a specified Excel file and load them into the Global Environment, using variable names of your own choice. For simplicity, I will use the original Excel sheet names as the variable names.
+
+The first thing to do is to specify the file path to the Excel file:
 ```{r}
-# folder_path <- "../datasets/test-excel/"
-
-# readxl::excel_sheets()
+wb_source <- "../datasets/test-excel/test-excel.xlsx"
 ```
+
+You can then run `readxl::excel_sheets()` to extract the sheet names in that Excel file, save it as a character string type vector.
+```{r}
+wb_sheets <- readxl::excel_sheets(wb_source) # Extract the sheet names as a character string vector
+print(wb_sheets)
+```
+
+The next step is to iterate through the sheet names (saved in `wb_sheets`) using the `map()` function from **purrr**, and within each iteration use `assign()` (base) and `read_xlsx()` (from **readxl**) to load each individual sheet into the Global Environment, giving each one a variable name. Here's the code:
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results = 'hide'}
+# Load everything into the Global Environment
+wb_sheets %>%
+  purrr::map(function(sheet){ # iterate through each sheet name
+  assign(x = sheet,
+         value = readxl::read_xlsx(path = wb_source, sheet = sheet),
+         envir = .GlobalEnv)
+})
+```
+
+What my work space looks like:
+```{r import-excel, echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
+knitr::include_graphics("../images/import-excel.PNG")
+```
+
+Note that `purrr::map()` always returns a list, but in this case we do not need a list returned and only require the "side effects", i.e. the objects being read in to be assigned to the Global Environment. If you prefer you can use `lapply()` instead of `map()`, which doesn't make a big practical difference for this purpose.
+
+Also, `assign()` allows you to assign a value to a name in an environment, where we've specified as arguments:
+- `sheet` as the name
+- The sheet we read in as the **value**. Here, we use `readxl::read_xlsx()` for reading in specific sheets from the Excel file, where you simply specify the file path and the sheet name as the arguments.
+- `.GlobalEnv` as the environment
+
+### Method 1B: Read all CSV files in directory into Global Environment
+
+### Method 2A: Read all sheets in Excel into a list
+
+### Method 2B: Read all CSV files in directory into a list
+
 
