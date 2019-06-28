@@ -180,7 +180,7 @@ file_path <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 ## [3] &quot;test-excel-virginica.csv&quot;  &quot;test-excel.xlsx&quot;</code></pre>
 <p>We only want CSV files in this instance, so we’ll want to do a bit of string manipulation (using <code>str_detect()</code> from <strong>stringr</strong> - again, from <strong>tidyverse</strong>) to get only the names that end with the extension “.csv”. Let’s pipe this along:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r">file_path <span class="op">%&gt;%</span>
-  </span><span class="kw">list.files</span>() <span class="op">%&gt;%</span>
+  <span class="kw">list.files</span>() <span class="op">%&gt;%</span>
 <span class="st">  </span>.[<span class="kw">str_detect</span>(., <span class="st">&quot;.csv&quot;</span>)] -&gt;<span class="st"> </span>csv_file_names
 
 csv_file_names</code></pre></div>
@@ -245,7 +245,7 @@ wb_sheets <span class="op">%&gt;%</span>
 <p>At this point you’ve probably gathered how you can adapt the code to read CSV files into a list, but let’s cover this for comprehensiveness. No <code>assign()</code> needed, and only run <code>read_csv()</code> within the <code>map()</code> function, iterating through the file names:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load everything into the Global Environment</span>
 csv_file_names <span class="op">%&gt;%</span>
-  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(file_name){ <span class="co"># iterate through each file name</span>
+  purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(file_name){ <span class="co"># iterate through each file name</span>
   
   <span class="kw">read_csv</span>(<span class="kw">paste0</span>(file_path, file_name))
   
