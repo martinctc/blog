@@ -1,113 +1,18 @@
-<!DOCTYPE html>
+---
+title: "Vignette: Write & Read Multiple Excel files with purrr"
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<meta name="author" content="Martin Chan" />
-
-<meta name="date" content="2019-06-28" />
-
-<title>Vignette: Write &amp; Read Multiple Excel files with purrr</title>
-
-
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
-
-
-
-<link rel="stylesheet" href="Write_Read_Multiple_Excel_24-06-19_files/style.css" type="text/css" />
-
-</head>
-
-<body>
-
-
-
-
-<section class="page-header">
-<h1 class="title toc-ignore project-name">Vignette: Write &amp; Read Multiple Excel files with purrr</h1>
-<h4 class="author project-author">Martin Chan</h4>
-<h4 class="date project-date">June 28, 2019</h4>
-</section>
-
+author: "Martin Chan"
+date: "June 28, 2019"
+layout: post
+---
 
 
 <section class="main-content">
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>This post will show you how to write and read a list of data tables to and from Excel with <a href="https://purrr.tidyverse.org/"><strong>purrr</strong></a>, the functional programming package 📦 from <strong>tidyverse</strong>. In this example I will also use the packages <strong>readxl</strong> and <strong>writexl</strong> for reading and writing in Excel files, and cover methods for both XLSX and CSV (not strictly Excel, but might as well!) files.</p>
-<p><img src="../images/hex-purrr.png" width="20%" style="float:right; padding:10px" /></p>
-<p><img src="../images/readxl.png" width="20%" style="float:right; padding:10px" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/hex-purrr.png" width="20%" style="float:right; padding:10px" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/readxl.png" width="20%" style="float:right; padding:10px" /></p>
 <p>Whilst the internet is certainly in no shortage of R tutorials on how to read and write Excel files (see <a href="https://stackoverflow.com/questions/32888757/how-can-i-read-multiple-excel-files-into-r">this Stack Overflow thread</a> for example), I think a <strong>purrr</strong> approach still isn’t as well-known or well-documented. I find this approach to be very clean and readable, and certainly more “tidyverse-consistent” than other approaches which rely on <code>lapply()</code> or for loops. My choice of packages 📦 for reading and writing Excel files are <a href="https://readxl.tidyverse.org/">readxl</a> and <a href="https://docs.ropensci.org/writexl/">writexl</a>, where the advantage is that neither of them require external dependencies.</p>
 <p>For reading and writing CSV files, I personally have switched back and forth between <strong>readr</strong> and <strong>data.table</strong>, depending on whether I have a need to do a particular analysis in <strong>data.table</strong> (see <a href="https://martinctc.github.io/blog/using-data.table-with-magrittr-pipes-best-of-both-worlds/">this discussion</a> on why I sometimes use it in favour of <strong>dplyr</strong>). Where applicable in this post, I will point out in places where you can use alternatives from <a href="https://github.com/Rdatatable/data.table/wiki">data.table</a> for fast reading/writing.</p>
 <p>For documentation/demonstration purposes, I’ll make the package references (indicated by <code>::</code>) explicit in the functions below, but it’s advisable to remove them in “real life” to avoid code that is overly verbose.</p>
@@ -116,9 +21,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="getting-started" class="section level2">
 <h2>Getting Started</h2>
 <p>The key functions used in this vignette come from three packages: <strong>purrr</strong>, <strong>readxl</strong>, and <strong>writexl</strong>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(readxl)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(writexl)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(readxl)
+<span class="kw">library</span>(writexl)</code></pre></div>
 <p>Since <strong>purrr</strong> is part of core <strong>tidyverse</strong>, we can simply run <code>library(tidyverse)</code>. This is also convenient as we’ll also use various functions such as <code>group_split()</code> from <strong>dplyr</strong> and the <code>%&gt;%</code> operator from <strong>magrittr</strong> in the example.</p>
 <p>Note that although <strong>readxl</strong> is part of tidyverse, you’ll still need to load it explicitly as it’s not a “core” tidyverse package.</p>
 <hr />
@@ -126,7 +31,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="writing-multiple-excel-files" class="section level2">
 <h2>Writing multiple Excel files</h2>
 <p>Let us start off with the <strong>iris</strong> dataset that is pre-loaded with R. If you’re not one of us sad people who almost know this dataset by heart, here’s what it looks like:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">iris <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 ## 1          5.1         3.5          1.4         0.2  setosa
 ## 2          4.9         3.0          1.4         0.2  setosa
@@ -135,11 +40,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5          5.0         3.6          1.4         0.2  setosa
 ## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
 <p>The first thing that we want to do is to create multiple datasets, which we can do so by splitting <strong>iris</strong>. I’ll do this by running <code>group_split()</code> on the <strong>Species</strong> column, so that each species of iris has its own dataset. This will return a list of three data frames, one for each unique value in <strong>Species</strong>: <em>setosa</em>, <em>versicolor</em>, and <em>virginica</em>. I’ll assign these three data frames to a list object called <code>list_of_dfs</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Split: one data frame per Species</span></a>
-<a class="sourceLine" id="cb4-2" title="2">iris <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_split</span>(Species) -&gt;<span class="st"> </span>list_of_dfs </a>
-<a class="sourceLine" id="cb4-4" title="4"></a>
-<a class="sourceLine" id="cb4-5" title="5">list_of_dfs</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Split: one data frame per Species</span>
+iris <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_split</span>(Species) -&gt;<span class="st"> </span>list_of_dfs
+
+list_of_dfs</code></pre></div>
 <pre><code>## [[1]]
 ## # A tibble: 50 x 5
 ##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -188,18 +93,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 10          7.2         3.6          6.1         2.5 virginica
 ## # ... with 40 more rows</code></pre>
 <p>I’ll also use <code>purrr::map()</code> to take the character values (<em>setosa</em>, <em>versicolor</em>, and <em>virginica</em>) from the Species column itself for assigning names to the list. <code>map()</code> transforms an input by applying a function to each element of the input, and then returns a vector the same length as the input. In this immediate example, the input is the <code>list_of_dfs</code> and we apply the function <code>dplyr::pull()</code> to extract the <strong>Species</strong> variable from each data frame. We then repeat this approach to convert <strong>Species</strong> into character type with <code>as.character()</code> and take out a single value with <code>unique()</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># Use the value from the &quot;Species&quot; column to provide a name for the list members</span></a>
-<a class="sourceLine" id="cb6-2" title="2">list_of_dfs <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="op">~</span><span class="kw">pull</span>(.,Species)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Pull out Species variable</span></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="op">~</span><span class="kw">as.character</span>(.)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Convert factor to character</span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="op">~</span><span class="kw">unique</span>(.)) -&gt;<span class="st"> </span><span class="kw">names</span>(list_of_dfs) <span class="co"># Set this as names for list members</span></a>
-<a class="sourceLine" id="cb6-6" title="6"></a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="kw">names</span>(list_of_dfs)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use the value from the &quot;Species&quot; column to provide a name for the list members</span>
+list_of_dfs <span class="op">%&gt;%</span>
+<span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="op">~</span><span class="kw">pull</span>(.,Species)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Pull out Species variable</span>
+<span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="op">~</span><span class="kw">as.character</span>(.)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Convert factor to character</span>
+<span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="op">~</span><span class="kw">unique</span>(.)) -&gt;<span class="st"> </span><span class="kw">names</span>(list_of_dfs) <span class="co"># Set this as names for list members</span>
+
+<span class="kw">names</span>(list_of_dfs)</code></pre></div>
 <pre><code>## [1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot;</code></pre>
 <p>These names will be useful for exporting the data frames into Excel, as they will effectively be our Excel sheet names. You can always manually hard-code the sheet names, but the above approach allows you to do the entire thing dynamically if you need to.</p>
 <p>Having set the sheet names, I can then pipe the list of data frames directly into <code>write_xlsx()</code>, where the Excel file name and path is specified in the same <code>path</code> argument:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">list_of_dfs <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="st">  </span>writexl<span class="op">::</span><span class="kw">write_xlsx</span>(<span class="dt">path =</span> <span class="st">&quot;../datasets/test-excel/test-excel.xlsx&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r">list_of_dfs <span class="op">%&gt;%</span>
+<span class="st">  </span>writexl<span class="op">::</span><span class="kw">write_xlsx</span>(<span class="dt">path =</span> <span class="st">&quot;../datasets/test-excel/test-excel.xlsx&quot;</span>)</code></pre></div>
 <div id="writing-multiple-csv-files" class="section level3">
 <h3>Writing multiple CSV files</h3>
 <p>Exporting the list of data frames into multiple CSV files will take a few more lines of code, but still relatively straightforward. There are three main steps:</p>
@@ -208,28 +113,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Create a named list where the names match the arguments of the function you’ve just defined (<strong>data</strong> and <strong>names</strong>), and should contain the objects that you would like to pass through to the function for the respective arguments. In this case, <strong>list_of_dfs</strong> will provide the three data frames, and <strong>names(list_of_dfs)</strong> will provide the names of those three data frames. This is necessary for running <code>pmap()</code>, which in my view is basically a super-powered version of <code>map()</code> that lets you iterate over multiple inputs simultaneously.</p></li>
 <li><p><code>pmap()</code> will then iterate through the two sets of inputs through <code>output_csv()</code> (the inputs are used as arguments), which then writes the three CSV files with the file names you want. For the “writing” function, you could either use <code>write_csv()</code> from <strong>readr</strong> (part of <strong>tidyverse</strong>) or <code>fwrite()</code> from <strong>data.table</strong>, depending on your workflow / style.</p></li>
 </ol>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># Step 1</span></a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="co"># Define a function for exporting csv with the desired file names and into the right path</span></a>
-<a class="sourceLine" id="cb9-3" title="3">output_csv &lt;-<span class="st"> </span><span class="cf">function</span>(data, names){ </a>
-<a class="sourceLine" id="cb9-4" title="4">    folder_path &lt;-<span class="st"> &quot;../datasets/test-excel/&quot;</span></a>
-<a class="sourceLine" id="cb9-5" title="5">    </a>
-<a class="sourceLine" id="cb9-6" title="6">    <span class="kw">write_csv</span>(data, <span class="kw">paste0</span>(folder_path, <span class="st">&quot;test-excel-&quot;</span>, names, <span class="st">&quot;.csv&quot;</span>))</a>
-<a class="sourceLine" id="cb9-7" title="7">  }</a>
-<a class="sourceLine" id="cb9-8" title="8"></a>
-<a class="sourceLine" id="cb9-9" title="9"><span class="co"># Step 2</span></a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="kw">list</span>(<span class="dt">data =</span> list_of_dfs,</a>
-<a class="sourceLine" id="cb9-11" title="11">     <span class="dt">names =</span> <span class="kw">names</span>(list_of_dfs)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-12" title="12"><span class="st">  </span></a>
-<a class="sourceLine" id="cb9-13" title="13"><span class="co"># Step 3</span></a>
-<a class="sourceLine" id="cb9-14" title="14"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">pmap</span>(output_csv) </a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Step 1</span>
+<span class="co"># Define a function for exporting csv with the desired file names and into the right path</span>
+output_csv &lt;-<span class="st"> </span><span class="cf">function</span>(data, names){ 
+    folder_path &lt;-<span class="st"> &quot;../datasets/test-excel/&quot;</span>
+    
+    <span class="kw">write_csv</span>(data, <span class="kw">paste0</span>(folder_path, <span class="st">&quot;test-excel-&quot;</span>, names, <span class="st">&quot;.csv&quot;</span>))
+  }
+
+<span class="co"># Step 2</span>
+<span class="kw">list</span>(<span class="dt">data =</span> list_of_dfs,
+     <span class="dt">names =</span> <span class="kw">names</span>(list_of_dfs)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>
+<span class="co"># Step 3</span>
+<span class="st">  </span>purrr<span class="op">::</span><span class="kw">pmap</span>(output_csv) </code></pre></div>
 <p>The outcome of the above code is shown below. My directory now contains one Excel file with three Worksheets (sheet names are “setosa”, “versicolor”, and “virginica”), and three separate CSV files for each data slice:</p>
-<p><img src="../images/export-excel.PNG" width="80%" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/export-excel.PNG" width="80%" /></p>
 <hr />
 </div>
 </div>
 <div id="reading-multiple-excel-csv-files" class="section level2">
 <h2>Reading multiple Excel / CSV files</h2>
-<p><img src="../images/read-excel.GIF" width="80%" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/read-excel.GIF" width="80%" /></p>
 <p>For reading files in, you’ll need to decide on <em>how</em> you want them to be read in. The options are:</p>
 <ol style="list-style-type: decimal">
 <li>Read all the datasets directly into the Global Environment as individual data frames with a “separate existence” and separate names.</li>
@@ -241,22 +146,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>Method 1A: Read all sheets in Excel into Global Environment</h3>
 <p>So let’s begin! This method will read all the sheets within a specified Excel file and load them into the Global Environment, using variable names of your own choice. For simplicity, I will use the original Excel sheet names as the variable names.</p>
 <p>The first thing to do is to specify the file path to the Excel file:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">wb_source &lt;-<span class="st"> &quot;../datasets/test-excel/test-excel.xlsx&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r">wb_source &lt;-<span class="st"> &quot;../datasets/test-excel/test-excel.xlsx&quot;</span></code></pre></div>
 <p>You can then run <code>readxl::excel_sheets()</code> to extract the sheet names in that Excel file, and save it as a character type vector.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># Extract the sheet names as a character string vector</span></a>
-<a class="sourceLine" id="cb11-2" title="2">wb_sheets &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">excel_sheets</span>(wb_source) </a>
-<a class="sourceLine" id="cb11-3" title="3"></a>
-<a class="sourceLine" id="cb11-4" title="4"><span class="kw">print</span>(wb_sheets)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Extract the sheet names as a character string vector</span>
+wb_sheets &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">excel_sheets</span>(wb_source) 
+
+<span class="kw">print</span>(wb_sheets)</code></pre></div>
 <pre><code>## [1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot;</code></pre>
 <p>The next step is to iterate through the sheet names (saved in <code>wb_sheets</code>) using <code>map()</code>, and within each iteration use <code>assign()</code> (base) and <code>read_xlsx()</code> (from <strong>readxl</strong>) to load each individual sheet into the Global Environment, giving each one a variable name. Here’s the code:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># Load everything into the Global Environment</span></a>
-<a class="sourceLine" id="cb13-2" title="2">wb_sheets <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(sheet){ <span class="co"># iterate through each sheet name</span></a>
-<a class="sourceLine" id="cb13-4" title="4">  <span class="kw">assign</span>(<span class="dt">x =</span> sheet,</a>
-<a class="sourceLine" id="cb13-5" title="5">         <span class="dt">value =</span> readxl<span class="op">::</span><span class="kw">read_xlsx</span>(<span class="dt">path =</span> wb_source, <span class="dt">sheet =</span> sheet),</a>
-<a class="sourceLine" id="cb13-6" title="6">         <span class="dt">envir =</span> .GlobalEnv)</a>
-<a class="sourceLine" id="cb13-7" title="7">})</a></code></pre></div>
-<p>This is what my work space looks like: <img src="../images/import-excel.PNG" width="80%" /></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load everything into the Global Environment</span>
+wb_sheets <span class="op">%&gt;%</span>
+<span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(sheet){ <span class="co"># iterate through each sheet name</span>
+  <span class="kw">assign</span>(<span class="dt">x =</span> sheet,
+         <span class="dt">value =</span> readxl<span class="op">::</span><span class="kw">read_xlsx</span>(<span class="dt">path =</span> wb_source, <span class="dt">sheet =</span> sheet),
+         <span class="dt">envir =</span> .GlobalEnv)
+})</code></pre></div>
+<p>This is what my work space looks like: <img src="{{ site.url }}{{ site.baseurl }}/images/import-excel.PNG" width="80%" /></p>
 <p>Note that <code>map()</code> always returns a list, but in this case we do not need a list returned and only require the “side effects”, i.e. the objects being read in to be assigned to the Global Environment. If you prefer you can use <code>lapply()</code> instead of <code>map()</code>, which for this purpose doesn’t make a big practical difference.</p>
 <p>Also, <code>assign()</code> allows you to assign a value to a name in an environment, where we’ve specified the following as arguments:</p>
 <ul>
@@ -268,40 +173,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="method-1b-read-all-csv-files-in-directory-into-global-environment" class="section level3">
 <h3>Method 1B: Read all CSV files in directory into Global Environment</h3>
 <p>The method for reading CSV files into a directory is slightly different, as you’ll need to find a way to identify or create a character vector of names of all the files that you want to load into R. To do this, we’ll use <code>list.files()</code>, which produces a character vector of the names of files or directories in the named directory:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">file_path &lt;-<span class="st"> &quot;../datasets/test-excel/&quot;</span></a>
-<a class="sourceLine" id="cb14-2" title="2"></a>
-<a class="sourceLine" id="cb14-3" title="3">file_path <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">list.files</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r">file_path &lt;-<span class="st"> &quot;../datasets/test-excel/&quot;</span>
+
+file_path <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">list.files</span>()</code></pre></div>
 <pre><code>## [1] &quot;test-excel-setosa.csv&quot;     &quot;test-excel-versicolor.csv&quot;
 ## [3] &quot;test-excel-virginica.csv&quot;  &quot;test-excel.xlsx&quot;</code></pre>
 <p>We only want CSV files in this instance, so we’ll want to do a bit of string manipulation (using <code>str_detect()</code> from <strong>stringr</strong> - again, from <strong>tidyverse</strong>) to get only the names that end with the extension “.csv”. Let’s pipe this along:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">file_path <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="st">  </span><span class="kw">list.files</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-3" title="3"><span class="st">  </span>.[<span class="kw">str_detect</span>(., <span class="st">&quot;.csv&quot;</span>)] -&gt;<span class="st"> </span>csv_file_names</a>
-<a class="sourceLine" id="cb16-4" title="4"></a>
-<a class="sourceLine" id="cb16-5" title="5">csv_file_names</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r">file_path <span class="op">%&gt;%</span>
+  </span><span class="kw">list.files</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span>.[<span class="kw">str_detect</span>(., <span class="st">&quot;.csv&quot;</span>)] -&gt;<span class="st"> </span>csv_file_names
+
+csv_file_names</code></pre></div>
 <pre><code>## [1] &quot;test-excel-setosa.csv&quot;     &quot;test-excel-versicolor.csv&quot;
 ## [3] &quot;test-excel-virginica.csv&quot;</code></pre>
 <p>The next part is similar to what we’ve done earlier, using <code>map()</code>. Note that apart from replacing the <code>value</code> argument with <code>read_csv()</code> (or you can use <code>fread()</code> to return a <strong>data.table</strong> object rather than a <strong>tibble</strong>), I also removed the file extension in the <code>x</code> argument so that the variable names would not contain the actual characters “.csv”:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co"># Load everything into the Global Environment</span></a>
-<a class="sourceLine" id="cb18-2" title="2">csv_file_names <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-3" title="3"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(file_name){ <span class="co"># iterate through each file name</span></a>
-<a class="sourceLine" id="cb18-4" title="4">  <span class="kw">assign</span>(<span class="dt">x =</span> <span class="kw">str_remove</span>(file_name, <span class="st">&quot;.csv&quot;</span>), <span class="co"># Remove file extension &quot;.csv&quot;</span></a>
-<a class="sourceLine" id="cb18-5" title="5">         <span class="dt">value =</span> <span class="kw">read_csv</span>(<span class="kw">paste0</span>(file_path, file_name)),</a>
-<a class="sourceLine" id="cb18-6" title="6">         <span class="dt">envir =</span> .GlobalEnv)</a>
-<a class="sourceLine" id="cb18-7" title="7">})</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load everything into the Global Environment</span>
+csv_file_names <span class="op">%&gt;%</span>
+<span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(file_name){ <span class="co"># iterate through each file name</span>
+  <span class="kw">assign</span>(<span class="dt">x =</span> <span class="kw">str_remove</span>(file_name, <span class="st">&quot;.csv&quot;</span>), <span class="co"># Remove file extension &quot;.csv&quot;</span>
+         <span class="dt">value =</span> <span class="kw">read_csv</span>(<span class="kw">paste0</span>(file_path, file_name)),
+         <span class="dt">envir =</span> .GlobalEnv)
+})</code></pre></div>
 </div>
 <div id="method-2a-read-all-sheets-in-excel-into-a-list" class="section level3">
 <h3>Method 2A: Read all sheets in Excel into a list</h3>
 <p>Reading sheets into a list is actually easier than to read it into the Global Environment, as <code>map()</code> returns a list and you won’t have to use <code>assign()</code> or specify a variable name. Recall that <code>wb_source</code> holds the path of the Excel file, and <code>wb_sheets</code> is a character vector of all the sheet names in the Excel file:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co"># Load everything into the Global Environment</span></a>
-<a class="sourceLine" id="cb19-2" title="2">wb_sheets <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-3" title="3"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(sheet){ <span class="co"># iterate through each sheet name</span></a>
-<a class="sourceLine" id="cb19-4" title="4">  readxl<span class="op">::</span><span class="kw">read_xlsx</span>(<span class="dt">path =</span> wb_source, <span class="dt">sheet =</span> sheet)</a>
-<a class="sourceLine" id="cb19-5" title="5">}) -&gt;<span class="st"> </span>df_list_read <span class="co"># Assign to a list</span></a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load everything into the Global Environment</span>
+wb_sheets <span class="op">%&gt;%</span>
+<span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(sheet){ <span class="co"># iterate through each sheet name</span>
+  readxl<span class="op">::</span><span class="kw">read_xlsx</span>(<span class="dt">path =</span> wb_source, <span class="dt">sheet =</span> sheet)
+}) -&gt;<span class="st"> </span>df_list_read <span class="co"># Assign to a list</span></code></pre></div>
 <p>You can then use <code>map()</code> again to run operations across all members of the list, and even chain operations within it:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">df_list_read <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-2" title="2"><span class="st">  </span><span class="kw">map</span>(<span class="op">~</span><span class="kw">select</span>(., Petal.Length, Species) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-3" title="3"><span class="st">        </span><span class="kw">head</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r">df_list_read <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">map</span>(<span class="op">~</span><span class="kw">select</span>(., Petal.Length, Species) <span class="op">%&gt;%</span>
+<span class="st">        </span><span class="kw">head</span>())</code></pre></div>
 <pre><code>## [[1]]
 ## # A tibble: 6 x 2
 ##   Petal.Length Species
@@ -338,13 +243,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="method-2b-read-all-csv-files-in-directory-into-a-list" class="section level3">
 <h3>Method 2B: Read all CSV files in directory into a list</h3>
 <p>At this point you’ve probably gathered how you can adapt the code to read CSV files into a list, but let’s cover this for comprehensiveness. No <code>assign()</code> needed, and only run <code>read_csv()</code> within the <code>map()</code> function, iterating through the file names:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co"># Load everything into the Global Environment</span></a>
-<a class="sourceLine" id="cb22-2" title="2">csv_file_names <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-3" title="3"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(file_name){ <span class="co"># iterate through each file name</span></a>
-<a class="sourceLine" id="cb22-4" title="4">  </a>
-<a class="sourceLine" id="cb22-5" title="5">  <span class="kw">read_csv</span>(<span class="kw">paste0</span>(file_path, file_name))</a>
-<a class="sourceLine" id="cb22-6" title="6">  </a>
-<a class="sourceLine" id="cb22-7" title="7">}) -&gt;<span class="st"> </span>df_list_read2 <span class="co"># Assign to a list</span></a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load everything into the Global Environment</span>
+csv_file_names <span class="op">%&gt;%</span>
+  </span>purrr<span class="op">::</span><span class="kw">map</span>(<span class="cf">function</span>(file_name){ <span class="co"># iterate through each file name</span>
+  
+  <span class="kw">read_csv</span>(<span class="kw">paste0</span>(file_path, file_name))
+  
+}) -&gt;<span class="st"> </span>df_list_read2 <span class="co"># Assign to a list</span></code></pre></div>
 <hr />
 </div>
 </div>
@@ -353,18 +258,3 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Hopefully this is a helpful tutorial for an iterative approach to writing and reading Excel files. If you like what you read or if you have any suggestions / thoughts about the subject, do leave a comment in the Disqus fields in the blog and let me know!</p>
 </div>
 </section>
-
-
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
-
-</body>
-</html>
