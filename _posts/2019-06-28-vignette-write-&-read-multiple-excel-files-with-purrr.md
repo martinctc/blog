@@ -134,7 +134,7 @@ output_csv &lt;-<span class="st"> </span><span class="cf">function</span>(data, 
 </div>
 <div id="reading-multiple-excel-csv-files" class="section level2">
 <h2>Reading multiple Excel / CSV files</h2>
-<p><img src="{{ site.url }}{{ site.baseurl }}/images/read-excel.GIF" width="80%" /></p>
+<p><img src="{{ site.url }}{{ site.baseurl }}/images/read-excel.gif" width="80%" /></p>
 <p>For reading files in, you’ll need to decide on <em>how</em> you want them to be read in. The options are:</p>
 <ol style="list-style-type: decimal">
 <li>Read all the datasets directly into the Global Environment as individual data frames with a “separate existence” and separate names.</li>
