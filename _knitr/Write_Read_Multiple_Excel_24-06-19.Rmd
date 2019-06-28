@@ -1,7 +1,7 @@
 ---
 title: "Vignette: Writing & Reading Multiple Excel files with purrr"
 author: "Martin Chan"
-date: "June 24, 2019"
+date: "June 28, 2019"
 output:                    # DO NOT CHANGE
   prettydoc::html_pretty:  # DO NOT CHANGE
     theme: cayman          # DO NOT CHANGE
@@ -9,13 +9,13 @@ output:                    # DO NOT CHANGE
 ---
 
 ```{r eval=FALSE, include=FALSE}
-# prettyjekyll::FormatPost("_knitr/First_Post_13-04-19.Rmd")
+# prettyjekyll::FormatPost("_knitr/Write_Read_Multiple_Excel_24-06-19.Rmd")
 ```
 
 
 ## Background
 
-This post will show you how to write and read a list of data frames / tibbles through using [**purrr**](https://purrr.tidyverse.org/), the functional programming package `r emo::ji("package")` from tidyverse. I will also use the packages **readxl** and **writexl** for reading and writing in Excel files.
+This post will show you how to write and read a list of data frames / tibbles with [**purrr**](https://purrr.tidyverse.org/), the functional programming package `r emo::ji("package")` from tidyverse. In this example I will also use the packages **readxl** and **writexl** for reading and writing in Excel files.
 
 ```{r purrr, echo=FALSE, out.width = '20%', out.extra='style="float:right; padding:10px"'}
 knitr::include_graphics("../images/pp550x5501.jpg")
@@ -27,39 +27,45 @@ knitr::include_graphics("../images/readxl.png")
 
 Whilst the internet is certainly in no shortage of R tutorials on how to read and write Excel files (see [this Stack Overflow thread](https://stackoverflow.com/questions/32888757/how-can-i-read-multiple-excel-files-into-r) for example), I think a **purrr** approach still isn't as well-known or well-documented. I find this approach to be very clean and readable, and certainly more "tidyverse-consistent" than other approaches which rely on `lapply()` or for loops. My choice of packages `r emo::ji("package")`  for reading and writing Excel files are [readxl](https://readxl.tidyverse.org/) and [writexl](https://docs.ropensci.org/writexl/), as neither of them require external dependencies. 
 
-For documentation/demonstration purposes, I'll make the package references explicit in the functions below, but it's advisable to remove them in "real life" to avoid verbose code.
+For reading and writing CSV files I would switch between **readr** and **data.table**, depending on whether I have a need to do a particular analysis in **data.table** (see [this discussion](https://martinctc.github.io/blog/using-data.table-with-magrittr-pipes-best-of-both-worlds/) on why I sometimes use it in favour of **dplyr**). Where applicable in this post, I will point out in places where you can use alternatives from [data.table](https://github.com/Rdatatable/data.table/wiki) for fast reading/writing.
+
+For documentation/demonstration purposes, I'll make the package references (`::`) explicit in the functions below, but it's advisable to remove them in "real life" to avoid verbose code.
+
+---
 
 ## Getting Started
 
-The key functions used in this example come from three packages: **purrr**, **readxl**, and **writexl**.
+The key functions used in this vignette come from three packages: **purrr**, **readxl**, and **writexl**.
 
 Since **purrr** is part of core **tidyverse**, we can simply run `library(tidyverse)`. This is also convenient as we'll also use various functions such as `group_split()` from **dplyr** and the `%>%` operator from **magrittr** in the example. 
 
 Note that although **readxl** is part of tidyverse, you'll still need to load it explicitly as it's not a "core" tidyverse package:
 
-```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 library(tidyverse)
 library(readxl)
 library(writexl)
 ```
 
+---
+
 ## Writing multiple Excel / CSV files
 
-Let us start off with the **iris** dataset that is pre-loaded with R:
+Let us start off with the **iris** dataset that is pre-loaded with R. If you're not one of us sad people who almost know this dataset by heart, here's what it looks like:
+
 ```{r}
 iris %>% head()
 ```
 
-The first thing that we want to do is to create multiple datasets. I'll do this by running `group_split()` on the **Species** column. This will return a list of three data frames, one for each unique value in **Species** i.e. *setosa*, *versicolor*, and *virginica*.
+The first thing that we want to do is to create multiple datasets, which we can do so by splitting **iris**. I'll do this by running `group_split()` on the **Species** column, so that each Species of iris is its own dataset. This will return a list of three data frames, one for each unique value in **Species**: *setosa*, *versicolor*, and *virginica*. I'll assign these three data frames to a list object called `list_of_dfs`:
 
 ```{r}
-iris %>%
-  dplyr::group_split(Species) -> list_of_dfs # Split: one data frame per Species
+iris %>% dplyr::group_split(Species) -> list_of_dfs # Split: one data frame per Species
 
-print(list_of_dfs)
+list_of_dfs
 ```
 
-I'll also use `purrr::map()` to take the value from the Species column itself for assigning names to the list. These names will be useful for exporting the data frames into Excel, as these will effectively be our Excel sheet names. Here's how it's done:
+I'll also use `purrr::map()` to take the character values (*setosa*, *versicolor*, and *virginica*) from the Species column itself for assigning names to the list. These names will be useful for exporting the data frames into Excel, as they will effectively be our Excel sheet names. You can always manually hard-code the sheet names, but if you want to do the entire thing dynamically here's how:
 
 ```{r}
 # Use the value from the "Species" column to provide a name for the list members
@@ -78,42 +84,53 @@ list_of_dfs %>%
   writexl::write_xlsx(path = "../datasets/test-excel/test-excel.xlsx")
 ```
 
-Exporting the list of data frames into multiple CSV files will take a few more lines of code, but still relatively straightforward. 
+Exporting the list of data frames into multiple CSV files will take a few more lines of code, but still relatively straightforward. There are three main steps:
 
-1. Define a function that tells R what the names for each CSV file should be. The **data** argument will take in a data frame whilst the **names** argument will take in a character string that will form part of the file name for the individual CSV file.
+1. Define a function that tells R what the names for each CSV file should be, which I've called `output_csv()` below. The **data** argument will take in a data frame whilst the **names** argument will take in a character string that will form part of the file name for the individual CSV file.
 
-2. Create a named list where the names match the arguments of the function you've just defined, and should contain the objects that you would like to pass through to the function for the respective arguments. In this case, **list_of_dfs** will provide the three data frames, and **names(list_of_dfs)** will provide the names of those three data frames.
+2. Create a named list where the names match the arguments of the function you've just defined (**data** and **names**), and should contain the objects that you would like to pass through to the function for the respective arguments. In this case, **list_of_dfs** will provide the three data frames, and **names(list_of_dfs)** will provide the names of those three data frames.
 
-3. **pmap** will then iterate through the two sets of inputs through `output_csv()`, which then writes the three CSV files with the file names you want.
+3. **pmap** will then iterate through the two sets of inputs through `output_csv()`, which then writes the three CSV files with the file names you want. For the "writing" function, you could either use `write_csv()` from **readr** (part of **tidyverse**) or `fwrite()` from **data.table**, depending on your workflow / style.
 
 ```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+# Step 1
 # Define a function for exporting csv with the desired file names and into the right path
-output_csv <- function(data, names){
+output_csv <- function(data, names){ 
     folder_path <- "../datasets/test-excel/"
     
     write_csv(data, paste0(folder_path, "test-excel-", names, ".csv"))
   }
 
+# Step 2
 list(data = list_of_dfs,
-     names = names(list_of_dfs)) %>% purrr::pmap(output_csv)
+     names = names(list_of_dfs)) %>% 
+  
+# Step 3
+  purrr::pmap(output_csv) 
 ```
 
-The outcome of the above code is shown below. Here is one Excel file with three Worksheets per data slice (sheet names are "setosa", "versicolor", and "virginica"), and three separate CSV files for each data slice: 
+The outcome of the above code is shown below. My directory now contains one Excel file with three Worksheets (sheet names are "setosa", "versicolor", and "virginica"), and three separate CSV files for each data slice: 
 
 ```{r export-excel, echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
 knitr::include_graphics("../images/export-excel.PNG")
 ```
 
+---
+
 ## Reading multiple Excel / CSV files
+
+```{r readexcel, echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
+knitr::include_graphics("../images/read-excel.GIF")
+```
 
 For reading files in, you'll need to decide on *how* you want them to be read in. The options are:
 
 1. Read all the datasets directly into the Global Environment as individual data frames with a "separate existence" and separate names.
 2. Read all the datasets into a single list, where each data frame is a member of that list. 
 
-The first option is best if you are unlikely to run similar operations on all the data frames at the same time. You may for instance want to do this if the data sets that you are reading in are vastly different from each other, and that you are likely to manipulate them separately.
+The first option is best if you are **unlikely** to run similar operations on all the data frames at the same time. You may for instance want to do this if the data sets that you are reading in are structurally different from each other, and that you are planning to manipulate them separately.
 
-The second option will be best if you are likely to manipulate all the data frames at the same time, where for instance you may run on the list of data frames `purrr::map()` with `drop_na()` as an argument to remove missing values for all of the data frames at the same time. The benefit of reading your multiple data sets into a list is that you will have a much cleaner workspace (Global Environment). However, accessing individual data frames will require you to go into a list and pick out the right member of the list (e.g. doing something like `list_of_dfs[3]`).
+The second option will be best if you are likely to manipulate all the data frames at the same time, where for instance you may run on the list of data frames `purrr::map()` with `drop_na()` as an argument to remove missing values for all of the data frames at the same time. The benefit of reading your multiple data sets into a list is that you will have a much cleaner workspace (Global Environment). However, there is a minor and almost negligible inconvenience accessing individual data frames, as you will need to go into a list and pick out the right member of the list (e.g. doing something like `list_of_dfs[3]`).
 
 ### Method 1A: Read all sheets in Excel into Global Environment
 
@@ -124,13 +141,13 @@ The first thing to do is to specify the file path to the Excel file:
 wb_source <- "../datasets/test-excel/test-excel.xlsx"
 ```
 
-You can then run `readxl::excel_sheets()` to extract the sheet names in that Excel file, save it as a character string type vector.
+You can then run `readxl::excel_sheets()` to extract the sheet names in that Excel file, and save it as a character type vector.
 ```{r}
 wb_sheets <- readxl::excel_sheets(wb_source) # Extract the sheet names as a character string vector
 print(wb_sheets)
 ```
 
-The next step is to iterate through the sheet names (saved in `wb_sheets`) using the `map()` function from **purrr**, and within each iteration use `assign()` (base) and `read_xlsx()` (from **readxl**) to load each individual sheet into the Global Environment, giving each one a variable name. Here's the code:
+The next step is to iterate through the sheet names (saved in `wb_sheets`) using the `map()`, and within each iteration use `assign()` (base) and `read_xlsx()` (from **readxl**) to load each individual sheet into the Global Environment, giving each one a variable name. Here's the code:
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results = 'hide'}
 # Load everything into the Global Environment
@@ -142,22 +159,85 @@ wb_sheets %>%
 })
 ```
 
-What my work space looks like:
+This is what my work space looks like:
 ```{r import-excel, echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
 knitr::include_graphics("../images/import-excel.PNG")
 ```
 
-Note that `purrr::map()` always returns a list, but in this case we do not need a list returned and only require the "side effects", i.e. the objects being read in to be assigned to the Global Environment. If you prefer you can use `lapply()` instead of `map()`, which doesn't make a big practical difference for this purpose.
+Note that `purrr::map()` always returns a list, but in this case we do not need a list returned and only require the "side effects", i.e. the objects being read in to be assigned to the Global Environment. If you prefer you can use `lapply()` instead of `map()`, which for this purpose doesn't make a big practical difference.
 
 Also, `assign()` allows you to assign a value to a name in an environment, where we've specified as arguments:
+
 - `sheet` as the name
 - The sheet we read in as the **value**. Here, we use `readxl::read_xlsx()` for reading in specific sheets from the Excel file, where you simply specify the file path and the sheet name as the arguments.
 - `.GlobalEnv` as the environment
 
 ### Method 1B: Read all CSV files in directory into Global Environment
 
+The method for reading CSV files into a directory is slightly different, as you'll need to find a way to identify or create a character vector of names of all the files that you want to load into R. To do this, we'll use `list.files()`, which produces a character vector of the names of files or directories in the named directory:
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+file_path <- "../datasets/test-excel/"
+
+file_path %>% list.files()
+```
+
+We only want CSV files in this instance, so we'll want to do a bit of string manipulation (using `str_detect()` from **stringr** - again, from **tidyverse**) to get only the names that end with the extension ".csv". Let's pipe this along:
+
+```{r}
+file_path %>%
+  list.files() %>%
+  .[str_detect(., ".csv")] -> csv_file_names
+
+csv_file_names
+```
+
+The next part is similar to what we've done earlier, using `map()`. Note that apart from replacing the `value` argument with `read_csv()` (or you can use `fread()` to return a **data.table** object rather than a **tibble**), I also removed the file extension in the `x` argument so that the variable names would not contain the actual characters ".csv": 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results = 'hide'}
+# Load everything into the Global Environment
+csv_file_names %>%
+  purrr::map(function(file_name){ # iterate through each file name
+  assign(x = str_remove(file_name, ".csv"), # Remove file extension ".csv"
+         value = read_csv(paste0(file_path, file_name)),
+         envir = .GlobalEnv)
+})
+```
+
 ### Method 2A: Read all sheets in Excel into a list
+
+Reading sheets into a list is actually easier than to read it into the Global Environment, as `map()` returns a list and you won't have to use `assign()` or specify a variable name. Recall that `wb_source` holds the path of the Excel file, and `wb_sheets` is a character vector of all the sheet names in the Excel file: 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results = 'hide'}
+# Load everything into the Global Environment
+wb_sheets %>%
+  purrr::map(function(sheet){ # iterate through each sheet name
+  readxl::read_xlsx(path = wb_source, sheet = sheet)
+}) -> df_list_read # Assign to a list
+```
+
+You can then use `map()` again to run operations across all members of the list, and even chain operations within it:
+```{r}
+df_list_read %>%
+  map(~select(., Petal.Length, Species) %>%
+        head())
+```
 
 ### Method 2B: Read all CSV files in directory into a list
 
+At this point you've probably gathered how you can adapt the code to read CSV files into a list, but let's cover this for comprehensiveness. No `assign()` needed, and only run `read_csv()` within the `map()` function, iterating through the file names:
 
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results = 'hide'}
+# Load everything into the Global Environment
+csv_file_names %>%
+  purrr::map(function(file_name){ # iterate through each file name
+  
+  read_csv(paste0(file_path, file_name))
+  
+}) -> df_list_read2 # Assign to a list
+```
+---
+
+## Thank you for reading! `r emo::ji("smile")`
+
+Hopefully this is a helpful tutorial for an iterative approach to writing and reading Excel files. If you like what you read or if you have any suggestions / thoughts about the subject, do leave a comment in the Disqus fields in the blog and let me know!
