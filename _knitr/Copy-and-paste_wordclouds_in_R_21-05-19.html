@@ -28,6 +28,11 @@ rgb2hex &lt;- function(r,g,b) rgb(r, g, b, maxColorValue = 255) # Load function<
 <div id="specifying-colours" class="section level3">
 <h3>2. Specifying colours</h3>
 <p>The next step would then be to specify the colours that you want to use in your word cloud. Effectively, you’re creating a vector of character strings that specify the colours you want. The <code>rgb2hex()</code> function is used here to convert the RGB values, but if you prefer you can use the HEX codes directly, e.g. “#ff0000”.</p>
+<pre class="r"><code>colour_scheme &lt;- c(rgb2hex(0,144,218),
+                  rgb2hex(219,10,91),
+                  rgb2hex(0,163,173),
+                  rgb2hex(0,97,160),
+                  rgb2hex(96,37,169))</code></pre>
 </div>
 <div id="specify-additional-stop-words-to-remove" class="section level3">
 <h3>3. Specify additional stop words to remove</h3>

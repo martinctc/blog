@@ -53,7 +53,7 @@ rgb2hex <- function(r,g,b) rgb(r, g, b, maxColorValue = 255) # Load function
 
 The next step would then be to specify the colours that you want to use in your word cloud. Effectively, you're creating a vector of character strings that specify the colours you want. The `rgb2hex()` function is used here to convert the RGB values, but if you prefer you can use the HEX codes directly, e.g. "#ff0000".
 
-```{r pressure, echo=FALSE}
+```{r pressure, echo=TRUE}
 colour_scheme <- c(rgb2hex(0,144,218),
                   rgb2hex(219,10,91),
                   rgb2hex(0,163,173),
