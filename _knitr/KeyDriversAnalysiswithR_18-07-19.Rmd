@@ -1,0 +1,78 @@
+---
+title: "Key Drivers Analysis with R"
+author: "Martin Chan"
+date: "July 18, 2019"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+# prettyjekyll::FormatPost("_knitr/First_Post_13-04-19.Rmd")
+```
+
+## Background
+This post will provide an introduction on how to perform a **Key Drivers Analysis** (KDA) in R. The term *Key Drivers Analysis* is more commonly used in the market research industry, and refers to a family of methods for measuring the importance of a set of input variables in predicting an outcome variable. KDA is also known as *relative importance analysis*, which is what the R package [relaimpo](https://cran.r-project.org/web/packages/relaimpo/index.html) is named after. 
+
+In this post, I will provide an overview of how to perform KDA using two methods/packages:
+
+- **Lindeman, Merenda and Gold** (abbreviated *lmg*) / **Shapley value regression** - using the package [relaimpo](https://cran.r-project.org/web/packages/relaimpo/index.html)
+- **Relative Weights Analysis** - using a package I wrote called [rwa](https://github.com/martinctc/rwa), which is based off the work by [Tonidandel and LeBreton, 2015](https://link.springer.com/article/10.1007/s10869-014-9351-z)
+
+## Example: Growing your hex sticker business
+A typical use case in market research is to understand what “drives” **customer satisfaction**, where drivers may include:
+
+- Quality of service
+- Speed of service delivery
+- Quality of product
+- Value for money
+- Accessibility / availability
+- User experience (if digital)
+
+The question then is to understand: *which of these variables are most important if I wish to maximise customer satisfaction?* KDA can be applied to a diverse range of consumer products and services (and even beyond consumer markets), and in different situations you’re likely to get a different set of potential drivers. In an attempt to make this tutorial more engaging and in my curiosity to see whether this reduces the bounce rate of this post, I shall fabricate a slightly comical business example.
+
+Imagine that you lead an analytics team in a business that manufactures and sells R-themed merchandise (e.g. hex stickers, t-shirts), and the CEO has asked you to provide some analysis on the business’s latest customer survey as input to her upcoming annual strategy planning meeting.[^1] What makes your customers happy, and what factors are the most important? You have some standard grid-type 7-point scale customer satisfaction questions, and you want to show up with something a bit more impressive than some correlation coefficients for your boss on how to grow the hex sticker business.
+
+
+> On a scale of 1 to 7 where 1 is Extremely Dissatisfied and 7 is Extremely Satisfied, how would you rate your level of satisfaction with [BRAND'S] product quality?
+
+(Example of one of the questions available within the survey)
+
+## Principles behind KDA
+
+As succinctly as possible, what a KDA does is to **infer the relative contribution or importance of several predictor variables in a regression analysis**. The regression model is based off a select number of predictor variables, and the coefficients (or some transformed version of them) are then used to represent the importance of the input variables. The first step, certainly, then is to have some idea of what you want to be measuring:
+
+1. Select the outcome variable that you want the input variables to predict (e.g. customer satisfaction)
+2. Select the set of predictor variables in which you want to measure their importance in contributing towards the outcome variable. Like with building any model, it is wise to be discriminate and select relevant and meaningful variables (rather than chuck all the data in).
+
+The next step - or you may prefer to do this before even commencing the exercise - is to decide on a method for running the KDA. One of the main differences between the different KDA methods is their approach to dealing with **multicollinearity**.
+
+
+According to Tonidandel and LeBreton (2015),
+
+> multicollinearity makes the partitioning of variance among multiple correlated predictors difficult. Despite these difficulties, researchers continue to rely on commonly available indices (e.g., simple correlation coefficients, partial correlation coefficients, standardized regression coefficients) when partitioning the variance in the criterion that is predicted by multiple (typically correlated) predictors.
+
+There are various ways to carry out a KDA, including:
+
+The *lmg* method as referred to in **relaimpo**, first mentioned in Lindeman, Merenda and Gold (1980), but also Kruskall (1987). The method was later improved by other researchers in the field and became better known as *Shapley value regression* or *dominance analysis* (Budescu, 1993).
+*Relative Weights Analysis* - this is a more recent method usually attributed to Johnson (2000). 
+
+The variant of KDA used in this analysis is the Relative Weights Analysis. This method deals with multicollinearity by creating a set of new predictor variables that are maximally related to the original variables, but are uncorrelated (orthogonal) to each other.
+
+According to Tonidandel and LeBreton (2015), Relative Weights Analysis...
+
+> ...decompose[s] the total variance predicted in a regression model (R 2) into weights that accurately reflect the proportional contribution of the various predictor variables.
+
+Outputs
+The output of KDA exercises is typically a relative importance weight (%), which represent the proportion that a factor contributes to the output variable, relative to other factors in the model.
+
+## Important Notes
+There are two key caveats with KDA:
+KDA outputs are relative estimates, and is critically dependent on the inputs selected to build the model. For this analysis we have selected variables deemed most relevant as drivers of eNPS based on the established understanding of the employee market.
+
+Different methods of KDA deliver very similar results on strong relationships, but fluctuate more on weaker relationships. Therefore, consistency across different models should in itself be interpreted as evidence (e.g. benefits consistently ranked higher over income as driver)
+
+[^1]: KDA is typically applied to survey data, but there can certainly be alternative use cases. 
+
