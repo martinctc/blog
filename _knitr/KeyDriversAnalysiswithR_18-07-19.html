@@ -51,12 +51,13 @@ code > span.ot { color: #007020; }
 <section class="main-content">
 <div id="background" class="section level2">
 <h2>Background</h2>
-<p>This post will provide an introduction on how to perform a <strong>Key Drivers Analysis</strong> (KDA) in R. The term <em>Key Drivers Analysis</em> is more commonly used in the market research industry, and refers to a family of methods for measuring the importance of a set of input variables in predicting an outcome variable. KDA is also known as <em>relative importance analysis</em>, which is what the R package <a href="https://cran.r-project.org/web/packages/relaimpo/index.html">relaimpo</a> is named after.</p>
-<p>In this post, I will provide an overview of how to perform KDA using two methods/packages:</p>
+<p>This post will provide an introduction on how to perform a <strong>Key Drivers Analysis</strong> (KDA) in R. The term <em>Key Drivers Analysis</em> is more commonly used in the market research industry, and refers to a family of methods for measuring the importance of a set of input variables (or key drivers, predictors) in predicting an outcome variable. KDA is also known as <em>relative importance analysis</em>, which is what the R package <a href="https://cran.r-project.org/web/packages/relaimpo/index.html">relaimpo</a> is named after.</p>
+<p>In this post, I will provide an overview of the two most common methods to perform a KDA:</p>
 <ul>
 <li><strong>Lindeman, Merenda and Gold</strong> (abbreviated <em>lmg</em>) / <strong>Shapley value regression</strong> - using the package <a href="https://cran.r-project.org/web/packages/relaimpo/index.html">relaimpo</a></li>
 <li><strong>Relative Weights Analysis</strong> - using a package I wrote called <a href="https://github.com/martinctc/rwa">rwa</a>, which is based off the work by <a href="https://link.springer.com/article/10.1007/s10869-014-9351-z">Tonidandel and LeBreton, 2015</a></li>
 </ul>
+<p>There are many variations of KDA, where similar outcomes can be achieved with say <strong>dominance analysis</strong> (See Budescu) or through estimating variable importance with a Random Forest model.</p>
 </div>
 <div id="example-growing-your-hex-sticker-business" class="section level2">
 <h2>Example: Growing your hex sticker business</h2>
@@ -78,34 +79,58 @@ code > span.ot { color: #007020; }
 </div>
 <div id="principles-behind-kda" class="section level2">
 <h2>Principles behind KDA</h2>
-<p>As succinctly as possible, what a KDA does is to <strong>infer the relative contribution or importance of several predictor variables in a regression analysis</strong>. The regression model is based off a select number of predictor variables, and the coefficients (or some transformed version of them) are then used to represent the importance of the input variables. The first step, certainly, then is to have some idea of what you want to be measuring:</p>
+<p>As succinctly as possible, what a KDA does is to <strong>infer the relative contribution or importance of several predictor variables in a regression analysis</strong>. The keyword here is <strong>relative</strong> - importance is a measure of the relationship between a predictor and the outcome variable, <em>relative</em> to other predictors in the model. The regression model is based off a select number of predictor variables, and model outputs such as coefficients (or some transformed version of them) are then used to represent the importance of the input variables.</p>
+<p>The first step, certainly, then is to have some idea of what you want to be measuring:</p>
 <ol style="list-style-type: decimal">
-<li>Select the outcome variable that you want the input variables to predict (e.g. customer satisfaction)</li>
+<li>Select the <em>outcome variable</em> that you want the input variables to predict (e.g. customer satisfaction)</li>
 <li>Select the set of predictor variables in which you want to measure their importance in contributing towards the outcome variable. Like with building any model, it is wise to be discriminate and select relevant and meaningful variables (rather than chuck all the data in).</li>
 </ol>
-<p>The next step - or you may prefer to do this before even commencing the exercise - is to decide on a method for running the KDA. One of the main differences between the different KDA methods is their approach to dealing with <strong>multicollinearity</strong>.</p>
+<p>The next step - or you may prefer to do this before even commencing the exercise - is to decide on a method for running the KDA. One of the main differences between the different KDA methods is how they deal with the issue of <strong>multicollinearity</strong>. The challenge with multiple correlated predictors is that it increases the difficulty in inferring the ‘true’ relative importance of a given single predictor, as the value of their coefficients will be inflated by other correlated predictors in the model.</p>
 <p>According to Tonidandel and LeBreton (2015),</p>
 <blockquote>
 <p>multicollinearity makes the partitioning of variance among multiple correlated predictors difficult. Despite these difficulties, researchers continue to rely on commonly available indices (e.g., simple correlation coefficients, partial correlation coefficients, standardized regression coefficients) when partitioning the variance in the criterion that is predicted by multiple (typically correlated) predictors.</p>
 </blockquote>
-<p>There are various ways to carry out a KDA, including:</p>
-<p>The <em>lmg</em> method as referred to in <strong>relaimpo</strong>, first mentioned in Lindeman, Merenda and Gold (1980), but also Kruskall (1987). The method was later improved by other researchers in the field and became better known as <em>Shapley value regression</em> or <em>dominance analysis</em> (Budescu, 1993). <em>Relative Weights Analysis</em> - this is a more recent method usually attributed to Johnson (2000).</p>
-<p>The variant of KDA used in this analysis is the Relative Weights Analysis. This method deals with multicollinearity by creating a set of new predictor variables that are maximally related to the original variables, but are uncorrelated (orthogonal) to each other.</p>
+<p>For most KDA techniques, the ability to deal with correlated predictors offers an advantage over running a simple correlation matrix when you are trying to understand the relative importance of variables.</p>
+<p>The <em>lmg</em> / <em>Shapley</em> method and Johnson’s <em>Relative Weights Analysis</em> are two of the most well-known methods for running a KDA, and both have a way to deal with correlated predictors. Here’s a brief background to these two methods:</p>
+<div id="lmg-shapley" class="section level3">
+<h3>lmg / Shapley</h3>
+<p>The <em>lmg</em> method as referred to in <strong>relaimpo</strong>, first mentioned in Lindeman, Merenda and Gold (1980), but also Kruskall (1987). The method was later improved by other researchers in the field and became better known as <em>Shapley value regression</em> or <em>dominance analysis</em> (Budescu, 1993).</p>
+</div>
+<div id="relative-weights-analysis" class="section level3">
+<h3>Relative Weights Analysis</h3>
+<p><em>Relative Weights Analysis</em> (RWA) - this is a more recent method usually attributed to Johnson (2000). The main advantage of RWA over the Shapley is its computational speed, especially in the case of a large number of predictors. Whilst the time to compute KDA with Shapley increases <em>exponentially</em> with the number of predictors in the model, it only increases by polynomial time for RWA. This method deals with multicollinearity by creating a set of new predictor variables that are maximally related to the original variables, but are uncorrelated (orthogonal) to each other.</p>
 <p>According to Tonidandel and LeBreton (2015), Relative Weights Analysis…</p>
 <blockquote>
 <p>…decompose[s] the total variance predicted in a regression model (R 2) into weights that accurately reflect the proportional contribution of the various predictor variables.</p>
 </blockquote>
-<p>Outputs The output of KDA exercises is typically a relative importance weight (%), which represent the proportion that a factor contributes to the output variable, relative to other factors in the model.</p>
+<p>The output of KDA exercises is typically a relative importance weight (%), which represent the proportion that a factor contributes to the output variable, relative to other factors in the model.</p>
+<p>The differences between Shapley and RWA in terms of outputs are…</p>
+</div>
+</div>
+<div id="method-1---kda-with-lmg-relaimpo" class="section level2">
+<h2>Method #1 - KDA with lmg (<code>relaimpo</code>)</h2>
+</div>
+<div id="method-2---kda-with-rwa-rwa" class="section level2">
+<h2>Method #2 - KDA with RWA (<code>rwa</code>)</h2>
 </div>
 <div id="important-notes" class="section level2">
 <h2>Important Notes</h2>
 <p>There are two key caveats with KDA: KDA outputs are relative estimates, and is critically dependent on the inputs selected to build the model. For this analysis we have selected variables deemed most relevant as drivers of eNPS based on the established understanding of the employee market.</p>
 <p>Different methods of KDA deliver very similar results on strong relationships, but fluctuate more on weaker relationships. Therefore, consistency across different models should in itself be interpreted as evidence (e.g. benefits consistently ranked higher over income as driver)</p>
+<div id="section" class="section level4">
+<h4>——————————–</h4>
+</div>
+</div>
+<div id="footnotes" class="section level1">
+<h1>FOOTNOTES!!!</h1>
+<div id="section-1" class="section level4">
+<h4>——————————–</h4>
+</div>
 </div>
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>KDA is typically applied to survey data, but there can certainly be alternative use cases.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>KDA is typically applied to survey data, but there can certainly be alternative use cases. See <a href="https://cran.r-project.org/web/packages/dominanceanalysis/vignettes/da-logistic-regression.html">this tutorial</a> by Filipa Coutinho Soares (2019) which uses dominance analysis (using <code>dominanceanalysis</code>) with a binomial logistic regression to identify the most important environmental variables for predicting the presence of tropical birds.<a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 </section>

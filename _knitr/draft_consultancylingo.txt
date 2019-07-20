@@ -1,0 +1,20 @@
+*Strictly* speaking, this isn't really a R post. 
+
+This post is more about *language*, and more specifically, the language to pitch and communicate a data science product. Just to be clear, I'm referring to *language* in the stricter sense of the word 
+
+Here's a beginner's guide on how to use consultant lingo (jargon?) to articulate the findings from your data science work. 
+
+
+## Unlock insights
+
+## Leverage
+
+## Surface
+
+## Alignment
+
+## Triggers, Drivers, Barriers, Headwinds
+
+## Is this scalable?
+
+Ultimately, one of the main ways that consultants add value is by communicating and articulating things well, which certainly overlaps with what's required of data scientists. 
