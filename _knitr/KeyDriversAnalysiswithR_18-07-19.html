@@ -18,6 +18,70 @@
 
 
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 
 
@@ -92,12 +156,12 @@ code > span.ot { color: #007020; }
 </blockquote>
 <p>For most KDA techniques, the ability to deal with correlated predictors offers an advantage over running a simple correlation matrix when you are trying to understand the relative importance of variables.</p>
 <p>The <em>lmg</em> / <em>Shapley</em> method and Johnson’s <em>Relative Weights Analysis</em> are two of the most well-known methods for running a KDA, and both have a way to deal with correlated predictors. Here’s a brief background to these two methods:</p>
-<div id="lmg-shapley" class="section level3">
-<h3>lmg / Shapley</h3>
-<p>The <em>lmg</em> method as referred to in <strong>relaimpo</strong>, first mentioned in Lindeman, Merenda and Gold (1980), but also Kruskall (1987). The method was later improved by other researchers in the field and became better known as <em>Shapley value regression</em> or <em>dominance analysis</em> (Budescu, 1993).</p>
+<div id="background-lmg-shapley" class="section level3">
+<h3>Background: lmg / Shapley</h3>
+<p>The <em>lmg</em> method as referred to in <strong>relaimpo</strong>, first mentioned in Lindeman, Merenda and Gold (1980), but also Kruskall (1987). The method was later improved by other researchers in the field and became better known as <em>Shapley value regression</em> or <em>dominance analysis</em> (Budescu, 1993). It may perhaps be more accurate to describe this as a close family of related methods, but I follow the precedent in the existing literature that treats this as a single approach.</p>
 </div>
-<div id="relative-weights-analysis" class="section level3">
-<h3>Relative Weights Analysis</h3>
+<div id="background-relative-weights-analysis" class="section level3">
+<h3>Background: Relative Weights Analysis</h3>
 <p><em>Relative Weights Analysis</em> (RWA) - this is a more recent method usually attributed to Johnson (2000). The main advantage of RWA over the Shapley is its computational speed, especially in the case of a large number of predictors. Whilst the time to compute KDA with Shapley increases <em>exponentially</em> with the number of predictors in the model, it only increases by polynomial time for RWA. This method deals with multicollinearity by creating a set of new predictor variables that are maximally related to the original variables, but are uncorrelated (orthogonal) to each other.</p>
 <p>According to Tonidandel and LeBreton (2015), Relative Weights Analysis…</p>
 <blockquote>
@@ -109,6 +173,39 @@ code > span.ot { color: #007020; }
 </div>
 <div id="method-1---kda-with-lmg-relaimpo" class="section level2">
 <h2>Method #1 - KDA with lmg (<code>relaimpo</code>)</h2>
+<p>Let’s start with loading in the {relaimpo} package and the example dataset.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(relaimpo)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3">data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;datasets&quot;</span>,<span class="st">&quot;kda_example.csv&quot;</span>))</a></code></pre></div>
+<p>This data was collected from our Annual Customer Satisfaction survey, which interviewed a representative sample of 1000 customers who have recently purchased one of our R-themed merchandise. We’ve asked them to rate on a seven-point scale their satisfaction with a number attributes.</p>
+<p>By running <code>glimpse()</code>, you’ll see that excluding the respondent id, the dataset has five variables:</p>
+<ul>
+<li><code>quality_service</code> - Quality of Service</li>
+<li><code>speed_service</code> - Speed of Service</li>
+<li><code>quality_product</code> - Quality of Product</li>
+<li><code>value_for_money</code> - Value for Money</li>
+<li><code>overall_sat</code> - Overall Satisfaction</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">data <span class="op">%&gt;%</span><span class="st"> </span>skimr<span class="op">::</span><span class="kw">skim</span>()</a></code></pre></div>
+<pre><code>## Skim summary statistics
+##  n obs: 1000 
+##  n variables: 6 
+## 
+## -- Variable type:numeric ------------------------------------------------------------------------
+##         variable missing complete    n   mean     sd p0    p25   p50
+##               id       0     1000 1000 500.5  288.82  1 250.75 500.5
+##      overall_sat       0     1000 1000   3.94   2.03  1   2      4  
+##  quality_product       0     1000 1000   3.96   1.99  1   2      4  
+##  quality_service       0     1000 1000   4      2.06  1   2      4  
+##    speed_service       0     1000 1000   3.96   1.99  1   2      4  
+##  value_for_money       0     1000 1000   4.07   2.02  1   2      4  
+##     p75 p100     hist
+##  750.25 1000 &lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;
+##    6       7 &lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2587&gt;
+##    6       7 &lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2587&gt;
+##    6       7 &lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2587&gt;
+##    6       7 &lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2586&gt;&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2586&gt;
+##    6       7 &lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2587&gt;</code></pre>
 </div>
 <div id="method-2---kda-with-rwa-rwa" class="section level2">
 <h2>Method #2 - KDA with RWA (<code>rwa</code>)</h2>

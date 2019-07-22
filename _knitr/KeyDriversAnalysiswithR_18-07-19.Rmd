@@ -65,6 +65,8 @@ The *lmg* / *Shapley* method and Johnson's *Relative Weights Analysis* are two o
 
 The *lmg* method as referred to in **relaimpo**, first mentioned in Lindeman, Merenda and Gold (1980), but also Kruskall (1987). The method was later improved by other researchers in the field and became better known as *Shapley value regression* or *dominance analysis* (Budescu, 1993). It may perhaps be more accurate to describe this as a close family of related methods, but I follow the precedent in the existing literature that treats this as a single approach.
 
+> The recommended metric is lmg, which provides a decomposition of the model explained variance into non-negative contributions.
+
 ### Background: Relative Weights Analysis
 
 *Relative Weights Analysis* (RWA) - this is a more recent method usually attributed to Johnson (2000). The main advantage of RWA over the Shapley is its computational speed, especially in the case of a large number of predictors. Whilst the time to compute KDA with Shapley increases *exponentially* with the number of predictors in the model, it only increases by polynomial time for RWA. This method deals with multicollinearity by creating a set of new predictor variables that are maximally related to the original variables, but are uncorrelated (orthogonal) to each other.
@@ -78,6 +80,45 @@ The output of KDA exercises is typically a relative importance weight (%), which
 The differences between Shapley and RWA in terms of outputs are...
 
 ## Method #1 - KDA with lmg (`relaimpo`)
+
+Let's start with loading in the {relaimpo} package and the example dataset. 
+
+```{r message=FALSE, warning=FALSE}
+library(relaimpo)
+
+data <- read_csv(here::here("datasets","kda_example.csv"))
+```
+
+This data was collected from our Annual Customer Satisfaction survey, which interviewed a representative sample of 1000 customers who have recently purchased one of our R-themed merchandise. We've asked them to rate on a seven-point scale their satisfaction with a number attributes.
+
+By running `glimpse()`, you'll see that excluding the respondent id, the dataset has five variables:
+
+- `quality_service` - Quality of Service
+- `speed_service` - Speed of Service
+- `quality_product` - Quality of Product
+- `value_for_money` - Value for Money
+- `overall_sat` - Overall Satisfaction
+
+```{r}
+data %>% glimpse()
+
+# data %>% 
+#   filter(overall_sat >= 6) %>%
+#   mutate_at(vars(-id, -overall_sat),
+#             ~sample(5:7, length(.), replace = TRUE)) %>% copy_df()
+```
+
+We can base the KDA off a linear regression model. Let's build one:
+
+```{r}
+data %>%
+  lm(overall_sat ~ quality_service + speed_service + quality_product + value_for_money,
+     data = .) -> lm_fit
+
+lm_fit
+```
+
+According to the package documentation, **relaimpo** is also compatible with Thomas Lumley's **survey** package, which allows you to use this package together with complex survey designs.
 
 ## Method #2 - KDA with RWA (`rwa`)
 
