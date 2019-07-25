@@ -1,0 +1,49 @@
+
+## Background
+
+Why decided to do interviews
+
+Bio about Avision
+
+Avision is a data scientist at the Department of Education, with a background in Economics and Mathematics.
+
+Where to find out more about him
+
+## About the EARL Conference
+
+The EARL Conference is an annual conference on the *Enterprise Applications of the R Language*, organised by Mango Solutions. My friend Avision is giving a talk in the upcoming EARL 2019 in September in London, so in this interview we had a chat about what's it all going to be about.
+
+**Disclaimer**: I'm not affiliated with Mango Solutions! I have, however, found the EARL conference and other meet-ups (e.g. LondonR) they organise extremely helpful. Through their talks/events I've made many friends (including Avision), and certainly have expanded my knowledge in R. Talking to people is a great way to learn - an approach I'd much prefer over simply binge-ing on R video tutorials!
+
+
+## Interview with Avision Ho
+
+
+**Do you want to start off by telling me briefly what your EARL talk is about? I seem to recall it had something to do with Nobel Prizes.**
+
+Certainly, the title of the talk is: "*Why a Nobel Prize algorithm is not always optimal for business*".
+
+The title of it was quite deliberate in ensuring that it was as click-bait-y as possible and in many respects, it focusses the mind on the actual issue that we face day-to-day as data scientists. Specifically, that a Nobel-Prize algorithm may be the most fastest and accurate solution to a problem, but when you have business constraints such as cost, computing power or even time, then sometimes, the best and optimal solution is one that's more low-tech but achieves a better balance in these constraints.
+
+**Well I think a click-bait is perfectly acceptable when you're delivering a data science talk - most people do it. I'm actually slightly surprised you didn't try to slip a R pun in there! What inspired you to choose this subject to talk about?**
+
+Haha, I think there have already been many R puns used out there such that using one may lose its desired effect!
+
+Regarding inspiration, it was inspired by a recent project I volunteered for in helping to organise a conference.
+As part of the conference, my team's responsibility was to assign attendees to talks that are occurring simultaeously, given that the attendees have revealed preferences over which talks they want to attend. Breaking down the issue in this way enabled me to recognise that this must be an issue that was tackled before because it is quite a common one. Upon searching on the internet, lo and behold, I found research in the game theoretical discipline that did cover this problem.
+
+Yet as I implemented it, I realised that there were two core issues with this initial solution:
+1. *Scalability* - the particular implementation that I was using would quickly slow down for larger datasets which wasn't an issue for the dataset I was using, but would be if it was applied to other ones.
+2. *Interpretability* - the algorithm I was using was theoretically sound and mathematically robust but it was difficult to explain and understand in a 30 second window, which was something important as I wanted to make the selection process as transparent as possible for attendees.
+
+This led me on a merry chase to build my own bespoke function/algorithm solved these two issues.
+
+Whilst I make no claim to this solution being as theoretically sound nor mathematically robust as the initial solution (which did win the Nobel Prize), so sadly I am not expecting an invite to next year's ceremony; it did fit our business needs better.
+
+Therefore, this talk was based off the experiences I had on this project. What I plan to cover in my talk also is turning a process that requires coding knowledge to a process which is knowledge-agnostic. By this I mean that I won't be volunteering for that conference next year nor at other time soon, so I will cover the second phase of it where I future-proofed what I did so that whoever takes over is able to use what I built, irrespective of whether they can code or not.
+
+**Wow that sounds super fascinating. In danger of making you give the entire plot  of your talk away before you actually deliver it - I presume you implemented all of your solution in R? Was there a reason why you chose R to do this?**
+
+Haha, maybe I just talk too much! As it is, my solution was implemented all in R. I chose it because I am most familiar with R and there isn't a strict requirement to use other languages.
+
+Nevertheless, I do want to link the app to an underlying SQL database so that I do not need to store the dummy data within the app session. The part I have not quite got my head round is finding a vendor who will offer me a free cloud SQL database.
