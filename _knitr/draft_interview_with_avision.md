@@ -4,7 +4,7 @@
 
 ### Why do an interview?
 
-This post is not typical of the content on this blog, as on this occasion I've decided to *interview* a data scientist as opposed to creating a vignette or reviewing a package I really like. I've always enjoyed interviews as talking to people is a great way to understand and imagine *what it really is like* to do something or face a particular challenge. 
+This post is not typical of the content [on this blog](https://martinctc.github.io/blog/), as on this occasion I've decided to *interview* a data scientist as opposed to creating a vignette or reviewing a package I really like. I've always enjoyed interviews as talking to people is a great way to understand and imagine *what it really is like* to do something or face a particular challenge. 
 
 ### About Avision
 
@@ -12,17 +12,16 @@ I've decided to have a conversation with Avision Ho, who's a data scientist and 
 
 If you wish to find out more about him, check out...
 
-One reason why I thought it'd be interesting to speak with Avision is because he will be speaking at the EARL Conference this upcoming September in London. From my own experience, speaking about a technical subject at a conference can be both intimidating and enjoyable, so in this interview I'm going to find out what he is talking about and what his experience of the process is like.
+One reason why I thought it'd be interesting to speak with Avision is because he will be speaking at the [EARL Conference this upcoming September in London](https://earlconf.com/). From my own experience, speaking about a technical subject at a conference can be both intimidating and enjoyable, so in this interview I'm going to find out what he is talking about and what his experience of the process is like.
 
 ### The EARL Conference
 
 The EARL Conference is an annual conference on the *Enterprise Applications of the R Language*, organised by Mango Solutions. My friend Avision is giving a talk in the upcoming EARL 2019 in September in London, so in this interview we had a chat about what's it all going to be about.
 
-**Disclaimer**: I'm not affiliated with Mango Solutions! I have, however, found the EARL conference and other meet-ups (e.g. LondonR) they organise extremely helpful. Through their talks/events I've made many friends (including Avision), and certainly have expanded my knowledge in R. Talking to people is a great way to learn - an approach I'd much prefer over simply binge-ing on R video tutorials!
+**Disclaimer**: I'm not affiliated with Mango Solutions! I have however found the EARL conference and other meet-ups (e.g. LondonR) they organise to be extremely helpful. Through their talks/events I've made many friends (including Avision), and certainly have expanded my knowledge in R. Talking to people is a great way to learn - an approach I'd much prefer over simply binge-ing on R video tutorials!
 
 
 ## Interview with Avision Ho
-
 
 **Do you want to start off by telling me briefly what your EARL talk is about? I seem to recall it had something to do with Nobel Prizes.**
 
