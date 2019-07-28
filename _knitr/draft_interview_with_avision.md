@@ -54,7 +54,7 @@ Haha, maybe I just talk too much! As it is, my solution was implemented all in R
 
 Nevertheless, I do want to link the app to an underlying SQL database so that I do not need to store the dummy data within the app session. The part I have not quite got my head round is finding a vendor who will offer me a free cloud SQL database.
 
-## That makes sense. I guess what I'm trying to get at, more broadly, is understanding is how R fits within the broader suite of tools and languages that you use in your day-to-day work. 
+**That makes sense. I guess what I'm trying to get at, more broadly, is understanding is how R fits within the broader suite of tools and languages that you use in your day-to-day work.** 
 
 Absolutely, I use the following tools for the specific purposes:
 
