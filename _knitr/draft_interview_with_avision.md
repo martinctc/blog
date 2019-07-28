@@ -4,7 +4,7 @@
 
 ### Why do an interview?
 
-On this occasion, I've decided to have a conversation with a data scientist, as opposed to creating a vignette or reviewing a package (not typical of the content [on this blog](https://martinctc.github.io/blog/)). I've always enjoyed interviews as talking to people is a great way to understand and imagine *what it really is like* to do something or face a particular challenge. Hope you all enjoy this interview!
+On this occasion, I've decided to have a conversation with a data scientist for a change, as opposed to creating a vignette or reviewing a package (atypical of the content [on this blog](https://martinctc.github.io/blog/)). I've always enjoyed interviews as talking to people is a great way to understand and imagine *what it really is like* to do something or face a particular challenge. Hope you all enjoy this interview!
 
 ### About Avision
 
@@ -16,7 +16,7 @@ If you wish to find out more about him, check out [his GitHub profile here](http
 
 One reason why I thought it'd be interesting to speak with Avision is because he will be speaking at the [EARL Conference this upcoming September in London](https://earlconf.com/). From my own experience, speaking about a technical subject at a conference can be both intimidating and enjoyable, so in this interview I'm going to find out what he is talking about and what his experience of the process is like.
 
-### The EARL Conference
+### EARL Conference
 
 <img src="https://martinctc.github.io/blog/images/earl-logo.png" alt="drawing" width="200"/>
 
@@ -68,10 +68,10 @@ Absolutely, I use the following tools for the specific purposes:
 
 Regarding things I prefer using R for, they are:
 
-I. **Creating reproducible work** - through RProjects, packrat/renv, RMarkdown, integrated Git in RStudio (though I am a Git Bash fanboy) as well as the well-developed framework, the conditions are really strong for me to create projects that can be ported over easily onto a different machine for a colleague to run. 
+I. **Creating reproducible work**: through RProjects, packrat/renv, RMarkdown, integrated Git in RStudio (though I am a Git Bash fanboy) as well as the well-developed framework, the conditions are really strong for me to create projects that can be ported over easily onto a different machine for a colleague to run. 
 
-II. **Communicating analysis to technical and non-technical audiences** -  RMarkdown is really strong here in the way you can weave your commentary relatively seamlessly alongside code and graph outputs. This enables me to create parameterised reports that update automatically when the data is updated. Via the ability to show and hide code instantaneously, the report can easily cater for technical audiences who want to see your code, and non-technical audiences who can be put-off by it.
+II. **Communicating analysis to technical and non-technical audiences**:  RMarkdown is really strong here in the way you can weave your commentary relatively seamlessly alongside code and graph outputs. This enables me to create parameterised reports that update automatically when the data is updated. Via the ability to show and hide code instantaneously, the report can easily cater for technical audiences who want to see your code, and non-technical audiences who can be put-off by it.
 
-III. **App building**  - this is more debateable, but if I want to relatively quickly create a bespoke web-application such as a dashboard, then I would use R because I know it quite well.
+III. **App building**: this is more debateable, but if I want to relatively quickly create a bespoke web-application such as a dashboard, then I would use R because I know it quite well.
 
 **That's interesting - I'm with you! I personally love RMarkdown as well for the fact it ticks so many boxes - it's great for documentation, for producing professional business outputs, whilst at the same time great for reproducibility. In fact, all my blogs here are written using RMarkdown! Finally, I have two final questions regarding your EARL talk. What is the application process for EARL like for you, and have you got any tips for students who want to get into data science?**
