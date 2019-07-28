@@ -18,6 +18,8 @@ One reason why I thought it'd be interesting to speak with Avision is because he
 
 ### The EARL Conference
 
+<img src="https://martinctc.github.io/blog/images/earl-logo.png" alt="drawing" width="200"/>
+
 The EARL Conference is an annual conference on the *Enterprise Applications of the R Language*, organised by Mango Solutions. My friend Avision is giving a talk in the upcoming EARL 2019 in September in London, so in this interview we had a chat about what's it all going to be about.
 
 **Disclaimer**: I'm not affiliated with Mango Solutions! I have however found the EARL conference and other meet-ups (e.g. LondonR) they organise to be extremely helpful. Through their talks/events I've made many friends (including Avision), and certainly have expanded my knowledge in R. Talking to people is a great way to learn - an approach I'd much prefer over simply binge-ing on R video tutorials!
