@@ -1,10 +1,10 @@
-# Data Science and Business Reality: an interview with Avision Ho
+# Data Chats: An Interview with Avision Ho
 
 ## Introduction
 
 ### Why do an interview?
 
-On this occasion, I've decided to have a conversation with a data scientist, as opposed to creating a vignette or reviewing a package (not typical of the content [on this blog](https://martinctc.github.io/blog/)). I've always enjoyed interviews as talking to people is a great way to understand and imagine *what it really is like* to do something or face a particular challenge.
+On this occasion, I've decided to have a conversation with a data scientist, as opposed to creating a vignette or reviewing a package (not typical of the content [on this blog](https://martinctc.github.io/blog/)). I've always enjoyed interviews as talking to people is a great way to understand and imagine *what it really is like* to do something or face a particular challenge. Hope you all enjoy this interview!
 
 ### About Avision
 
