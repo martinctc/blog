@@ -8,9 +8,11 @@ This post is not typical of the content [on this blog](https://martinctc.github.
 
 ### About Avision
 
-I've decided to have a conversation with Avision Ho, who's a data scientist and also a (I'm pretty sure) tidyverse enthusiast whom I've met at a R conference in London. Avision works as a data scientist at the UK Government's Department of Education, with a background in Economics and Mathematics. He works mainly with...
+<img src="https://martinctc.github.io/blog/images/avision-profile.jpeg" alt="drawing" width="200"/>
 
-If you wish to find out more about him, check out...
+I've decided to have a conversation with Avision Ho, who's a data scientist and also a (I'm pretty sure) tidyverse enthusiast whom I've met at a R conference in London. Avision works as a data scientist at the UK Government's Department of Education, with a background in Economics and Mathematics. Nowadays, Avision mainly spends his time creating robust data pipelines that feed the data from an external body's API into SQL databases; establish and implement strong data management and handling principles; and advising colleagues and clients on how to effectively use the data.
+
+If you wish to find out more about him, check out [his GitHub profile here](https://github.com/avisionh).
 
 One reason why I thought it'd be interesting to speak with Avision is because he will be speaking at the [EARL Conference this upcoming September in London](https://earlconf.com/). From my own experience, speaking about a technical subject at a conference can be both intimidating and enjoyable, so in this interview I'm going to find out what he is talking about and what his experience of the process is like.
 
@@ -51,3 +53,19 @@ Therefore, this talk was based off the experiences I had on this project. What I
 Haha, maybe I just talk too much! As it is, my solution was implemented all in R. I chose it because I am most familiar with R and there isn't a strict requirement to use other languages.
 
 Nevertheless, I do want to link the app to an underlying SQL database so that I do not need to store the dummy data within the app session. The part I have not quite got my head round is finding a vendor who will offer me a free cloud SQL database.
+
+## That makes sense. Just more broadly, what other tools or languages do you use at work?
+
+Absolutely, I use the following for the specified purpose:
+
+1. SQL (SSMS specifically) - storing and manipulating data
+2. Visual Studio - building SSIS packages to import data into SQL
+3. R - analysis, sharing analysis, apps building
+4. Git - version-control
+5. Python - analysis, sharing analysis to a technical audience, CRUD operations into MongoDB NoSQL database
+
+Regarding things i prefer using R for, they are:
+I. Creating reprodible work - through RProjects, packrat/renv, rmarkdown, integrated Git in RStudio (though i am a Git Bash fanboy) as well as the well-developed framework, the conditions are really strong for me to create projects that can be ported over easily onto a different machine for a colleague to run. 
+II. Communicating analysis to technical and non-technical audiences -  rmarkdown is really strong here in the way you can weave your commentary relatively seamlessly alongside code and graph outputs. This enables me to create parameterised reports that update automatically when the data is updated. Via the ability to show and hide code instantaneously, the report can easily cater for technical audiences who want to see your code, and non-technical audiences who can be put-off by it.
+
+III. App building  - this is more debateable but if i want to relatively quickly create a bespoke web-application such as a dashboard, then i would use R because i know it quite well.
