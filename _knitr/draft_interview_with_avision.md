@@ -4,15 +4,13 @@
 
 ### Why do an interview?
 
-On this occasion, I've decided to have a conversation with a data scientist for a change, as opposed to creating a vignette or reviewing a package (atypical of the content [on this blog](https://martinctc.github.io/blog/)). I've always enjoyed interviews as talking to people is a great way to understand and imagine *what it really is like* to do something or face a particular challenge. Hope you all enjoy this interview!
+On this occasion, I've decided to have a conversation with a data scientist for a change, as opposed to creating a vignette or reviewing a package (atypical of the content [on this blog](https://martinctc.github.io/blog/)). I've always enjoyed interviews as talking to people is a great way to understand and imagine *what it really is like* to do something, or face a particular challenge. Hope you all enjoy this interview!
 
 ### About Avision
 
 <img src="https://martinctc.github.io/blog/images/avision-profile.jpeg" alt="drawing" width="200"/>
 
-I've decided to have a conversation with Avision Ho, who's a data scientist and also a (I'm pretty sure) tidyverse enthusiast whom I've met at a R conference in London. Avision works as a data scientist at the UK Government's Department of Education, with a background in Economics and Mathematics. Nowadays, Avision mainly spends his time creating robust data pipelines that feed the data from an external body's API into SQL databases; establish and implement strong data management and handling principles; and advising colleagues and clients on how to effectively use the data.
-
-If you wish to find out more about him, check out [his GitHub profile here](https://github.com/avisionh).
+I've decided to have a conversation with Avision Ho, who's a data scientist and also a **tidyverse** enthusiast whom I've met at a R conference in London. Avision works as a data scientist at the UK Government's Department of Education, and has a background in Economics and Mathematics. Nowadays, Avision mainly spends his time creating robust data pipelines that feed the data from an external body's API into SQL databases; establish and implement strong data management and handling principles; and advising colleagues and clients on how to effectively use the data. If you wish to find out more about him, check out [his GitHub profile here](https://github.com/avisionh).
 
 One reason why I thought it'd be interesting to speak with Avision is because he will be speaking at the [EARL Conference this upcoming September in London](https://earlconf.com/). From my own experience, speaking about a technical subject at a conference can be both intimidating and enjoyable, so in this interview I'm going to find out what he is talking about and what his experience of the process is like.
 
