@@ -54,9 +54,9 @@ Haha, maybe I just talk too much! As it is, my solution was implemented all in R
 
 Nevertheless, I do want to link the app to an underlying SQL database so that I do not need to store the dummy data within the app session. The part I have not quite got my head round is finding a vendor who will offer me a free cloud SQL database.
 
-## That makes sense. Just more broadly, what other tools or languages do you use at work?
+## That makes sense. I guess what I'm trying to get at, more broadly, is understanding is how R fits within the broader suite of tools and languages that you use in your day-to-day work. 
 
-Absolutely, I use the following for the specified purpose:
+Absolutely, I use the following tools for the specific purposes:
 
 1. SQL (SSMS specifically) - storing and manipulating data
 2. Visual Studio - building SSIS packages to import data into SQL
@@ -64,8 +64,10 @@ Absolutely, I use the following for the specified purpose:
 4. Git - version-control
 5. Python - analysis, sharing analysis to a technical audience, CRUD operations into MongoDB NoSQL database
 
-Regarding things i prefer using R for, they are:
-I. Creating reprodible work - through RProjects, packrat/renv, rmarkdown, integrated Git in RStudio (though i am a Git Bash fanboy) as well as the well-developed framework, the conditions are really strong for me to create projects that can be ported over easily onto a different machine for a colleague to run. 
-II. Communicating analysis to technical and non-technical audiences -  rmarkdown is really strong here in the way you can weave your commentary relatively seamlessly alongside code and graph outputs. This enables me to create parameterised reports that update automatically when the data is updated. Via the ability to show and hide code instantaneously, the report can easily cater for technical audiences who want to see your code, and non-technical audiences who can be put-off by it.
+Regarding things I prefer using R for, they are:
 
-III. App building  - this is more debateable but if i want to relatively quickly create a bespoke web-application such as a dashboard, then i would use R because i know it quite well.
+I. **Creating reproducible work** - through RProjects, packrat/renv, RMarkdown, integrated Git in RStudio (though I am a Git Bash fanboy) as well as the well-developed framework, the conditions are really strong for me to create projects that can be ported over easily onto a different machine for a colleague to run. 
+
+II. **Communicating analysis to technical and non-technical audiences** -  RMarkdown is really strong here in the way you can weave your commentary relatively seamlessly alongside code and graph outputs. This enables me to create parameterised reports that update automatically when the data is updated. Via the ability to show and hide code instantaneously, the report can easily cater for technical audiences who want to see your code, and non-technical audiences who can be put-off by it.
+
+III. **App building**  - this is more debateable, but if I want to relatively quickly create a bespoke web-application such as a dashboard, then I would use R because I know it quite well.
