@@ -75,3 +75,10 @@ II. **Communicating analysis to technical and non-technical audiences**:  RMarkd
 III. **App building**: this is more debateable, but if I want to relatively quickly create a bespoke web-application such as a dashboard, then I would use R because I know it quite well.
 
 **That's interesting - I'm with you! I personally love RMarkdown as well for the fact it ticks so many boxes - it's great for documentation, for producing professional business outputs, whilst at the same time great for reproducibility. In fact, all my blogs here are written using RMarkdown! Finally, I have two final questions regarding your EARL talk. What is the application process for EARL like for you, and have you got any tips for students who want to get into data science?**
+
+
+## Footnotes
+
+Avision's also spoken about his journey to become a Data Scientist from an Economics background. Check out this video interview here, from *Data Strategy with Jonathan*:  
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=x5f6Z0TXdlQ" frameborder="0" allowfullscreen></iframe>
+
