@@ -44,7 +44,7 @@ Imagine that you lead an analytics team in a business that manufactures and sell
 
 ## Principles behind KDA
 
-As succinctly as possible, what a KDA does is to **infer the relative contribution or importance of several predictor variables in a regression analysis**. The keyword here is **relative** - importance is a measure of the relationship between a predictor and the outcome variable, *relative* to other predictors in the model. The regression model is based off a select number of predictor variables, and model outputs such as coefficients (or some transformed version of them) are then used to represent the importance of the input variables. 
+As succinctly as possible, what a KDA does is to **infer the relative contribution or importance of several predictor variables to the outcome variable in a regression analysis**. The keyword here is **relative** - importance is a measure of the relationship between a predictor and the outcome variable, *relative* to other predictors in the model. The regression model is based off a select number of predictor variables, and model outputs such as coefficients or $$R^2$$ (or some transformed version of these values) are then used to represent the importance of the input variables. 
 
 The first step, certainly, then is to have some idea of what you want to be measuring:
 
