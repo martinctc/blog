@@ -74,6 +74,18 @@ III. **App building**: this is more debateable, but if I want to relatively quic
 
 **That's interesting - I'm with you! I personally love RMarkdown as well for the fact it ticks so many boxes - it's great for documentation, for producing professional business outputs, whilst at the same time great for reproducibility. In fact, all my blogs here are written using RMarkdown! Finally, I have two final questions regarding your EARL talk. What is the application process for EARL like for you, and have you got any tips for students who want to get into data science?**
 
+Precisely, absolutely agree with you on all those points. 
+
+Good question on the EARL application. You sound like someone analysing the effectiveness of their process! It was really easy, smooth and quick. Just one relatively short form where you fill in your details, an abstract/description of your talk, a bio of yourself and an accompanying picture. Mango Solutions who determine the speakers then have a read of your abstract and make a decision on that.
+
+Having spoken to Aimee Gott, she said that the key to a successful abstract is emphasising the business element to it. Thus, when I wrote my abstract, I asked myself the following questions:
+1. Is it clear that my talk tackled a business problem?
+2. How did I go about tackling the business problem?
+3. Were there things I did to ensure there were benefits to the business from my solution?
+
+On the second question about tips for students getting into data science, at the very least, it is key that they should have a very inquisitive mind, the ability to independently troubleshoot problems on the internet, and as a bonus, a bit of coding experience. This experience need not even be formal training. Quite often, most data scientists taught themselves how to code, and in actual fact, I think this demonstrates a lot of self drive which is positive!!
+
+**I like your point about self-teaching coding as an evidence of self-drive! I guess the other point to add to that is to self-initiate projects, and be sure to share them either on GitHub or just any code repository so you can demonstrate these attributes you just talked about, such as inquisitiveness and self-drive. Anyway, thanks for the great chat, lots of interesting stuff - and good luck with the talk! **
 
 ## Footnotes
 
