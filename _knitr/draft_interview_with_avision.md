@@ -85,7 +85,7 @@ Having spoken to Aimee Gott, she said that the key to a successful abstract is e
 
 On the second question about tips for students getting into data science, at the very least, it is key that they should have a very inquisitive mind, the ability to independently troubleshoot problems on the internet, and as a bonus, a bit of coding experience. This experience need not even be formal training. Quite often, most data scientists taught themselves how to code, and in actual fact, I think this demonstrates a lot of self drive which is positive!!
 
-**I like your point about self-teaching coding as an evidence of self-drive! I guess the other point to add to that is to self-initiate projects, and be sure to share them either on GitHub or just any code repository so you can demonstrate these attributes you just talked about, such as inquisitiveness and self-drive. Anyway, thanks for the great chat, lots of interesting stuff - and good luck with the talk! **
+**I like your point about self-teaching coding as an evidence of self-drive! I guess the other point to add to that is to self-initiate projects, and be sure to share them either on GitHub or just any code repository so you can demonstrate these attributes you just talked about, such as inquisitiveness and self-drive. Anyway, thanks for the great chat, lots of interesting stuff - and good luck with the talk!**
 
 ## Footnotes
 
