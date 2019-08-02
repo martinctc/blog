@@ -10,7 +10,7 @@ On this occasion, I've decided to have a conversation with a data scientist for 
 
 <img src="https://martinctc.github.io/blog/images/avision-profile.jpeg" alt="drawing" width="200"/>
 
-I've decided to have a conversation with Avision Ho, who's a data scientist and also a **tidyverse** enthusiast whom I've met at a R conference in London. Avision works as a data scientist at the UK Government's Department of Education, and has a background in Economics and Mathematics. Nowadays, Avision mainly spends his time creating robust data pipelines that feed the data from an external body's API into SQL databases; establish and implement strong data management and handling principles; and advising colleagues and clients on how to effectively use the data. If you wish to find out more about him, check out [his GitHub profile here](https://github.com/avisionh).
+I've decided to have a conversation with Avision Ho, who's a data scientist and also a **tidyverse** enthusiast whom I've met at a R conference in London. Avision works as a data scientist at the UK Government's Department of Education, and has a background in Economics and Mathematics. Nowadays, Avision mainly spends his time creating robust data pipelines that feed the data from an external body's API into SQL databases; establish and implement strong data management and governance principles; and advising colleagues and clients on how to effectively use the data. If you wish to find out more about him, check out [his GitHub profile here](https://github.com/avisionh).
 
 One reason why I thought it'd be interesting to speak with Avision is because he will be speaking at the [EARL Conference this upcoming September in London](https://earlconf.com/). From my own experience, speaking about a technical subject at a conference can be both intimidating and enjoyable, so in this interview I'm going to find out what he is talking about and what his experience of the process is like.
 
@@ -29,24 +29,25 @@ The EARL Conference is an annual conference on the *Enterprise Applications of t
 
 Certainly, the title of the talk is: "*Why a Nobel Prize algorithm is not always optimal for business*".
 
-The title of it was quite deliberate in ensuring that it was as click-bait-y as possible and in many respects, it focusses the mind on the actual issue that we face day-to-day as data scientists. Specifically, that a Nobel-Prize algorithm may be the most fastest and accurate solution to a problem, but when you have business constraints such as cost, computing power or even time, then sometimes, the best and optimal solution is one that's more low-tech but achieves a better balance in these constraints.
+The title of it was quite deliberate in ensuring that it was as click-bait-y as possible and in many respects, it focusses the mind on the actual issue that we face day-to-day as data scientists. Specifically, that a Nobel-Prize algorithm may be the most fastest and accurate solution to a problem, but when you have business constraints such as cost, computing power or even time, then sometimes the best and optimal solution is one that's more low-tech but achieves a better balance in these constraints.
 
 **Well I think a click-bait is perfectly acceptable when you're delivering a data science talk - most people do it. I'm actually slightly surprised you didn't try to slip a R pun in there! What inspired you to choose this subject to talk about?**
 
-Haha, I think there have already been many R puns used out there such that using one may lose its desired effect!
+Haha, I think there have already been many R puns used out there such that using one may here may lose its desired effect!
 
-Regarding inspiration, it was inspired by a recent project I volunteered for in helping to organise a conference.
-As part of the conference, my team's responsibility was to assign attendees to talks that are occurring simultaeously, given that the attendees have revealed preferences over which talks they want to attend. Breaking down the issue in this way enabled me to recognise that this must be an issue that was tackled before because it is quite a common one. Upon searching on the internet, lo and behold, I found research in the game theoretical discipline that did cover this problem.
+Regarding inspiration, it was came from a recent project I volunteered for in helping to organise a conference.
+
+As part of the conference, my team's responsibility was to assign attendees to talks that are occurring simultaneously, given that the attendees have revealed preferences over which talks they want to attend. Breaking down the issue in this way enabled me to recognise that this must be an issue that was tackled before because it is quite a common one. Upon searching the internet, lo and behold, I found research in game-theory that did cover this problem.
 
 Yet as I implemented it, I realised that there were two core issues with this initial solution:
 1. *Scalability* - the particular implementation that I was using would quickly slow down for larger datasets which wasn't an issue for the dataset I was using, but would be if it was applied to other ones.
-2. *Interpretability* - the algorithm I was using was theoretically sound and mathematically robust but it was difficult to explain and understand in a 30 second window, which was something important as I wanted to make the selection process as transparent as possible for attendees.
+2. *Interpretability* - the algorithm I was using was theoretically sound and mathematically robust but it was difficult to explain and understand, which was something important as I wanted to make the selection process as transparent as possible for attendees. *e.g. consider the scenario where you, as an organiser, is held at gunpoint by a disgruntled attendee who demanded to know how the selection process worked as they were unhappy at being assigned to their least-preferred talk. You have around 30 seconds to explain the selection process to a level that they a) understand, and b) appreciate such that they won't shoot you.
 
-This led me on a merry chase to build my own bespoke function/algorithm solved these two issues.
+This led me on a merry chase to build my own bespoke function/algorithm that solved these two issues.
 
-Whilst I make no claim to this solution being as theoretically sound nor mathematically robust as the initial solution (which did win the Nobel Prize), so sadly I am not expecting an invite to next year's ceremony; it did fit our business needs better.
+Whilst I make no claim to this solution being as theoretically-sound nor mathematically robust as the initial solution (which did win the Nobel Prize), so sadly I am not expecting an invite to next year's ceremony; it did fit our business needs better.
 
-Therefore, this talk was based off the experiences I had on this project. What I plan to cover in my talk also is turning a process that requires coding knowledge to a process which is knowledge-agnostic. By this I mean that I won't be volunteering for that conference next year nor at other time soon, so I will cover the second phase of it where I future-proofed what I did so that whoever takes over is able to use what I built, irrespective of whether they can code or not.
+Therefore, this talk was based off the experiences I had on this project. What I plan to cover in my talk also is turning a process that requires coding knowledge to a process which is knowledge-agnostic. By this I mean that I won't be volunteering for that conference next year nor at other time soon, so in the second phase of the talk, I will discuss how I future-proofed what I did so that whoever takes over is able to use what I built, irrespective of whether they can code or not.
 
 **Wow that sounds super fascinating. In danger of making you give the entire plot  of your talk away before you actually deliver it - I presume you implemented all of your solution in R? Was there a reason why you chose R to do this?**
 
@@ -60,7 +61,7 @@ Absolutely, I use the following tools for the specific purposes:
 
 1. SQL (SSMS specifically) - storing and manipulating data
 2. Visual Studio - building SSIS packages to import data into SQL
-3. R - analysis, sharing analysis, apps building
+3. R - analysis, sharing analysis, app building
 4. Git - version-control
 5. Python - analysis, sharing analysis to a technical audience, CRUD operations into MongoDB NoSQL database
 
@@ -76,14 +77,14 @@ III. **App building**: this is more debateable, but if I want to relatively quic
 
 Precisely, absolutely agree with you on all those points. 
 
-Good question on the EARL application. You sound like someone analysing the effectiveness of their process! It was really easy, smooth and quick. Just one relatively short form where you fill in your details, an abstract/description of your talk, a bio of yourself and an accompanying picture. Mango Solutions who determine the speakers then have a read of your abstract and make a decision on that.
+Good question on the EARL application. You sound like someone who is analysing the effectiveness of their process! It was really easy, smooth and quick. Just one relatively short form where you fill in your details, an abstract/description of your talk, a bio of yourself and an accompanying picture. Mango Solutions who determine the speakers then have a read of your abstract and make a decision on that.
 
 Having spoken to Aimee Gott, she said that the key to a successful abstract is emphasising the business element to it. Thus, when I wrote my abstract, I asked myself the following questions:
 1. Is it clear that my talk tackled a business problem?
 2. How did I go about tackling the business problem?
 3. Were there things I did to ensure there were benefits to the business from my solution?
 
-On the second question about tips for students getting into data science, at the very least, it is key that they should have a very inquisitive mind, the ability to independently troubleshoot problems on the internet, and as a bonus, a bit of coding experience. This experience need not even be formal training. Quite often, most data scientists taught themselves how to code, and in actual fact, I think this demonstrates a lot of self drive which is positive!!
+On the second question about tips for students getting into data science, at the very least, it is key that they should have a very inquisitive mind, the ability to independently troubleshoot problems on the internet, and as a bonus, a bit of coding experience. This experience need not even be formal training. Quite often, most data scientists teach themselves how to code, and in actual fact, I think this demonstrates a lot of self drive which is positive!!
 
 **I like your point about self-teaching coding as an evidence of self-drive! I guess the other point to add to that is to self-initiate projects, and be sure to share them either on GitHub or just any code repository so you can demonstrate these attributes you just talked about, such as inquisitiveness and self-drive. Anyway, thanks for the great chat, lots of interesting stuff - and good luck with the talk!**
 
