@@ -83,7 +83,7 @@ layout: post
 <p>Avision’s also spoken about his journey to become a Data Scientist from an Economics background. Check out this video interview here, on <em>Data Strategy with Jonathan</em>:</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/x5f6Z0TXdlQ" frameborder="0" allowfullscreen>
 </iframe>
-<p>If you’ve got some interesting thoughts or have a project that you’d like to talk about, please <a href="https://twitter.com/martin_rstats">don’t hesitate to get in touch</a>!</p>
+<p>If you’ve got some interesting thoughts or have a project that you’d like to talk about, please <a href="https://twitter.com/martin_rstats">don’t hesitate to get in touch!</a></p>
 </div>
 </div>
 </section>
