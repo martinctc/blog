@@ -14,14 +14,20 @@ library(tidyverse)
 ```
 
 ## Background
-This post will provide an introduction on how to perform a **Key Drivers Analysis** (KDA) in R. The term *Key Drivers Analysis* is more commonly used in the market research industry, and refers to a family of methods for measuring the importance of a set of input variables (or key drivers, predictors) in predicting an outcome variable. KDA is also known as *relative importance analysis*, which is what the R package [relaimpo](https://cran.r-project.org/web/packages/relaimpo/index.html) is named after. 
+This post will provide an introduction on how to perform a **Key Drivers Analysis** (KDA) in R. The term *Key Drivers Analysis* is more commonly used in the market research industry, and refers to a family of methods for measuring the importance of input variables (or key drivers, predictors, independent variables, however you'd like to call them) in predicting the outcome variable. KDA is also known as *relative importance analysis*, which is what the R package [relaimpo](https://cran.r-project.org/web/packages/relaimpo/index.html) is named after. 
 
 In this post, I will provide an overview of the two most common methods to perform a KDA:
 
-- **Lindeman, Merenda and Gold** (abbreviated *lmg*) / **Shapley value regression** - using the package [relaimpo](https://cran.r-project.org/web/packages/relaimpo/index.html)
-- **Relative Weights Analysis** - using a package I wrote called [rwa](https://github.com/martinctc/rwa), which is based off the work by [Tonidandel and LeBreton, 2015](https://link.springer.com/article/10.1007/s10869-014-9351-z)
+- **Lindeman, Merenda and Gold** (abbreviated *LMG*) / **Shapley value regression** - using the package [relaimpo](https://cran.r-project.org/web/packages/relaimpo/index.html)
 
-There are many variations of KDA, where similar outcomes can be achieved with say **dominance analysis** (See Budescu) or through estimating variable importance with a Random Forest model. 
+- **Relative Weights Analysis** - using a package I wrote called [rwa](https://github.com/martinctc/rwa), which is based off the work by [Tonidandel and LeBreton, 2015](https://link.springer.com/article/10.1007/s10869-014-9351-z). In the literature, this is often attributed to Johnson (2000)[^ref1] and sometimes referred to Johnson's Relative Weights Analysis.
+
+There are many variations of KDA, where some techniques go under a different name but are for most intents and purposes the same, e.g. _dominance analysis_[^ref2] is very similar to the LMG approach. Although the majority of KDA methods are based on linear regression, _random forests_ can also be used to calculate variable importance,[^ref3] but this is a subject for another post.
+
+```{r echo=FALSE, out.width = '50%', out.extra='style="float:right; padding:10px"'}
+knitr::include_graphics("https://martinctc.github.io/blog/images/blake-wisz-q3o_8MteFM0-unsplash.jpg")
+```
+
 
 ## Example: Growing your hex sticker business
 A typical use case in market research is to understand what “drives” **customer satisfaction**, where drivers may include:
@@ -136,3 +142,8 @@ Different methods of KDA deliver very similar results on strong relationships, b
 
 [^1]: KDA is typically applied to survey data, but there can certainly be alternative use cases. See [this tutorial](https://cran.r-project.org/web/packages/dominanceanalysis/vignettes/da-logistic-regression.html) by Filipa Coutinho Soares (2019) which uses dominance analysis (using `dominanceanalysis`) with a binomial logistic regression to identify the most important environmental variables for predicting the presence of tropical birds.
 
+[^ref1]: Johnson, J.W. (2000). "A heuristic method for estimating the relative weight of predictor variables in multiple regression". _Multivariate Behavioral Research_, 35, 1-19.
+
+[^ref2]: Budescu, D. V. (1993). Dominance analysis: a new approach to the problem of relative importance of predictors in multiple regression. _Psychological bulletin_, 114(3), 542.
+
+[^ref3]: Grömping, U. (2009). Variable importance assessment in regression: linear regression versus random forest. _The American Statistician_, 63(4), 308-319.
