@@ -25,7 +25,7 @@ In this post, I will provide an overview of the two most common methods to perfo
 There are many variations of KDA, where some techniques go under a different name but are for most intents and purposes the same, e.g. _dominance analysis_[^ref2] is very similar to the LMG approach. Although the majority of KDA methods are based on linear regression, _random forests_ can also be used to calculate variable importance,[^ref3] but this is a subject for another post.
 
 ```{r echo=FALSE, out.width = '50%', out.extra='style="float:right; padding:10px"'}
-knitr::include_graphics("https://martinctc.github.io/blog/images/blake-wisz-q3o_8MteFM0-unsplash.jpg")
+knitr::include_graphics("https://martinctc.github.io/blog/images/street-3230554_1280.jpg")
 ```
 
 
