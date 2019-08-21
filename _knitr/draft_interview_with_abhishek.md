@@ -1,8 +1,16 @@
-## Data Chats: From Physics student to Data Scientist
+## Data Chats: From Physics student to Analytics Consultant
 
 ## Introduction
 
+How do you begin a career in analytics and data science? How do you get into R? 
+
+I have the pleasure of speaking with Abhishek Modi this week, to find out about his journey from a Physics student to an Analytics Consultant at Deloitte. 
+
 ### About Abhishek
+
+[INSERT SHORT BIO]
+
+Abhishek is a Consultant at Deloitte, based in Bangalore, India. 
 
 ## Interview with Abhishek Modi
 
@@ -18,3 +26,9 @@ I started learning with the traditional approach first and then started with wit
 While with tidyverse output, I imagine what each verb does to the dataset and then how to process the chain of sequence using the pipe operator.
 
 Learning R has been fun for me since I can obtain the same outcome using multiple ways!
+
+**That’s super interesting, and chimes very well with my own experience with learning R, i.e. starting with base, then discovering tidyverse, and then learning data.table for tasks that are more performance-demanding.**
+
+**I always find it very interesting how people use R in very different ways. I personally started using R for its text mining capabilities, and I know some people for web-scraping. What do you use R for on the day to day? What packages do you use, apart from the obvious ones (tidyverse)?**
+
+In my day to day life, I use R for everything starting from data cleaning, visualization, data wrangling, and to create models! I use ggplot2, caret, ts (for timeseries) apart from the usual ones.
