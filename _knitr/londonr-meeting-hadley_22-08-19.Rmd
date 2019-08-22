@@ -15,7 +15,7 @@ library(tidyverse)
 
 ## Meeting Hadley! 
 
-```{r hadley-dplyr, echo=FALSE, out.width = '50%', out.extra='style="float:right; padding:10px"'}
+```{r hadley-dplyr, echo=FALSE, out.width = '100%', out.extra='style="float:right; padding:10px"'}
 knitr::include_graphics("https://martinctc.github.io/blog/images/IMG_8041.jpg")
 ```
 
@@ -27,7 +27,7 @@ In this post, I’m going to briefly `summarize()` (sorry `r emo::ji("laughing")
 
 ## Tidyverse: the greatest hits
 
-```{r tidyverse, echo=FALSE, out.width = '100%', out.extra='style="float:right; padding:10px"'}
+```{r tidyverse, echo=FALSE, out.width = '100%', out.extra='style="float:left; padding:10px"'}
 knitr::include_graphics("https://martinctc.github.io/blog/images/IMG_8039.jpg")
 ```
 
@@ -35,24 +35,31 @@ This was perhaps the busiest LondonR sessions I’ve ever been to, but understan
 
 Interestingly, this turned out to be one of those attention-catching titles - what Hadley really planned to talk about was the greatest _mistakes_ of the tidyverse. As he claims, whilst the intuitive expectation of good developers and R coders may be that they make fewer mistakes, it’s more the case for him that he makes _many_ mistakes _as fast as possible_ - which, I imagine, is partly responsible for his prolific body of work in R. Unfortunately, some of these "mistakes" have become "permanent" within tidyverse, which in his talk he explained the certain things some of us R users have questioned when using **tidyverse** packages.
 
-```{r masking, echo=FALSE, out.width = '100%', out.extra='style="float:left; padding:10px"'}
-knitr::include_graphics("https://martinctc.github.io/blog/images/masking-filter-lag.PNG")
-```
-
 Hadley mentioned a number of these "permanent mistakes", and probably two of those which tidyverse users resonated the most with are:
 
 1. the conflicting function names with `stats::filter()` and `stats::lag()`
 2. the use of the `+` operator rather than `%>%` in **ggplot2**
 
-In the first case, it is the classic programming "problem" of naming variables / functions. You may think a variable name is intuitive or sensible initially, but not thinking it through can sometimes come back and bite you in the future. Hadley's argument for choosing `filter()` as the dplyr verb for filtering rows despite the existence of `stats::filter()` is because of the relatively niche applications of the latter function. The documentation of `stats::filter()` goes:
+```{r masking, echo=FALSE, out.width = '100%', out.extra='style="float:left; padding:10px"'}
+knitr::include_graphics("https://martinctc.github.io/blog/images/masking-filter-lag.PNG")
+```
 
-> Applies linear filtering to a univariate time series or to each series separately of a multivariate time series.
 
-I've never used `stats::filter()` myself and personally find `filter()` to be quite an intuitive verb, so I'm not too much bothered by this one. Another similar function-naming "mistake" that Hadley talked about is the lack of intuitiveness of `gather()` and `spread()`, where it isn't immediately clear to an unfamiliar **tidyr** user which of those functions converts data from long to wide format, and vice versa. Unlike `dplyr::filter()` where there are no plans for a new filtering / subsetting function, in the developmental version of **tidyr** [there will be two new functions for pivoting data frames](https://www.r-bloggers.com/pivoting-data-frames-just-got-easier-thanks-to-pivot_wide-and-pivot_long/), `pivot_wide()` and `pivot_long()`, which remove the ambiguity you get in `spread()` and `gather()`. Note that there isn't any intent to deprecate `spread()` and `gather()`, but I think you simply get two new alternatives which make code easier to read and use.
+In the first case, I suppose most of us who use **tidyverse** on a regular basis have wondered at at least on one occasion whether we can get rid of the function conflict when we run `library(tidyverse)`. It is the classic programming "problem" of naming variables / functions: you may think a variable name is intuitive or sensible initially, but not thinking it through thoroughly enough can sometimes come back and bite you in the future. 
+
+Hadley's argument for choosing `filter()` as the dplyr verb for filtering rows despite the existence of `stats::filter()` is because of the relatively niche applications of the latter function. 
+
+The documentation of `stats::filter()` goes:
+
+> [filter()] ...applies linear filtering to a univariate time series or to each series separately of a multivariate time series.
+
+I've never used `stats::filter()` myself and personally find `filter()` to be quite an intuitive verb, so I'm not too much bothered by this one. 
+
+Another similar function-naming "mistake" that Hadley talked about is the lack of intuitiveness of `gather()` and `spread()`, where it isn't immediately clear to an unfamiliar **tidyr** user which of those functions converts data from long to wide format, and vice versa. Unlike `dplyr::filter()` where there are no plans for a new filtering / subsetting function, in the developmental version of **tidyr** [there will be two new functions for pivoting data frames](https://www.r-bloggers.com/pivoting-data-frames-just-got-easier-thanks-to-pivot_wide-and-pivot_long/), `pivot_wide()` and `pivot_long()`, which remove the ambiguity you get in `spread()` and `gather()`. Note that there isn't any intent to deprecate `spread()` and `gather()`, but I think you simply get two new alternatives which make the code easier to read and use.
 
 The other interesting mistake that Hadley talked about is the `+` operator in **ggplot2**. To put it simply, this refers to the problem that whilst the rest of the **tidyverse** uses the pipe operator `%>%` to chain analysis steps together, **ggplot2** alone uses a different operator. Here's a simple illustration of the problem:
 
-```{r message=TRUE, warning=TRUE, results="hide"}
+```{r echo = TRUE, results = 'hide'}
 iris %>% # You can pipe
   select(Species, Sepal.Length, Sepal.Width) %>% # Still piping
   ggplot(aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) + # You cannot use pipe here
@@ -65,7 +72,8 @@ If you do not use the `+` operator once you start to use the ggplot arguments, y
 
 This is very much a mistake of _legacy_, because the magrittr pipe `%>%` was not in use when **ggplot2** was written. Again, this feels like a quirk or inconvenience that **tidyverse** users will need to live with, but from a macro perspective **ggplot2** is still a fantastic package with powerful functionality that played a significant role in popularising the use of R.
 
-Hannah Frick from Mango Solutions lists a couple more "mistakes" that Hadley mentioned during his talk:
+Hannah Frick lists a couple more points that Hadley mentioned during his talk:
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">The greatest tidyverse mistakes:<br>💥 no pipe in ggplot2<br>💥 overwriting filter and lag<br>💥 using the . in arg names<br>💥 tidyeval pushed too early<br>💥 tidyverse as a name made some people think it&#39;s meant to be used in isolation - nah, use it with whatever in <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> is useful for you!</p>&mdash; Hannah Frick (@hfcfrick) <a href="https://twitter.com/hfcfrick/status/1163519190067793928?ref_src=twsrc%5Etfw">August 19, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
