@@ -59,7 +59,7 @@ Another similar function-naming "mistake" that Hadley talked about is the lack o
 
 The other interesting mistake that Hadley talked about is the `+` operator in **ggplot2**. To put it simply, this refers to the problem that whilst the rest of the **tidyverse** uses the pipe operator `%>%` to chain analysis steps together, **ggplot2** alone uses a different operator. Here's a simple illustration of the problem:
 
-```{r echo = TRUE, results = 'hide'}
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results = 'hide'}
 iris %>% # You can pipe
   select(Species, Sepal.Length, Sepal.Width) %>% # Still piping
   ggplot(aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) + # You cannot use pipe here
@@ -76,4 +76,14 @@ Hannah Frick lists a couple more points that Hadley mentioned during his talk:
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">The greatest tidyverse mistakes:<br>💥 no pipe in ggplot2<br>💥 overwriting filter and lag<br>💥 using the . in arg names<br>💥 tidyeval pushed too early<br>💥 tidyverse as a name made some people think it&#39;s meant to be used in isolation - nah, use it with whatever in <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> is useful for you!</p>&mdash; Hannah Frick (@hfcfrick) <a href="https://twitter.com/hfcfrick/status/1163519190067793928?ref_src=twsrc%5Etfw">August 19, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
+## Conclusions
+
+Ultimately, what Hadley wanted to get across for talking about the "mistakes of tidyverse" is perhaps this slide:
+```{r hadley-conclusion, echo=FALSE, out.width = '100%', out.extra='style="float:right; padding:10px"'}
+
+knitr::include_graphics("https://martinctc.github.io/blog/images/IMG_8040.jpg")
+
+```
+
+> "The cost of never making a mistake is very often never making a change. It's just too incredibly hard to be sure." - GeePaw Hill
 
