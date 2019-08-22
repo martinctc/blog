@@ -31,4 +31,13 @@ Learning R has been fun for me since I can obtain the same outcome using multipl
 
 **I always find it very interesting how people use R in very different ways. I personally started using R for its text mining capabilities, and I know some people for web-scraping. What do you use R for on the day to day? What packages do you use, apart from the obvious ones (tidyverse)?**
 
+So true. data.table is so performance savvy.
+
 In my day to day life, I use R for everything starting from data cleaning, visualization, data wrangling, and to create models! I use ggplot2, caret, ts (for timeseries) apart from the usual ones.
+
+**One thing that people talk a lot about is whether languages like R and Python displace “traditional” tools like Excel. What’s your take on that?**
+
+That's a great question. I was working on a project where we were using Excel for data cleaning processes like removing spaces between words, replacing empty cells with 0 and so on.  Not just for 1 file but were doing this for around 20 such files and the time it would take for such a task would be around for each file to just replace the blank value with 0.  It would mainly depend on the number of rows and columns but we had to spare 2-3 days for this task alone every month. At that time I was learning R and decided to use it to do these simple tasks. Though it took me some time for me to code and then to debug the code I am glad I did it. It is still being used by the team and have saved many hours.
+
+However, I don't believe that R and Python can displace Excel in general field. In data science, it may. In general, Business stakeholders who have minimal understanding of programming love spreadsheets and it will be very difficult for R to displace that.
+
