@@ -1,0 +1,30 @@
+---
+title: "Hadley Wickham at LondonR "
+author: "Martin Chan"
+date: "August 22, 2019"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+# prettyjekyll::FormatPost("_knitr/londonr-meeting-hadley_22-08-19.Rmd")
+```
+
+## Meeting Hadley! 
+
+Last Monday, I had the pleasure of attending a talk by [Hadley Wickham](http://hadley.nz/) at [LondonR](https://www.londonr.org/), held at their usual venue at the UCL Darwin Lecture Theatre.
+
+For most readers of this blog, Hadley needs no introduction; the running joke amongst R users that if **tidyverse** hadn’t been rebranded it would’ve been known as formerly as the *hadleyverse* says it all. I had really looked forward to this event, as it’s always an interesting experience to meet in real life these people you seem to know so well or have heard so much about *virtually* (another occasion I could recall was Hilary Parker's keynote address at EARL, which I know her through her and Roger Peng's podcast [Not So Standard Deviations](http://nssdeviations.com/)).
+
+In this post, I’m going to briefly `summarize()` (sorry, couldn't resist) what Hadley covered in his talk, and some of my thoughts on what he said. (potential spoiler alert?)
+
+## Tidyverse: the greatest hits
+
+This was perhaps the busiest LondonR sessions I’ve ever been to, but understandably so! The lecture hall usually has a fair number of free seats left, but on this occasion late-comers struggled to find free seats. Speaking to others around me, nobody seemed to know what Hadley’s talk was going to be about. Apparently this is Hadley’s new talk - titled _Tidyverse: the greatest hits_.
+
+But this turned out to be one of those attention-catching titles - what Hadley really wanted to talk about was the greatest _mistakes_ of the Tidyverse. As he claims, whilst the intuitive expectation of good developers and R coders may be that they make fewer mistakes, it’s more the case for him that he makes _many_ mistakes _as fast as possible_, which I imagine is partly responsible for his prolific body of R work. Unfortunately, some of these “mistakes” have become “permanent” within tidyverse, which in his talk he’ll explain the certain things us R users will question and don’t understand when using tidyverse packages.
+
+
