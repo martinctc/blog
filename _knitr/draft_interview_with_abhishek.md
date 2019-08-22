@@ -2,9 +2,9 @@
 
 ## Introduction
 
-How do you begin a career in analytics and data science? How do you get into R? 
+How do you begin a career in analytics and data science? How do you learn R? 
 
-I have the pleasure of speaking with Abhishek Modi this week, to find out about his journey from a Physics student to an Analytics Consultant at Deloitte. 
+These are interesting questions that everyone has different answers to. This week, I have the pleasure of speaking with Abhishek Modi, to find out about his journey from a Physics student to an Analytics Consultant at Deloitte. 
 
 ### About Abhishek
 
@@ -43,5 +43,8 @@ However, I don't believe that R and Python can displace Excel in general field. 
 
 ##### I'm inclined to agree with you. People talk a lot about Excel being "dead", but actually if you think about it, there are many uses for Excel which isn't straightforward data analysis. For instance, data entry, ad-hoc cost estimations where you need to "play around" with combinations, creating dashboards which are fully portable and which you can run anywhere and send via email, etc. This portability thing is quite important, because in the real world things like IT restrictions or internet access can be a real barrier to socialising an interactive dashboard output like Shiny. Moreover, I think Excel will still be popular because it's neither realistic nor efficient to expect stakeholders to be able to read code or to run code on their own. 
 
-##### I love your example about using R for its automation value. My own personal motivation for learning to code was actually to automate tedious and repetitive tasks, which was why I started off learning Excel VBA. That was before I discovered R of course! I now even use R for PowerPoint automation, using packages such as David Gohel's mschart and officer, just to save myself the pain from and the potential errors that arise from creating loads and loads and loads of PowerPoint slides. I've heard that nowadays you can use RMarkdown to generate PowerPoint slides, but I haven't quite looked into this yet.
+##### I also love your example about using R for its automation value. My own personal motivation for learning to code was actually to automate tedious and repetitive tasks, which was why I started off learning Excel VBA. That was before I discovered R of course! I now even use R for PowerPoint automation, using packages such as David Gohel's mschart and officer, just to save myself the pain from and the potential errors that arise from creating loads and loads and loads of PowerPoint slides. I've heard that nowadays you can use RMarkdown to generate PowerPoint slides, but I haven't quite looked into this yet.
 
+### End Notes
+
+I'll be doing more of these 'Data Chats' in the future. If you'd like to share your experience or an interesting project that you're working on, please leave me a message below! 
