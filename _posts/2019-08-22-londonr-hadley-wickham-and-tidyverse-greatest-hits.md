@@ -1,132 +1,10 @@
-<!DOCTYPE html>
+---
+title: "LondonR: Hadley Wickham & tidyverse's greatest hits "
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<meta name="author" content="Martin Chan" />
-
-<meta name="date" content="2019-08-22" />
-
-<title>LondonR: Hadley Wickham and tidyverse’s greatest hits</title>
-
-
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
-</style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
-</script>
-
-
-
-<link rel="stylesheet" href="londonr-meeting-hadley_22-08-19_files/style.css" type="text/css" />
-
-
-
-
-
-</head>
-
-<body>
-
-
-
-
-<section class="page-header">
-<h1 class="title toc-ignore project-name">LondonR: Hadley Wickham and tidyverse’s greatest hits</h1>
-<h4 class="author project-author">Martin Chan</h4>
-<h4 class="date project-date">August 22, 2019</h4>
-</section>
-
+author: "Martin Chan"
+date: "August 22, 2019"
+layout: post
+---
 
 
 <section class="main-content">
@@ -134,7 +12,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Meeting Hadley!</h2>
 <p><img src="https://martinctc.github.io/blog/images/IMG_8041.jpg" width="100%" style="float:right; padding:10px" /></p>
 <p>Last Monday, I had the pleasure of attending a talk given by <a href="http://hadley.nz/">Hadley Wickham</a> at <a href="https://www.londonr.org/">LondonR</a>, which was held at one of their usual venues at the UCL Darwin Lecture Theatre.</p>
-<p>For most readers of this blog, Hadley needs no introduction: it is a running joke amongst R users that if <strong>tidyverse</strong> hadn’t been rebranded, it would’ve been known as the <em>hadleyverse</em> - and this says it all. If it weren’t for his contributions to all these packages (<strong>tidyr</strong>, <strong>dplyr</strong>, and <strong>gplot2</strong> - to name a few), I probably wouldn’t even be using R today.</p>
+<p>For most readers of this blog, Hadley needs no introduction: it is a running joke amongst R users that if <strong>tidyverse</strong> hadn’t been rebranded, it would’ve been known as the <em>hadleyverse</em> - and this pretty much says it all. If it weren’t for his contributions to all these packages (<strong>tidyr</strong>, <strong>dplyr</strong>, and <strong>gplot2</strong> - to name a few), I probably wouldn’t even be using R today.</p>
 <p>I had really looked forward to this event, as it’s always an interesting experience to meet in real life these people you seem to know so well or have heard so much about <em>virtually</em>. Another occasion I could recall was Hilary Parker’s keynote address at EARL, which I know her through her brilliant data science podcast (co-hosted with Roger Peng), <a href="http://nssdeviations.com/">Not So Standard Deviations</a>. Do check it out - I highly recommend it.</p>
 <p>In this post, I’m going to briefly <code>summarize()</code> (sorry 😆) what Hadley covered in his talk, and some of my thoughts on his points.</p>
 </div>
@@ -159,11 +37,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>I’ve never used <code>stats::filter()</code> myself and personally find <code>filter()</code> to be quite an intuitive verb, so I’m not too much bothered by this one.</p>
 <p>Another similar function-naming “mistake” that Hadley talked about is the lack of intuitiveness of <code>gather()</code> and <code>spread()</code>, where the criticism is that it isn’t immediately clear to an unfamiliar <strong>tidyr</strong> user which of those functions converts data from long to wide format, and vice versa. Unlike <code>dplyr::filter()</code> where there are no plans for a new filtering or subsetting function, in the development version of <strong>tidyr</strong> <a href="https://www.r-bloggers.com/pivoting-data-frames-just-got-easier-thanks-to-pivot_wide-and-pivot_long/">there will be two new functions for pivoting data frames</a>, <code>pivot_wide()</code> and <code>pivot_long()</code>, which remove the ambiguity you get in <code>spread()</code> and <code>gather()</code>. Note that there isn’t any intent to deprecate <code>spread()</code> and <code>gather()</code>, but I think you simply get two new alternatives which make the code easier to read and use.</p>
 <p>The other interesting mistake that Hadley talked about is the <code>+</code> operator in <strong>ggplot2</strong>. To put it simply, this refers to the problem that whilst the rest of the <strong>tidyverse</strong> uses the pipe operator <code>%&gt;%</code> to chain analysis steps together, <strong>ggplot2</strong> alone uses a different operator. Here’s a simple illustration of the problem:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">iris <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># You can pipe</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="st">  </span><span class="kw">select</span>(Species, Sepal.Length, Sepal.Width) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Still piping</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Sepal.Length, <span class="dt">y =</span> Sepal.Width, <span class="dt">colour =</span> Species)) <span class="op">+</span><span class="st"> </span><span class="co"># You cannot use pipe here</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>()</a></code></pre></div>
-<p><img src="londonr-meeting-hadley_22-08-19_files/figure-html/unnamed-chunk-2-1.png" /><!-- --></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># You can pipe</span>
+<span class="st">  </span><span class="kw">select</span>(Species, Sepal.Length, Sepal.Width) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Still piping </span>  
+  <span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Sepal.Length, <span class="dt">y =</span> Sepal.Width, <span class="dt">colour =</span> Species)) <span class="op">+</span><span class="st"> </span><span class="co"># You cannot use pipe here</span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="{{ site.url }}{{ site.baseurl }}/knitr_files/londonr-meeting-hadley_22-08-19_files/figure-html/unnamed-chunk-2-1.png" /><!-- --></p>
 <p>If you use the <code>%&gt;%</code> operator instead of <code>+</code> once you start to use the ggplot functions, you get the following error message:</p>
 <blockquote>
 <p>Error: <code>mapping</code> must be created by <code>aes()</code> Did you use %&gt;% instead of +?</p>
@@ -193,18 +71,3 @@ The greatest tidyverse mistakes:<br>💥 no pipe in ggplot2<br>💥 overwriting 
 <p>This was a great LondonR session, even though the content was much more about programming than data science. A big thank you to Hadley Wickham and the Mango Solutions team for organising this!</p>
 </div>
 </section>
-
-
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
-
-</body>
-</html>
