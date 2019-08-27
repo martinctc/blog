@@ -45,6 +45,12 @@ However, I don't believe that R and Python can displace Excel in general field. 
 
 ##### I also love your example about using R for its automation value. My own personal motivation for learning to code was actually to automate tedious and repetitive tasks, which was why I started off learning Excel VBA. That was before I discovered R of course! I now even use R for PowerPoint automation, using packages such as David Gohel's mschart and officer, just to save myself the pain from and the potential errors that arise from creating loads and loads and loads of PowerPoint slides. I've heard that nowadays you can use RMarkdown to generate PowerPoint slides, but I haven't quite looked into this yet.
 
+I love how R is evolving year over year and things are getting simplified. Recently I was watching a presentation from Joe Cheng (CTO at RStudio) where he talks about his work about Plot Caching in RShiny App. It is good to know that there is an entire community who is working to make things better than they are today
+
+##### I guess the other thing that I'm quite interested in finding out about is the R community in which you're based. In London, we have these regular R user meet-ups and conferences, and in general the community is very diverse and welcoming. What is it like in Bangalore? Do you have many meet ups locally, or do you usually get information about these things online?
+
+Though there are many meetups happening in Bangalore. I believe they are great places to learn from each other but unfortunately I haven't been able to participate in such meetups. And hence my knowledge I get is from r-bloggers which I have subscribed to get daily dose of knowledge.
+
 ### End Notes
 
 I'll be doing more of these 'Data Chats' in the future. If you'd like to share your experience or an interesting project that you're working on, please leave me a message below! 
