@@ -51,6 +51,12 @@ I love how R is evolving year over year and things are getting simplified. Recen
 
 Though there are many meetups happening in Bangalore. I believe they are great places to learn from each other but unfortunately I haven't been able to participate in such meetups. And hence my knowledge I get is from r-bloggers which I have subscribed to get daily dose of knowledge.
 
+#### Ah, that I can empathise - I've learnt so much from reading user contributions on r-bloggers myself. Thank you for the really interesting and informative chat, Abhishek. Finally, to wrap things up - have you got any personal tips or advice on learning R or data science for new-comers hoping to enter the industry?
+
+My advice to the people starting is out is to start using R in practical application and not just limited to courses. Once you start using R, the entire R community will be there to help you out!
+
+#### Awesome, I totally agree. Thanks again Abhishek for sharing your experience and insights, I really enjoyed this chat!
+
 ### End Notes
 
 I'll be doing more of these 'Data Chats' in the future. If you'd like to share your experience or an interesting project that you're working on, please leave me a message below! 
