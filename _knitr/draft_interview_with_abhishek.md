@@ -37,6 +37,7 @@ In my day to day life, I use R for everything starting from data cleaning, visua
 
 <img src="https://martinctc.github.io/blog/images/Rlogo.png" alt="drawing" width="200"/>
 <img src="https://martinctc.github.io/blog/images/python.png" alt="drawing" width="200"/>
+<img src="https://martinctc.github.io/blog/images/MSExcel.png" alt="drawing" width="200"/>
 
 ##### One thing that people talk a lot about is whether languages like R and Python displace “traditional” tools like Excel. What’s your take on that?
 
