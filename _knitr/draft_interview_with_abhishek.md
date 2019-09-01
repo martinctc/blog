@@ -35,9 +35,9 @@ So true. data.table is so performance savvy.
 
 In my day to day life, I use R for everything starting from data cleaning, visualization, data wrangling, and to create models! I use ggplot2, caret, ts (for timeseries) apart from the usual ones.
 
-<img src="https://martinctc.github.io/blog/images/Rlogo.png" alt="drawing" width="200"/>
-<img src="https://martinctc.github.io/blog/images/python.png" alt="drawing" width="200"/>
-<img src="https://martinctc.github.io/blog/images/MSExcel.png" alt="drawing" width="200"/>
+<img src="https://martinctc.github.io/blog/images/Rlogo.png" alt="drawing" width="30%" style="float:left"/>
+<img src="https://martinctc.github.io/blog/images/python.png" alt="drawing" width="30%" style="float:left"/>
+<img src="https://martinctc.github.io/blog/images/MSExcel.png" alt="drawing" width="30%" style="float:left"/>
 
 ##### One thing that people talk a lot about is whether languages like R and Python displace “traditional” tools like Excel. What’s your take on that?
 
