@@ -8,9 +8,7 @@ These are interesting questions that everyone has different answers to. This wee
 
 ### About Abhishek
 
-[INSERT SHORT BIO]
-
-Abhishek is a Consultant at Deloitte, based in Bangalore, India. 
+Abhishek is a Data Science consultant for Deloitte and has experience in this domain of 4 years. He decided to go in this direction after graduating from National Institute of Technology, Surat with a master degree in Physics. Abhishek has worked with Fortune 100 companies to help their IT, Sales, and Marketing teams with data-driven decision using advanced analytics.
 
 ## Interview with Abhishek Modi
 
@@ -19,6 +17,8 @@ Abhishek is a Consultant at Deloitte, based in Bangalore, India.
 I did Bachelors and Masters in Physics where my interest was in the design of particle accelerators and even my master thesis was on the same! During the dissertation period, I explored a lot of fields within and outside Physics. During this time, I came across FiveThreeEight and was surprised at how accurate predictions were made in 2008 US elections. This led to my desire to interview for data analytics companies at an entry level and soon I got an offer from one.
 
 Now after 4 years, I am working as a Consultant for Deloitte in their Analytics and Cognitive team based in Bangalore, India. My toolbox containts R, SQL, and Excel for 99% of the tasks.
+
+<img src="https://martinctc.github.io/blog/images/Rlogo.png" alt="drawing" width="30%" style="float:left"/>
 
 ##### That’s interesting, especially that you were motivated by an application of analytics in politics, as opposed to physics! Tell me about when you were first introduced to R - did you come across this during your degree? Did you have any prior background in programming?
 
@@ -31,15 +31,13 @@ Learning R has been fun for me since I can obtain the same outcome using multipl
 
 ##### I always find it very interesting how people use R in very different ways. I personally started using R for its text mining capabilities, and I know some people for web-scraping. What do you use R for on the day to day? What packages do you use, apart from the obvious ones (tidyverse)?
 
-So true. data.table is so performance savvy.
+So true. **data.table** is so performance savvy.
 
-In my day to day life, I use R for everything starting from data cleaning, visualization, data wrangling, and to create models! I use ggplot2, caret, ts (for timeseries) apart from the usual ones.
+In my day to day life, I use R for everything starting from data cleaning, visualization, data wrangling, and to create models! I use **ggplot2**, **caret**, **ts** (for timeseries) apart from the usual ones.
 
-<img src="https://martinctc.github.io/blog/images/Rlogo.png" alt="drawing" width="30%" style="float:left"/>
-<img src="https://martinctc.github.io/blog/images/python.png" alt="drawing" width="30%" style="float:left"/>
 <img src="https://martinctc.github.io/blog/images/MSExcel.png" alt="drawing" width="30%" style="float:left"/>
 
-##### One thing that people talk a lot about is whether languages like R and Python displace “traditional” tools like Excel. What’s your take on that?
+##### One thing that people talk a lot about is whether languages like R and Python displace “traditional” tools like Excel. What’s your take on this subject?
 
 That's a great question. I was working on a project where we were using Excel for data cleaning processes like removing spaces between words, replacing empty cells with 0 and so on.  Not just for 1 file but were doing this for around 20 such files and the time it would take for such a task would be around for each file to just replace the blank value with 0.  It would mainly depend on the number of rows and columns but we had to spare 2-3 days for this task alone every month. At that time I was learning R and decided to use it to do these simple tasks. Though it took me some time for me to code and then to debug the code I am glad I did it. It is still being used by the team and have saved many hours.
 
