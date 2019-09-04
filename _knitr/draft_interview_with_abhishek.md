@@ -63,4 +63,6 @@ My advice to the people starting is out is to start using R in practical applica
 
 ### End Notes
 
-I'll be doing more of these 'Data Chats' in the future. If you'd like to share your experience or an interesting project that you're working on, please leave me a message below! 
+If you enjoyed this post, you might also like [this other post in my "Data Chats" series](https://martinctc.github.io/blog/data-chats-an-interview-with-avision-ho/), where I speak with Avision Ho, who works as a Senior Data Scientist in the UK Government. 
+
+There will be more of these "Data Chats" coming in the future. If you'd like to share your experience or an interesting project that you're working on, I would definitely love to hear from you - in which case please leave me a message below! 
