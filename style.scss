@@ -19,19 +19,19 @@ html {
 
 body {
 	background: $darkGray;
-  font: 18px/1.4 $helvetica;
+  font: 18px/1.4 $trebuchet;
   color: $white;
 }
 
 .container {
   margin: 0 auto;
-  max-width: 740px;
+  max-width: 900px;
   padding: 0 10px;
   width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $helveticaNeue;
+  font-family: $trebuchet;
   color: $white;
   font-weight: bold;
 
@@ -198,7 +198,7 @@ img {
   margin: 0;
   color: #D3D3D3;
   cursor: pointer;
-  font-family: $helveticaNeue;
+  font-family: $trebuchet;
   font-weight: 300;
   font-size: 28px;
   letter-spacing: 1px;
