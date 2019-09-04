@@ -1,4 +1,4 @@
-## Data Chats: From Physics student to Analytics Consultant
+## Data Chats: From Physics student to Data Science Consultant
 
 ## Introduction
 
