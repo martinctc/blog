@@ -8,9 +8,11 @@ These are interesting questions that everyone has different answers to. This wee
 
 ### About Abhishek
 
-Abhishek is a Data Science consultant for Deloitte and has experience in this domain of 4 years. He decided to go in this direction after graduating from National Institute of Technology, Surat with a master degree in Physics. Abhishek has worked with Fortune 100 companies to help their IT, Sales, and Marketing teams with data-driven decision using advanced analytics.
+Abhishek is a Data Science consultant for Deloitte and has experience in this domain of 4 years. He decided to go in this direction after graduating from National Institute of Technology, Surat with a master degree in Physics. Abhishek has worked with Fortune 100 companies to help their IT, Sales, and Marketing teams with data-driven decision using advanced analytics. If you'd like to get in touch with him, [feel free to message!](https://www.linkedin.com/in/atmodi/)
 
 ## Interview with Abhishek Modi
+
+<img src="https://martinctc.github.io/blog/images/abhishek.jpeg" alt="drawing" style="float:left"/>
 
 ##### To start, could you tell me a bit about what you currently do, and what is your background?
 
