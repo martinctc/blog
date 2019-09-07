@@ -4,6 +4,7 @@ title: "A Short R Package Review: RQDA"
 author: "Martin Chan"
 date: "April 19, 2019"
 layout: post
+tags: package-reviews
 ---
 
 

@@ -4,6 +4,7 @@ title: "Vignette: Scraping Amazon Reviews in R"
 author: "Martin Chan"
 date: "May 16, 2019"
 layout: post
+tags: vignettes
 ---
 
 <section class="main-content">

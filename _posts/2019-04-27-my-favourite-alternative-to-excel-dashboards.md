@@ -4,6 +4,7 @@ title: "My favourite alternative to Excel dashboards"
 author: "Martin Chan"
 date: "April 27, 2019"
 layout: post
+tags: excel
 ---
 
 

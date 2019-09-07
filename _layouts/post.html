@@ -13,12 +13,12 @@ layout: default
 	<i class='fa fa-clock-o'></i> {% include readtime3.html content=content %}
   </div>
    
-  <div class ="tags">[
+  <div class ="tags">
   {% for tag in page.tags %}
     {% capture tag_name %}{{ tag }}{% endcapture %}
-    <a href="/tag/{{ tag_name }}">{{ tag_name }}</code>&nbsp;</a>
+    <i class='fa fa-tag'></i>&nbsp;<a href="{{ site.baseurl }}/tag/{{ tag_name }}">{{ tag_name }}</code>&nbsp;</a>
   {% endfor %}
-]</div>  
+ </div>  
 
   <hr>
   
@@ -27,6 +27,6 @@ layout: default
   <div class="entry">
     {{ content }}
   </div>
-
+  {% include tag-cloud.html %}
   {% include disqus.html %}  
 </article>

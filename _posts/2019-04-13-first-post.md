@@ -4,6 +4,7 @@ title: "First Post"
 author: "Martin Chan"
 date: "April 13, 2019"
 layout: post
+tags: learning-r
 ---
 
 

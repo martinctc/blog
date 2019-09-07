@@ -4,7 +4,7 @@ title: "Data Chats: From Physics student to Data Science Consultant"
 author: "Martin Chan"
 date: "September 4, 2019"
 layout: post
-tags: interviews learning-r tidyverse
+tags: interviews learning-r tidyverse rdatatable
 ---
 
 

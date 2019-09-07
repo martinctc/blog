@@ -4,6 +4,7 @@ title: "LondonR: Hadley Wickham & tidyverse's greatest hits "
 author: "Martin Chan"
 date: "August 22, 2019"
 layout: post
+tags: tidyverse
 ---
 
 

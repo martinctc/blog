@@ -4,6 +4,7 @@ title: "Two Styles of Learning R"
 author: "Martin Chan"
 date: "May 6, 2019"
 layout: post
+tags: tidyverse learning-r
 ---
 
 
