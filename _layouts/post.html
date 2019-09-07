@@ -12,6 +12,14 @@ layout: default
   <div class="readtime">
 	<i class='fa fa-clock-o'></i> {% include readtime3.html content=content %}
   </div>
+   
+  <div class ="tags">[
+  {% for tag in page.tags %}
+    {% capture tag_name %}{{ tag }}{% endcapture %}
+    <a href="/tag/{{ tag_name }}">{{ tag_name }}</code>&nbsp;</a>
+  {% endfor %}
+]</div>  
+
   <hr>
   
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
