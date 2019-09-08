@@ -290,7 +290,7 @@ footer {
 // Add formatting for tags 20190908
 .tag_format {
     background-color: #48585d; // slate grey
-    border-radius: 15px; // creates rounded corners
+    border-radius: 10px; // creates rounded corners
     padding: 2px; /*add this if you want a bit of space around the text*/
     font: 18px/1.4 $trebuchet;
     color: #33CC99; // Defines colour of tag icons
@@ -307,6 +307,27 @@ footer {
         }
     }
 }
+
+// Rotate image 20190908
+.rotate90 {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+// Center image 20190908
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+} 
 
 // Settled on moving the import of syntax highlighting to the bottom of the CSS
 // ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
