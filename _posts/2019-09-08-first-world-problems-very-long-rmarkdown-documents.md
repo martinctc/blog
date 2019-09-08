@@ -19,7 +19,7 @@ tags: vignettes rmarkdown
 </div>
 <div id="rmarkdown-documents-that-are-too-long" class="section level2">
 <h2>RMarkdown documents that are too long!</h2>
-<p><img src="https://martinctc.github.io/blog/images/fwp-rmarkdown.png" width="80%" style="float:right; padding:10px" /></p>
+<p><img src="https://martinctc.github.io/blog/images/fwp-rmarkdown.png" width="80%" style="padding:10px" /></p>
 <p>I quite often use RMarkdown to document my data exploratory analysis - e.g. when I’m coming across a completely new set of data.</p>
 <p>The problem is simple: as I explore different cuts of the data and layer more plots, tables, and text onto my RMarkdown document, it gets unmanageably long (1,000 lines+). Although I can create more functions and <code>source()</code> them externally from a separate R file where possible, there is a limit to how much I can shorten the length of the Rmd file. As the file gets longer, errors become more common and debugging becomes more difficult.</p>
 <p>However, it is not completely straightforward to split a RMarkdown document into multiple files and use <code>source()</code> to combine them into a single document, because <code>source()</code> doesn’t work on RMarkdown documents. A RMarkdown document contains more than just R code, and what you’d ideally want is to be able to combine both the code chunks and the accompanying text commentary. So I did some digging on Stack Overflow and found a solution that I was pretty happy with.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>

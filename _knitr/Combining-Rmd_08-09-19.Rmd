@@ -9,7 +9,7 @@ output:                    # DO NOT CHANGE
 ---
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
-# prettyjekyll::FormatPost("_knitr/Combining Rmd_08-09-19.Rmd")
+# prettyjekyll::FormatPost("_knitr/Combining-Rmd_08-09-19.Rmd")
 ```
 
 ## RMarkdown is awesome!
