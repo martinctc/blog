@@ -12,11 +12,11 @@ layout: default
   <div class="readtime">
 	<i class='fa fa-clock-o'></i> {% include readtime3.html content=content %}
   </div>
-   
+  <br> 
   <div class ="tags">
   {% for tag in page.tags %}
     {% capture tag_name %}{{ tag }}{% endcapture %}
-    <i class='fa fa-tag'></i>&nbsp;<a href="{{ site.baseurl }}/tag/{{ tag_name }}">{{ tag_name }}</code>&nbsp;</a>
+    <span class="tag_format"><i class='fa fa-tag'></i>&nbsp;<a href="{{ site.baseurl }}/tag/{{ tag_name }}">{{ tag_name }}</code>&nbsp;</a></span>
   {% endfor %}
  </div>  
 

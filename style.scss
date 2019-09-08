@@ -18,7 +18,7 @@ html {
 }
 
 body {
-	background: $darkGray;
+    background: $darkGray;
   font: 18px/1.4 $trebuchet;
   color: $white;
 }
@@ -69,14 +69,14 @@ p {
   margin: 15px 0;
 }
 // This affects links
-// 
+//
 a {
-    color: #69b8ff;
+    color: #33CC99; // Previously #69b8ff for light blue
     text-decoration: none;
     cursor: pointer;
 
     &:hover, &:active {
-        color: #B5DCFF;
+        color: #66FFCC; // Previously #B5DCFF for an even lighter blue
     }
 }
 
@@ -120,18 +120,18 @@ img {
 
 .date {
   font-style: italic;
-  color: #9FE4EB;
+  color: #66FFCC; // Previously #9FE4EB
 }
 
 // Specify the color of the selection
 // moz is for Mozilla
 ::-moz-selection {
-  color: $white;
-  background: #1d94ff;
+  color: #48585d; // Previously #1d94ff for 'Windows' blue
+  background: $white; 
 }
 ::selection {
-  color: $white;
-  background: #1d94ff;
+  color: #48585d;
+  background: $white;
 }
 
 // Nicolas Gallagher's micro clearfix hack
@@ -169,8 +169,8 @@ img {
 
 .site-avatar {
   float: left;
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   margin-right: 15px;
 
   @include mobile {
@@ -200,7 +200,7 @@ img {
   cursor: pointer;
   font-family: $trebuchet;
   font-weight: 300;
-  font-size: 28px;
+  font-size: 32px;
   letter-spacing: 1px;
 }
 
@@ -285,6 +285,27 @@ nav {
 footer {
   padding: 20px 0;
   text-align: center;
+}
+
+// Add formatting for tags 20190908
+.tag_format {
+    background-color: #48585d; // slate grey
+    border-radius: 15px; // creates rounded corners
+    padding: 2px; /*add this if you want a bit of space around the text*/
+    font: 18px/1.4 $trebuchet;
+    color: #33CC99; // Defines colour of tag icons
+    a {
+        margin-left: 0px;
+        color: #FFFFFF;
+        text-align: left;
+        font-weight: 100;
+        letter-spacing: 1px;
+
+        @include mobile {
+            margin: 0 10px;
+            color: #FFFFFF;
+        }
+    }
 }
 
 // Settled on moving the import of syntax highlighting to the bottom of the CSS
