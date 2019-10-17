@@ -1,0 +1,115 @@
+---
+title: "Vignette: Google Trends with the gtrendsR package"
+author: "Martin Chan"
+date: "October 17, 2019"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# prettyjekyll::FormatPost("_knitr/gtrendsr-package-17-10-19.Rmd")
+```
+
+## Background
+
+[Google Trends](https://trends.google.com) is a well-known, free tool provided by Google that allows you to analyse the popularity of top search queries, on its Google search engine. In _market exploration_ work, we often use Google Trends to get a very quick view of what behaviours, language, and general things are trending in a market. 
+
+**And of course, if you can do something in R, then why not do it in R?**
+
+Philippe Massicotte's [gtrendsR](https://github.com/PMassicotte/gtrendsR) is pretty much the go-to package for running Google Trends queries in R. It's simple, you don't need to set up API keys or anything, and it's fairly intuitive. Let's have a go at this with a simple and recent example. 
+
+## Example: A Controversial Song from Hong Kong
+<img src="https://liberty4hk.github.io/img/music/glory-to-hk.jpg">
+
+_Glory to Hong Kong_ (Chinese: _願榮光歸香港_) is a Cantonese march song which became highly controversial politically, due to its wide adoption as the ["anthem"](https://www.youtube.com/watch?v=dY_hkbVQA20) of the Hong Kong protests. Since it was written collaboratively by netizens in August 2019,[^1] the piece has become viral and was performed all over the world and translated into many different languages.[^2] It's also available on [Spotify](https://open.spotify.com/album/0o0tKVV8rtkDjydBjx7h6S) - just to give you a bit of context of its popularity.
+
+Analytically, it would be interesting to compare the Google search trends of the English search term ("Glory to Hong Kong") and the Chinese search term ("願榮光歸香港"), and see what they yield respectively. When did it go viral, and which search term is more popular? Let's find out.
+
+## Using gtrendsR
+
+[gtrendsR](https://github.com/PMassicotte/gtrendsR) is available on CRAN, so just make sure it's installed (`install.packages("gtrendsR")`) and load it. Let's load **tidyverse** as well, which we'll need for the basic data cleaning and plotting:
+
+```{r message=FALSE, warning=FALSE}
+library(gtrendsR)
+library(tidyverse)
+```
+
+The next step then is to assign our search terms to a character variable called `search_terms`, and then use the package's main function `gtrends()`. 
+
+Let's set the `geo` argument to Hong Kong only, and limit the search period to 12 months prior to today. We'll assign the output to a variable - and let's call it `output_results`.
+
+```{r}
+search_terms <- c("Glory to Hong Kong", "願榮光歸香港")
+
+gtrends(keyword = search_terms,
+        geo = "HK",
+        time = "today 12-m") -> output_results
+```
+
+`output_results` is a gtrends/list object, which you can extract all kinds of data from: 
+
+```{r}
+output_results %>% summary()
+```
+
+Let's have a look at `interest_over_time`, which is primarily what we're interested in. You can access the data frame with the `$` operator, and check out the data structure:
+
+```{r}
+output_results %>% 
+  .$interest_over_time %>%
+  glimpse()
+```
+
+Let us plot this in **ggplot2**, just to try and replicate what we normally see on the Google Trends site - i.e. visualising the search trends over time. I really like the Economist theme from [ggthemes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/), so I'll use that:
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results = 'hide'}
+output_results %>%
+  .$interest_over_time %>%
+  ggplot(aes(x = date, y = hits)) +
+  geom_line(colour = "darkblue", size = 1.5) +
+  facet_wrap(~keyword) +
+  ggthemes::theme_economist()
+```
+
+<img src="https://martinctc.github.io/blog/images/gtrendr-1.png">
+
+This finding above is surprising, because you would expect that Hong Kong people are more likely to search for the Chinese term rather than the English term, as the original piece was written in Cantonese.
+
+I'll now re-run this piece of analysis, using the shorter term _榮光_, as the hypothesis is that people are more likely to search for that instead of the full song name. It could also be a quirk of Google Trends that it doesn't return long Chinese search queries properly. 
+
+I'll try to do this in a single pipe-line. Note what's done differently this time:
+
+- `time` is set to 3 months from today
+- The `onlyInterest` argument is set to `TRUE`, which only returns interest over time and therefore is faster.
+- Google Trends returns hits as **<1** as a character value for a value lower than 1, so let's replace that with an arbitrary value 0.5 so we can plot this properly (the `hits` variable needs to be numeric).
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results = 'hide'}
+gtrends(keyword = c("Glory to Hong Kong", "榮光"),
+        geo = "HK",
+        time = "today 3-m",
+        onlyInterest = TRUE) %>%
+  .$interest_over_time %>%
+  mutate_at("hits", ~ifelse(. == "<1", 0.5, .)) %>% # replace with 0.5
+  mutate_at("hits", ~as.numeric(.)) %>% # convert to numeric
+  # Begin ggplot
+  ggplot(aes(x = date, y = hits)) +
+  geom_line(colour = "darkblue", size = 1.5) +
+  facet_wrap(~keyword) +
+  ggthemes::theme_economist()
+```
+
+<img src="https://martinctc.github.io/blog/images/gtrendr-2.png">
+
+There you go! This is a much more intuitive result, where you'll find that the search term for "榮光" reaches its peak in mid-September of 2019, whereas search volume for the English term is relatively lower, but still peaks at the same time. I should caveat that the term "榮光" simply means _Glory_ in Chinese, which people _could_ search for without necessarily searching for the song, but we can be pretty sure that in the context of what's happening that this search term relates to the actual song itself. 
+
+
+[^1]: https://en.wikipedia.org/wiki/Glory_to_Hong_Kong. For more information about the Hong Kong protests, check out https://www.helphk.info/.
+[^2]: https://www.youtube.com/watch?v=7y5JOd7jWqk
+
+
+
+
+

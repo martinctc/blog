@@ -19,6 +19,7 @@ url: https://martinctc.github.io
 # then add in the baseurl here, like this: "/repository-name"
 baseurl: /blog
 
+encoding: utf-8
 #
 # Flags below are optional
 #
