@@ -127,11 +127,11 @@ img {
 // moz is for Mozilla
 ::-moz-selection {
   color: #48585d; // Previously #1d94ff for 'Windows' blue
-  background: $white; 
+  background: #1d94ff; 
 }
 ::selection {
   color: #48585d;
-  background: $white;
+  background: #1d94ff; // Previously $white
 }
 
 // Nicolas Gallagher's micro clearfix hack
