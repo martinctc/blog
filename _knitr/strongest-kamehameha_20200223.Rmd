@@ -1,0 +1,225 @@
+---
+title: "Data cleaning with Kamehamehas in R"
+author: "Martin Chan"
+date: "April 11, 2020"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# prettyjekyll::FormatPost("_knitr/strongest-kamehameha_20200223.Rmd")
+```
+
+## Background
+
+Given present circumstances in in the world, I thought it might be nice to write a post on a lighter subject.
+
+Recently, I came across an interesting Kaggle dataset that features [the power levels of Dragon Ball characters at different points in the franchise](https://www.kaggle.com/shiddharthsaran/dragon-ball-dataset). Whilst the dataset itself is quite simple with only four columns (`Character`, `Power_Level`, `Saga_or_Movie`, `Dragon_Ball_Series`), I noticed that you do need to do a fair amount of data and string manipulation before you can perform any meaningful data analysis with it. Therefore, if you're a fan of Dragon Ball and interested in learning about string manipulation in R, this post is definitely for you!
+
+![The Kamehameha - image from Giphy](https://raw.githubusercontent.com/martinctc/blog/master/images/kamehameha.gif)
+
+For those who aren't as interested in Dragon Ball but still interested in general R tricks, please do read ahead anyway - you won't need to understand the references to know what's going on with the code. But you have been warned for spoilers! `r emo::ji("laugh")`
+
+Functions or techniques that are covered in this post:
+
+- Basic regular expression (regex) matching
+- `stringr::str_detect()`
+- `stringr::str_remove_all()` or `stringr::str_remove()`
+- `dplyr::anti_join()`
+- Example of 'dark mode' ggplot in themes
+
+
+## Getting started
+
+You can download the dataset from [Kaggle](https://www.kaggle.com/shiddharthsaran/dragon-ball-dataset), which you'll need to register an account in order to do so. I would highly recommend doing so if you still haven't, since they've got tons of datasets available on the website which you can practise on.
+
+The next thing I'll do is to set up my R working directory [in this style](https://martinctc.github.io/blog/rstudio-projects-and-working-directories-a-beginner%27s-guide/), and ensure that the dataset is saved in the _datasets_ subfolder. I'll use the {here} workflow for this example, which is generally good practice as `here::here` implicitly sets the path root to the path to the top-level of they current project.
+
+Let's load our packages and explore the data using `glimpse()`:
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(here)
+
+dball_data <- read_csv(here("datasets", "Dragon_Ball_Data_Set.csv"))
+
+dball_data %>% glimpse()
+```
+
+...and also `tail()` to view the last five rows of the data, just so we get a more comprehensive picture of what some of the other observations in the data look like:
+ 
+```{r}
+dball_data %>% tail()
+```
+ 
+## Who does the strongest Kamehameha? `r emo::ji("fire")`
+ 
+In the Dragon Ball series, there is an energy attack called _Kamehameha_, which is a signature (and perhaps the most well recognised) move by the main character **Goku**. This move is however not unique to him, and has also been used by other characters in the series, including his son **Gohan** and his master **Muten Roshi**.
+
+![Goku and Muten Roshi - image from Giphy](https://raw.githubusercontent.com/martinctc/blog/master/images/goku-and-roshi.gif)
+
+As you'll see, this dataset includes observations which detail the power level of the notable occasions when this attack was used. Our task here is get some understanding about this attack move from the data, and see if we can figure out whose kamehameha is actually the strongest out of all the characters.
+
+### Data cleaning
+
+Here, we use regex (regular expression) string matching to filter on the `Character` column. The `str_detect()` function from the {stringr} package detects whether a pattern or expression exists in a string, and returns a logical value of either `TRUE` or `FALSE` (which is what `dplyr::filter()` takes in the second argument). I also used the `stringr::regex()` function and set the `ignore_case` argument to `TRUE`, which makes the filter case-insensitive, such that cases of 'Kame' and 'kAMe' are also picked up if they do exist. 
+
+```{r}
+dball_data %>%
+  filter(str_detect(Character, regex("kameha", ignore_case = TRUE))) -> dball_data_1
+
+dball_data_1 %>% head()
+```
+
+If this filter feels convoluted, it's for a good reason. There is a variation of cases and spellings used in this dataset, which a 'straightforward' filter wouldn't have picked up. So there are two of these:
+
+```{r}
+dball_data %>%
+  filter(str_detect(Character, "Kamehameha")) -> dball_data_1b
+
+## Show the rows which do not appears on BOTH datasets
+dball_data_1 %>%
+  dplyr::anti_join(dball_data_1b, by = "Character")
+
+```
+
+Before we go any further with any analysis, we'll also need to do something about `Power_Level`, as it is currently in the form of character / text, which means we can't do any meaningful analysis until we convert it to numeric. To do this, we can start with removing the comma separators with `stringr::str_remove_all()`, and then run `as.numeric()`. 
+
+In 'real life', you often get data saved with _k_ and _m_ suffixes for thousands and millions, which will require a bit more cleaning to do - so here, I'm just thankful that all I have to do is to remove some comma separators.
+
+```{r}
+dball_data_1 %>%
+  mutate_at("Power_Level", ~str_remove_all(., ",")) %>%
+  mutate_at("Power_Level", ~as.numeric(.)) -> dball_data_2
+
+dball_data_2 %>% tail()
+```
+
+Now that we've fixed the `Power_Level` column, the next step is to isolate the information about the characters from the `Character` column. The reason why we have to do this is because, inconveniently, the column provides information for both the _character_ and _the occasion_ of when the kamehameha is used, which means we won't be able to easily filter or group the dataset by the characters only. 
+
+One way to overcome this problem is to use the apostrophe (or single quote) as a delimiter to extract the characters from the column. Before I do this, I will take another manual step to remove the rows corresponding to absorbed kamehamehas, e.g. _Android 19 (Goku's kamehameha absorbed)_, as it refers to the character's power level _after_ absorbing the attack, rather than the attack itself. (Yes, some characters are able to absorb kamehameha attacks and make themselves stronger..!)
+
+After applying the filter, I use `mutate()` to create a new column called `Character_Single`, and then `str_remove_all()` to remove all the characters that appear after the apostrophe:
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results = 'hide'}
+dball_data_2 %>%
+  filter(!str_detect(Character, "absorbed")) %>% # Remove 2 rows unrelated to kamehameha attacks
+  mutate(Character_Single = str_remove_all(Character, "\\'.+")) %>% # Remove everything after apostrophe
+  select(Character_Single, everything()) -> dball_data_3
+```
+
+```{r echo=FALSE}
+dball_data_3 %>%
+  head(10)
+```
+
+Note that the apostrophe is a special character, and therefore it needs to be escaped by adding two forward slashes before it. The dot (`.`) matches all characters, and `+` tells R to match the preceding dot to match one or more times. Regex is a very useful thing to learn, and I would highly recommend just reading through the linked references below if you've never used regular expressions before.[^1]
+
+[^1]: See https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html and https://stringr.tidyverse.org/articles/regular-expressions.html
+
+### Analysis
+
+Now that we've got a clean dataset, what can we find out about the Kamehamehas?
+
+![The Kamehameha - image from Giphy](https://raw.githubusercontent.com/martinctc/blog/master/images/kamehameha2.gif)
+
+My approach is start with calculating the average power levels of Kamehamehas in R, grouped by `Character_Single`. The resulting table tells us that on average, Goku's Kamehameha is the most powerful, followed by Gohan:
+
+```{r}
+dball_data_3 %>%
+  group_by(Character_Single) %>%
+  summarise_at(vars(Power_Level), ~mean(.)) %>%
+  arrange(desc(Power_Level)) -> kame_data_grouped # Sort by descending
+
+kame_data_grouped
+```
+
+However, it's not helpful to directly visualise this on a bar chart, as the Power Level of the strongest Kamehameha is 175,433 times greater than the median!
+
+```{r}
+kame_data_grouped %>%
+  pull(Power_Level) %>%
+  summary()
+```
+
+A way around this is to log transform the `Power_Level` variable prior to visualising it, which I've saved the data into a new column called `Power_Index`. Then, we can pipe the data directly into a ggplot chain, and set a dark mode using `theme()`:
+
+```{r}
+kame_data_grouped %>%
+  mutate(Power_Index = log(Power_Level)) %>% # Log transform Power Levels
+  ggplot(aes(x = reorder(Character_Single, Power_Level),
+             y = Power_Index,
+             fill = Character_Single)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_minimal() +
+  geom_text(aes(y = Power_Index,
+                label = round(Power_Index, 1),
+                hjust = -.2),
+            colour = "#FFFFFF") +
+  ggtitle("Power Levels of Kamehamehas", subtitle = "By Dragon Ball characters") +
+  theme(plot.background = element_rect(fill = "grey20"),
+        text = element_text(colour = "#FFFFFF"),
+        panel.grid = element_blank(),
+        plot.title = element_text(colour="#FFFFFF", face="bold", size=20),
+        axis.line = element_line(colour = "#FFFFFF"),
+        legend.position = "none",
+        axis.title = element_text(colour = "#FFFFFF", size = 12),
+        axis.text = element_text(colour = "#FFFFFF", size = 12)) +
+  ylab("Power Levels (log transformed)") +
+  xlab(" ")
+```
+
+So as it turns out, the results aren't too surprising. Goku's Kamehameha is the strongest of all the characters on average, although it has been referenced several times in the series that his son Gohan's latent powers are beyond Goku's. 
+
+Also, it is perhaps unsurprising that Master Roshi's Kamehameha is the least powerful, given a highly powered comparison set of characters. Interestingly, Roshi's Kamehameha is stronger as 'Jackie Chun' than as himself. 
+
+We can also see the extent to which Goku's Kamehameha has grown more powerful across the series. This is available in the column `Saga_or_Movie`. In the same approach as above, we can do this by grouping the data by `Saga_or_Movie`, and pipe this into a ggplot bar chart:
+
+```{r}
+dball_data_3 %>%
+  filter(Character_Single == "Goku") %>%
+  mutate(Power_Index = log(Power_Level)) %>% # Log transform Power Levels
+  group_by(Saga_or_Movie) %>%
+  summarise(Power_Index = mean(Power_Index)) %>%
+  ggplot(aes(x = reorder(Saga_or_Movie, Power_Index),
+             y = Power_Index)) +
+  geom_col(fill = "#F85B1A") +
+  theme_minimal() +
+  geom_text(aes(y = Power_Index,
+                label = round(Power_Index, 1),
+                vjust = -.5),
+                colour = "#FFFFFF") +
+  ggtitle("Power Levels of Goku's Kamehamehas", subtitle = "By Saga/Movie") +
+  scale_y_continuous(limits = c(0, 40)) +
+  theme(plot.background = element_rect(fill = "grey20"),
+        text = element_text(colour = "#FFFFFF"),
+        panel.grid = element_blank(),
+        plot.title = element_text(colour="#FFFFFF", face="bold", size=20),
+        plot.subtitle = element_text(colour="#FFFFFF", face="bold", size=12),
+        axis.line = element_line(colour = "#FFFFFF"),
+        legend.position = "none",
+        axis.title = element_text(colour = "#FFFFFF", size = 10),
+        axis.text.y = element_text(colour = "#FFFFFF", size = 8),
+        axis.text.x = element_text(colour = "#FFFFFF", size = 8, angle = 45, hjust = 1)) +
+  ylab("Power Levels (log transformed)") +
+  xlab(" ")
+  
+```
+
+I don't have full knowledge of the chronology of the franchise, but I do know that _Emperor Pilaf Saga_, _Red Ribbon Army Saga_, and _Piccolo Jr. Saga_ are the earliest story arcs where Goku's martial arts abilities are still developing. It also appears that if I'd like to witness Goku's most powerful Kamehameha attack, I should find this in the _Baby Saga_! 
+
+## Notes
+
+Hope this was an interesting read for you, and that this tells you something new about R or Dragon Ball.
+
+There is certainly more you can do with this dataset, especially once it is processed into a usable, tidy format.
+
+If you have any related datasets that will help make this analysis more interesting, please let me know! 
+
+In the mean time, please stay safe and take care all! 
+
+
