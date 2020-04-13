@@ -7,6 +7,8 @@ This blog is built using a combination of:
 - Jekyll (GitHub Pages generated)
 - the {prettyjekyll} package
 
+The static site is generated with Jekyll via GitHub Pages, rather than locally.
+
 ## Publishing
 
 Posts from this blog can be found on:
