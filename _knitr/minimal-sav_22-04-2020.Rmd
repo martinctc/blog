@@ -1,0 +1,139 @@
+---
+title: "Vignette: Simulating a minimal SPSS dataset from R"
+author: "Martin Chan"
+date: "April 22, 2020"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+# prettyjekyll::FormatPost("_knitr/First_Post_13-04-19.Rmd")
+```
+
+## Background
+
+Simulating data is one of the most useful skills to have in R. For one, it is helpful when you're debugging code, and you have to create a **reprex** (reproducible example) so you can communicate your problem to others for help. The data associated with your code is likely to be either confidential so you can't really share it on [Stack Overflow](https://stackoverflow.com/), or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem. 
+
+The is slightly more tricky with **survey datasets**, which are characterised by variables having labels attached (for both the variable itself and the codes), and a lot more ordinal / categorical variables. As a bonus, it would also be great to simulate a labelled dataset where there is some 'meaningful' relationship between variables, rather than them being completely random. 
+
+In this post, I will simulate a _minimal_ labelled survey dataset that can be exported to a SPSS (.SAV) file, with full variable and value labels. 
+
+## Getting started
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(surveytoolbox) # Install with devtools::install_github("martinctc/surveytoolbox")
+library(haven)
+
+set.seed(100) # Enable reproducibility
+```
+
+
+```{r message=FALSE, warning=FALSE}
+#### Create individual vectors ####
+## Record Identifier
+v_id <-
+  1:1000 %>%
+  set_varl("Record Identifier")
+
+## Gender
+v_gender <-
+  sample(1:3, 1000, replace = TRUE, prob = c(.48, .48, .4)) %>%
+  set_vall(value_labels = c("Male" = 1,
+                            "Female" = 2,
+                            "Other" = 3)) %>%
+  set_varl("Q1. Gender")
+```
+
+
+```{r message=FALSE, warning=FALSE}
+## KPI
+v_kpi <-
+  v_gender %>%
+  map_dbl(function(x){
+    if(x == 1){
+      sample(1:5,
+             size = 1,
+             prob = c(2, 3, 3, 5, 5))
+    } else if(x == 2){
+      sample(1:5,
+             size = 1,
+             prob = c(2, 4, 5, 4, 3))
+
+    } else {
+      sample(1:5,
+             size = 1,
+             prob = c(2, 3, 3, 4, 3))
+    }
+  }) %>%
+  set_vall(value_labels = c("Extremely dissatisfied" = 1,
+                            "Somewhat dissatisfied" = 2,
+                            "Neither" = 3,
+                            "Satisfied" = 4,
+                            "Extremely satisfied" = 5)) %>%
+  set_varl("Q2. KPI")
+```
+
+For completeness...
+
+```{r message=FALSE, warning=FALSE}
+## Outcome KPI - NPS
+v_nps <-
+  v_gender %>%
+  map_dbl(function(x){
+    if(x == 1){
+      sample(0:10,
+             size = 1,
+             prob = c(1, 2, 2, 5, 4, 3, 5, 8, 9, 8, 9))
+
+    } else if(x == 2){
+
+      sample(0:10,
+             size = 1,
+             prob = c(1, 3, 4, 3, 2, 2, 2, 7, 6, 5, 6))
+
+    } else {
+      sample(0:10,
+             size = 1,
+             prob = c(1, 2, 2, 3, 2, 4, 3, 7, 8, 9, 8))
+    }
+  }) %>%
+  as_nps() %>%
+  set_varl("Q3. NPS")
+```
+
+## Combine vectors
+
+```{r message=FALSE, warning=FALSE}
+#### Combine individual vectors ####
+combined_df <-
+  tibble(id = v_id,
+         gender = v_gender,
+         kpi = v_kpi,
+         nps = v_nps)
+
+```
+
+Looking at the result
+
+```{r message=FALSE, warning=FALSE}
+combined_df %>% varl_tb()
+```
+
+```{r message=FALSE, warning=FALSE}
+combined_df %>%
+  select(-id) %>%
+  data_dict()
+```
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE, include=FALSE, results="hide"}
+combined_df %>% sjPlot::view_df()
+```
+
+```{r echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, results="hide"}
+combined_df %>% haven::write_sav("Simulated Dataset.sav")
+```
+
