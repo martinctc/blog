@@ -23,6 +23,10 @@ In this post, I will simulate a _minimal_ labelled survey dataset that can be ex
 
 ## Getting started
 
+To run this example, we’ll need to load {tidyverse}, {surveytoolbox}, and {haven}. In particular, I’m using {tidyverse} for its data manipulation functions, {surveytoolbox} for functions to deal with variable/value labels
+
+- 
+
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(surveytoolbox) # Install with devtools::install_github("martinctc/surveytoolbox")
