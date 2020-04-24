@@ -23,7 +23,11 @@ In this post, I will simulate a _minimal_ labelled survey dataset that can be ex
 
 ## Getting started
 
-To run this example, we’ll need to load {tidyverse}, {surveytoolbox}, and {haven}. In particular, I’m using {tidyverse} for its data manipulation functions, {surveytoolbox} for functions to deal with variable/value labels
+To run this example, we’ll need to load {tidyverse}, {surveytoolbox}, and {haven}. In particular, I’m using {tidyverse} for its data manipulation functions, {surveytoolbox} for functions to set up variable/value labels, and finally {haven} to export the data as a .SAV file.
+
+Note that {surveytoolbox} is currently not available on CRAN yet, but you can install this by running `devtools::install_github("martinctc/surveytoolbox")`.
+
+In addition to loading the packages, let us also set the seed so that the simulated numbers can be reproducible:
 
 - 
 
@@ -35,6 +39,7 @@ library(haven)
 set.seed(100) # Enable reproducibility
 ```
 
+## Create individual vectors
 
 ```{r message=FALSE, warning=FALSE}
 #### Create individual vectors ####
