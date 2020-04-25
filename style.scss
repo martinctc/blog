@@ -20,7 +20,8 @@ html {
 body {
     background: $darkGray;
   font: 18px/1.4 $trebuchet;
-  color: $white;
+  // color: $white;
+  color: #DEDEDE;
 }
 
 .container {
@@ -33,7 +34,6 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: $trebuchet;
   color: $white;
-  font-weight: normal;
 
   line-height: 1.7;
   margin: 1em 0 15px;
@@ -224,7 +224,8 @@ img {
 nav {
   float: right;
   margin-top: 23px; // @TODO: Vertically middle align
-  font-family: $helveticaNeue;
+  font-family: $trebuchet;
+  // font-family: $helveticaNeue;
   font-size: 18px;
 
   @include mobile {

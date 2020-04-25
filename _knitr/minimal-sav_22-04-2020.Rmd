@@ -15,7 +15,9 @@ library(tidyverse)
 
 ## Background
 
-Simulating data is one of the most useful skills to have in R. For one, it is helpful when you're debugging code, and you have to create a **reprex** (reproducible example) so you can communicate your problem to others for help. The data associated with your code is likely to be either confidential so you can't really share it on [Stack Overflow](https://stackoverflow.com/), or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem. 
+Simulating data is one of the most useful skills to have in R. For one, it is helpful when you're debugging code, and you have to create a **reprex** (reproducible example) so you can communicate your problem to others for help.[^1] Whether you're a researcher or a business analyst, the data associated with your code is likely to be either confidential so you cannot share it on [Stack Overflow](https://stackoverflow.com/), or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem. 
+
+[^1]: Check out [this RStudio Community thread](https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-do-one/5219) to find out more about **reprex** (Allegedly, the term _reprex_ is coined by [Romain Francois](https://twitter.com/romain_francois/status/530011023743655936))
 
 The is slightly more tricky with **survey datasets**, which are characterised by variables having labels attached (for both the variable itself and the codes), and a lot more ordinal / categorical variables. As a bonus, it would also be great to simulate a labelled dataset where there is some 'meaningful' relationship between variables, rather than them being completely random. 
 
@@ -29,8 +31,6 @@ Note that {surveytoolbox} is currently not available on CRAN yet, but you can in
 
 In addition to loading the packages, let us also set the seed so that the simulated numbers can be reproducible:
 
-- 
-
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(surveytoolbox) # Install with devtools::install_github("martinctc/surveytoolbox")
@@ -40,12 +40,16 @@ set.seed(100) # Enable reproducibility
 ```
 
 ## Create individual vectors
+To make it easier to control for the individual variables of the labelled dataset, I will take the approach of first setting up individual variables as labelled vectors, and then binding them together at the end into a data frame.   
+
+To start with, I will create `v_id` as an ID variable running from 1 to 1000, which can simply be generated with the `seq()` function. I can then use `set_varl()` from {surveytoolbox} to set a variable label for the `v_id` vector. 
+
 
 ```{r message=FALSE, warning=FALSE}
 #### Create individual vectors ####
 ## Record Identifier
 v_id <-
-  1:1000 %>%
+  seq(1, 1000) %>%
   set_varl("Record Identifier")
 
 ## Gender
@@ -57,9 +61,30 @@ v_gender <-
   set_varl("Q1. Gender")
 ```
 
+The next step is a bit more tricky. I wanted to create a 5-point scale KPI variable (which could represent _customer satisfaction_ or _likelihood to recommend_. One way to do this is to simply run `sample()` again:
 
 ```{r message=FALSE, warning=FALSE}
-## KPI
+## KPI - #1 simple sampling
+v_kpi <-
+  sample(x = 1:5,
+         size = 1000,
+         replace = TRUE) %>%
+  set_vall(value_labels = c("Extremely dissatisfied" = 1,
+                            "Somewhat dissatisfied" = 2,
+                            "Neither" = 3,
+                            "Satisfied" = 4,
+                            "Extremely satisfied" = 5)) %>%
+  set_varl("Q2. KPI")
+```
+
+Whilst the above approach is straightforward, the downside is that the numbers are likely to look completely random if we try to actually analyse the results (which is what `sample()` is supposed to do).
+
+I wanted to simulate numbers that are more realistic, i.e. data which will form a discernible pattern when grouping and summarising by gender. What I'll therefore do is to iterate through each number in `v_gender`, and sample numbers based on the gender of the 'respondent'. 
+
+The `prob` argument within `sample()` are completely made up, but are designed to generate results where a bigger KPI value is more likely if `v_gender == 1`, followed by `v_gender == 3`, then `v_gender == 2`.
+
+```{r message=FALSE, warning=FALSE}
+## KPI - #2 gender-dependent sampling
 v_kpi <-
   v_gender %>%
   map_dbl(function(x){
