@@ -161,21 +161,30 @@ code span.ot { color: #007020; }
 <section class="main-content">
 <div id="background" class="section level2">
 <h2>Background</h2>
-<p>Simulating data is one of the most useful skills to have in R. For one, it is helpful when you’re debugging code, and you have to create a <strong>reprex</strong> (reproducible example) so you can communicate your problem to others for help. The data associated with your code is likely to be either confidential so you can’t really share it on <a href="https://stackoverflow.com/">Stack Overflow</a>, or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem.</p>
-<p>The is slightly more tricky with <strong>survey datasets</strong>, which are characterised by variables having labels attached (for both the variable itself and the codes), and a lot more ordinal / categorical variables. As a bonus, it would also be great to simulate a labelled dataset where there is some ‘meaningful’ relationship between variables, rather than them being completely random.</p>
+<p>Simulating data is one of the most useful skills to have in R. For one, it is helpful when you’re debugging code, and you have to create a <strong>reprex</strong> (reproducible example) so you can communicate your problem to others for help.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Whether you’re a researcher or a business analyst, the data associated with your code is likely to be either confidential so you cannot share it on <a href="https://stackoverflow.com/">Stack Overflow</a>, or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem.</p>
+<p>Data simulation is slightly less straightforward with <strong>survey datasets</strong>, which are characterised by (1) variables having labels attached (for both the variable itself and the codes), and (2) a large proportion of ordinal / categorical variables. For instance, a Net Promoter Score (NPS) question/variable is usually accompanied with the variable label “On a scale of 0-10, how likely are you to recommend X to a friend or family?”, and is itself an instance of an ordinal variable. If you are trying to reproduce an example</p>
+<p>As a bonus, it would also be great to simulate a labelled dataset where there is some ‘meaningful’ relationship between variables, rather than them being completely random.</p>
 <p>In this post, I will simulate a <em>minimal</em> labelled survey dataset that can be exported to a SPSS (.SAV) file, with full variable and value labels.</p>
 </div>
 <div id="getting-started" class="section level2">
 <h2>Getting started</h2>
+<p>To run this example, we’ll need to load {tidyverse}, {surveytoolbox}, and {haven}. In particular, I’m using {tidyverse} for its data manipulation functions, {surveytoolbox} for functions to set up variable/value labels, and finally {haven} to export the data as a .SAV file.</p>
+<p>Note that {surveytoolbox} is currently not available on CRAN yet, but you can install this by running <code>devtools::install_github(&quot;martinctc/surveytoolbox&quot;)</code>.</p>
+<p>In addition to loading the packages, let us also set the seed so that the simulated numbers can be reproducible:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(surveytoolbox) <span class="co"># Install with devtools::install_github(&quot;martinctc/surveytoolbox&quot;)</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(haven)</span>
 <span id="cb1-4"><a href="#cb1-4"></a></span>
 <span id="cb1-5"><a href="#cb1-5"></a><span class="kw">set.seed</span>(<span class="dv">100</span>) <span class="co"># Enable reproducibility</span></span></code></pre></div>
+</div>
+<div id="create-individual-vectors" class="section level2">
+<h2>Create individual vectors</h2>
+<p>To make it easier to control for the individual variables of the labelled dataset, I will take the approach of first setting up individual variables as labelled vectors, and then binding them together at the end into a data frame.</p>
+<p>To start with, I will create <code>v_id</code> as an ID variable running from 1 to 1000, which can simply be generated with the <code>seq()</code> function. I can then use <code>set_varl()</code> from {surveytoolbox} to set a variable label for the <code>v_id</code> vector.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#### Create individual vectors ####</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="co">## Record Identifier</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>v_id &lt;-</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span><span class="dv">1</span><span class="op">:</span><span class="dv">1000</span> <span class="op">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">1000</span>) <span class="op">%&gt;%</span></span>
 <span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span><span class="kw">set_varl</span>(<span class="st">&quot;Record Identifier&quot;</span>)</span>
 <span id="cb2-6"><a href="#cb2-6"></a></span>
 <span id="cb2-7"><a href="#cb2-7"></a><span class="co">## Gender</span></span>
@@ -185,66 +194,81 @@ code span.ot { color: #007020; }
 <span id="cb2-11"><a href="#cb2-11"></a>                            <span class="st">&quot;Female&quot;</span> =<span class="st"> </span><span class="dv">2</span>,</span>
 <span id="cb2-12"><a href="#cb2-12"></a>                            <span class="st">&quot;Other&quot;</span> =<span class="st"> </span><span class="dv">3</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb2-13"><a href="#cb2-13"></a><span class="st">  </span><span class="kw">set_varl</span>(<span class="st">&quot;Q1. Gender&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">## KPI</span></span>
+<p>The next step is a bit more tricky. I wanted to create a 5-point scale KPI variable (which could represent <em>customer satisfaction</em> or <em>likelihood to recommend</em>. One way to do this is to simply run <code>sample()</code> again:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">## KPI - #1 simple sampling</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a>v_kpi &lt;-</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span>v_gender <span class="op">%&gt;%</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="st">  </span><span class="kw">map_dbl</span>(<span class="cf">function</span>(x){</span>
-<span id="cb3-5"><a href="#cb3-5"></a>    <span class="cf">if</span>(x <span class="op">==</span><span class="st"> </span><span class="dv">1</span>){</span>
-<span id="cb3-6"><a href="#cb3-6"></a>      <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span>
-<span id="cb3-7"><a href="#cb3-7"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
-<span id="cb3-8"><a href="#cb3-8"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">5</span>))</span>
-<span id="cb3-9"><a href="#cb3-9"></a>    } <span class="cf">else</span> <span class="cf">if</span>(x <span class="op">==</span><span class="st"> </span><span class="dv">2</span>){</span>
-<span id="cb3-10"><a href="#cb3-10"></a>      <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span>
-<span id="cb3-11"><a href="#cb3-11"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
-<span id="cb3-12"><a href="#cb3-12"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>))</span>
-<span id="cb3-13"><a href="#cb3-13"></a></span>
-<span id="cb3-14"><a href="#cb3-14"></a>    } <span class="cf">else</span> {</span>
-<span id="cb3-15"><a href="#cb3-15"></a>      <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span>
-<span id="cb3-16"><a href="#cb3-16"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
-<span id="cb3-17"><a href="#cb3-17"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">3</span>))</span>
-<span id="cb3-18"><a href="#cb3-18"></a>    }</span>
-<span id="cb3-19"><a href="#cb3-19"></a>  }) <span class="op">%&gt;%</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a><span class="st">  </span><span class="kw">set_vall</span>(<span class="dt">value_labels =</span> <span class="kw">c</span>(<span class="st">&quot;Extremely dissatisfied&quot;</span> =<span class="st"> </span><span class="dv">1</span>,</span>
-<span id="cb3-21"><a href="#cb3-21"></a>                            <span class="st">&quot;Somewhat dissatisfied&quot;</span> =<span class="st"> </span><span class="dv">2</span>,</span>
-<span id="cb3-22"><a href="#cb3-22"></a>                            <span class="st">&quot;Neither&quot;</span> =<span class="st"> </span><span class="dv">3</span>,</span>
-<span id="cb3-23"><a href="#cb3-23"></a>                            <span class="st">&quot;Satisfied&quot;</span> =<span class="st"> </span><span class="dv">4</span>,</span>
-<span id="cb3-24"><a href="#cb3-24"></a>                            <span class="st">&quot;Extremely satisfied&quot;</span> =<span class="st"> </span><span class="dv">5</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb3-25"><a href="#cb3-25"></a><span class="st">  </span><span class="kw">set_varl</span>(<span class="st">&quot;Q2. KPI&quot;</span>)</span></code></pre></div>
-<p>For completeness…</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## Outcome KPI - NPS</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>v_nps &lt;-</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span><span class="kw">sample</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span>
+<span id="cb3-4"><a href="#cb3-4"></a>         <span class="dt">size =</span> <span class="dv">1000</span>,</span>
+<span id="cb3-5"><a href="#cb3-5"></a>         <span class="dt">replace =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="st">  </span><span class="kw">set_vall</span>(<span class="dt">value_labels =</span> <span class="kw">c</span>(<span class="st">&quot;Extremely dissatisfied&quot;</span> =<span class="st"> </span><span class="dv">1</span>,</span>
+<span id="cb3-7"><a href="#cb3-7"></a>                            <span class="st">&quot;Somewhat dissatisfied&quot;</span> =<span class="st"> </span><span class="dv">2</span>,</span>
+<span id="cb3-8"><a href="#cb3-8"></a>                            <span class="st">&quot;Neither&quot;</span> =<span class="st"> </span><span class="dv">3</span>,</span>
+<span id="cb3-9"><a href="#cb3-9"></a>                            <span class="st">&quot;Satisfied&quot;</span> =<span class="st"> </span><span class="dv">4</span>,</span>
+<span id="cb3-10"><a href="#cb3-10"></a>                            <span class="st">&quot;Extremely satisfied&quot;</span> =<span class="st"> </span><span class="dv">5</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="st">  </span><span class="kw">set_varl</span>(<span class="st">&quot;Q2. KPI&quot;</span>)</span></code></pre></div>
+<p>Whilst the above approach is straightforward, the downside is that the numbers are likely to look completely random if we try to actually analyse the results (which is what <code>sample()</code> is supposed to do).</p>
+<p>I wanted to simulate numbers that are more realistic, i.e. data which will form a discernible pattern when grouping and summarising by gender. What I’ll therefore do is to iterate through each number in <code>v_gender</code>, and sample numbers based on the gender of the ‘respondent’.</p>
+<p>The <code>prob</code> argument within <code>sample()</code> are completely made up, but are designed to generate results where a bigger KPI value is more likely if <code>v_gender == 1</code>, followed by <code>v_gender == 3</code>, then <code>v_gender == 2</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## KPI - #2 gender-dependent sampling</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>v_kpi &lt;-</span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="st">  </span>v_gender <span class="op">%&gt;%</span></span>
 <span id="cb4-4"><a href="#cb4-4"></a><span class="st">  </span><span class="kw">map_dbl</span>(<span class="cf">function</span>(x){</span>
 <span id="cb4-5"><a href="#cb4-5"></a>    <span class="cf">if</span>(x <span class="op">==</span><span class="st"> </span><span class="dv">1</span>){</span>
-<span id="cb4-6"><a href="#cb4-6"></a>      <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span>,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>      <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span>
 <span id="cb4-7"><a href="#cb4-7"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
-<span id="cb4-8"><a href="#cb4-8"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">9</span>))</span>
-<span id="cb4-9"><a href="#cb4-9"></a></span>
-<span id="cb4-10"><a href="#cb4-10"></a>    } <span class="cf">else</span> <span class="cf">if</span>(x <span class="op">==</span><span class="st"> </span><span class="dv">2</span>){</span>
-<span id="cb4-11"><a href="#cb4-11"></a></span>
-<span id="cb4-12"><a href="#cb4-12"></a>      <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span>,</span>
-<span id="cb4-13"><a href="#cb4-13"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
-<span id="cb4-14"><a href="#cb4-14"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">6</span>))</span>
-<span id="cb4-15"><a href="#cb4-15"></a></span>
-<span id="cb4-16"><a href="#cb4-16"></a>    } <span class="cf">else</span> {</span>
-<span id="cb4-17"><a href="#cb4-17"></a>      <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span>,</span>
-<span id="cb4-18"><a href="#cb4-18"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
-<span id="cb4-19"><a href="#cb4-19"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">8</span>))</span>
-<span id="cb4-20"><a href="#cb4-20"></a>    }</span>
-<span id="cb4-21"><a href="#cb4-21"></a>  }) <span class="op">%&gt;%</span></span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="st">  </span><span class="kw">as_nps</span>() <span class="op">%&gt;%</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="st">  </span><span class="kw">set_varl</span>(<span class="st">&quot;Q3. NPS&quot;</span>)</span></code></pre></div>
+<span id="cb4-8"><a href="#cb4-8"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">5</span>))</span>
+<span id="cb4-9"><a href="#cb4-9"></a>    } <span class="cf">else</span> <span class="cf">if</span>(x <span class="op">==</span><span class="st"> </span><span class="dv">2</span>){</span>
+<span id="cb4-10"><a href="#cb4-10"></a>      <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span>
+<span id="cb4-11"><a href="#cb4-11"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
+<span id="cb4-12"><a href="#cb4-12"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-15"><a href="#cb4-15"></a>      <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span>
+<span id="cb4-16"><a href="#cb4-16"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
+<span id="cb4-17"><a href="#cb4-17"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb4-18"><a href="#cb4-18"></a>    }</span>
+<span id="cb4-19"><a href="#cb4-19"></a>  }) <span class="op">%&gt;%</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="st">  </span><span class="kw">set_vall</span>(<span class="dt">value_labels =</span> <span class="kw">c</span>(<span class="st">&quot;Extremely dissatisfied&quot;</span> =<span class="st"> </span><span class="dv">1</span>,</span>
+<span id="cb4-21"><a href="#cb4-21"></a>                            <span class="st">&quot;Somewhat dissatisfied&quot;</span> =<span class="st"> </span><span class="dv">2</span>,</span>
+<span id="cb4-22"><a href="#cb4-22"></a>                            <span class="st">&quot;Neither&quot;</span> =<span class="st"> </span><span class="dv">3</span>,</span>
+<span id="cb4-23"><a href="#cb4-23"></a>                            <span class="st">&quot;Satisfied&quot;</span> =<span class="st"> </span><span class="dv">4</span>,</span>
+<span id="cb4-24"><a href="#cb4-24"></a>                            <span class="st">&quot;Extremely satisfied&quot;</span> =<span class="st"> </span><span class="dv">5</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="st">  </span><span class="kw">set_varl</span>(<span class="st">&quot;Q2. KPI&quot;</span>)</span></code></pre></div>
+<p>For completeness…</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">## Outcome KPI - NPS</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>v_nps &lt;-</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span>v_gender <span class="op">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="st">  </span><span class="kw">map_dbl</span>(<span class="cf">function</span>(x){</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="cf">if</span>(x <span class="op">==</span><span class="st"> </span><span class="dv">1</span>){</span>
+<span id="cb5-6"><a href="#cb5-6"></a>      <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span>,</span>
+<span id="cb5-7"><a href="#cb5-7"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
+<span id="cb5-8"><a href="#cb5-8"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">9</span>))</span>
+<span id="cb5-9"><a href="#cb5-9"></a></span>
+<span id="cb5-10"><a href="#cb5-10"></a>    } <span class="cf">else</span> <span class="cf">if</span>(x <span class="op">==</span><span class="st"> </span><span class="dv">2</span>){</span>
+<span id="cb5-11"><a href="#cb5-11"></a></span>
+<span id="cb5-12"><a href="#cb5-12"></a>      <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span>,</span>
+<span id="cb5-13"><a href="#cb5-13"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
+<span id="cb5-14"><a href="#cb5-14"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">6</span>))</span>
+<span id="cb5-15"><a href="#cb5-15"></a></span>
+<span id="cb5-16"><a href="#cb5-16"></a>    } <span class="cf">else</span> {</span>
+<span id="cb5-17"><a href="#cb5-17"></a>      <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span>,</span>
+<span id="cb5-18"><a href="#cb5-18"></a>             <span class="dt">size =</span> <span class="dv">1</span>,</span>
+<span id="cb5-19"><a href="#cb5-19"></a>             <span class="dt">prob =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">8</span>))</span>
+<span id="cb5-20"><a href="#cb5-20"></a>    }</span>
+<span id="cb5-21"><a href="#cb5-21"></a>  }) <span class="op">%&gt;%</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a><span class="st">  </span><span class="kw">as_nps</span>() <span class="op">%&gt;%</span></span>
+<span id="cb5-23"><a href="#cb5-23"></a><span class="st">  </span><span class="kw">set_varl</span>(<span class="st">&quot;Q3. NPS&quot;</span>)</span></code></pre></div>
 </div>
 <div id="combine-vectors" class="section level2">
 <h2>Combine vectors</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#### Combine individual vectors ####</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>combined_df &lt;-</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw">tibble</span>(<span class="dt">id =</span> v_id,</span>
-<span id="cb5-4"><a href="#cb5-4"></a>         <span class="dt">gender =</span> v_gender,</span>
-<span id="cb5-5"><a href="#cb5-5"></a>         <span class="dt">kpi =</span> v_kpi,</span>
-<span id="cb5-6"><a href="#cb5-6"></a>         <span class="dt">nps =</span> v_nps)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">#### Combine individual vectors ####</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>combined_df &lt;-</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="st">  </span><span class="kw">tibble</span>(<span class="dt">id =</span> v_id,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>         <span class="dt">gender =</span> v_gender,</span>
+<span id="cb6-5"><a href="#cb6-5"></a>         <span class="dt">kpi =</span> v_kpi,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>         <span class="dt">nps =</span> v_nps)</span></code></pre></div>
 <p>Looking at the result</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>combined_df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">varl_tb</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>combined_df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">varl_tb</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 2
 ##   var    var_label        
 ##   &lt;chr&gt;  &lt;chr&gt;            
@@ -252,9 +276,9 @@ code span.ot { color: #007020; }
 ## 2 gender Q1. Gender       
 ## 3 kpi    Q2. KPI          
 ## 4 nps    Q3. NPS</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>combined_df <span class="op">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>id) <span class="op">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="st">  </span><span class="kw">data_dict</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>combined_df <span class="op">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>id) <span class="op">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span><span class="kw">data_dict</span>()</span></code></pre></div>
 <pre><code>##      var  label_var
 ## 1 gender Q1. Gender
 ## 2    kpi    Q2. KPI
@@ -267,6 +291,15 @@ code span.ot { color: #007020; }
 ## 1       1; 2; 3
 ## 2 1; 2; 3; 4; 5
 ## 3  -100; 0; 100</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>combined_df <span class="op">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="st">  </span>sjPlot<span class="op">::</span><span class="kw">view_df</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>combined_df <span class="op">%&gt;%</span><span class="st"> </span>haven<span class="op">::</span><span class="kw">write_sav</span>(<span class="st">&quot;Simulated Dataset.sav&quot;</span>)</span></code></pre></div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Check out <a href="https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-do-one/5219">this RStudio Community thread</a> to find out more about <strong>reprex</strong> (Allegedly, the portmanteau <em>reprex</em> is coined by <a href="https://twitter.com/romain_francois/status/530011023743655936">Romain Francois</a>)<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 </section>
 

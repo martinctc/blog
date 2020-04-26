@@ -17,9 +17,11 @@ library(tidyverse)
 
 Simulating data is one of the most useful skills to have in R. For one, it is helpful when you're debugging code, and you have to create a **reprex** (reproducible example) so you can communicate your problem to others for help.[^1] Whether you're a researcher or a business analyst, the data associated with your code is likely to be either confidential so you cannot share it on [Stack Overflow](https://stackoverflow.com/), or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem. 
 
-[^1]: Check out [this RStudio Community thread](https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-do-one/5219) to find out more about **reprex** (Allegedly, the term _reprex_ is coined by [Romain Francois](https://twitter.com/romain_francois/status/530011023743655936))
+[^1]: Check out [this RStudio Community thread](https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-do-one/5219) to find out more about **reprex** (Allegedly, the portmanteau _reprex_ is coined by [Romain Francois](https://twitter.com/romain_francois/status/530011023743655936))
 
-The is slightly more tricky with **survey datasets**, which are characterised by variables having labels attached (for both the variable itself and the codes), and a lot more ordinal / categorical variables. As a bonus, it would also be great to simulate a labelled dataset where there is some 'meaningful' relationship between variables, rather than them being completely random. 
+Data simulation is slightly less straightforward with **survey datasets**, which are characterised by (1) variables having labels attached (for both the variable itself and the codes), and (2) a large proportion of ordinal / categorical variables. For instance, a Net Promoter Score (NPS) question/variable is usually accompanied with the variable label "On a scale of 0-10, how likely are you to recommend X to a friend or family?", and is itself an instance of an ordinal variable. If you are trying to reproduce an example
+
+As a bonus, it would also be great to simulate a labelled dataset where there is some 'meaningful' relationship between variables, rather than them being completely random. 
 
 In this post, I will simulate a _minimal_ labelled survey dataset that can be exported to a SPSS (.SAV) file, with full variable and value labels. 
 
@@ -163,11 +165,12 @@ combined_df %>%
   data_dict()
 ```
 
-```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE, include=FALSE, results="hide"}
-combined_df %>% sjPlot::view_df()
+```{r eval=FALSE}
+combined_df %>%
+  sjPlot::view_df()
 ```
 
-```{r echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, results="hide"}
+```{r eval=FALSE}
 combined_df %>% haven::write_sav("Simulated Dataset.sav")
 ```
 
