@@ -15,7 +15,9 @@ library(tidyverse)
 
 ## TL;DR `r emo::ji("open_book")`
 
-In this post, I will simulate a _minimal_ labelled survey dataset that can be exported as a SPSS (.SAV) file, with full variable and value labels. I will also attempt to arbitrarily introduce 'meaning' to the dataset so they can be more effectively used as examples.
+In this post, I will simulate a _minimal_ labelled survey dataset that can be exported as a SPSS (.SAV) file, with full variable and value labels. I will also attempt to arbitrarily introduce 'meaning' to the dataset such that it can be more effectively used for creating demo examples.
+
+![image from Giphy](https://raw.githubusercontent.com/martinctc/blog/master/images/surveysays.gif)
 
 ## Background
 
@@ -29,27 +31,28 @@ For instance, a Net Promoter Score (NPS) question/variable is usually accompanie
 
 Simulating data is also useful for demo-ing an analysis or a function, because you'd want to make it easy for your audience to reproduce your example. For this purpose, it would be especially beneficial if you can simulate a dataset where there is some arbitrarily 'meaningful' relationship between variables, rather than them being completely random. Personally, I've in the past found it a pain to simulate datasets which are suited for demo-ing survey related functions, especially when I was working on examples for the [{surveytoolbox}](https://www.github.com/martinctc/surveytoolbox) package `r emo::ji("package")`. Hence, this is partly an attempt to simulate a labelled dataset that is minimally sufficient for demonstrating [{surveytoolbox}](https://www.github.com/martinctc/surveytoolbox) functions.
 
+`r emo::ji("label")` For more on specifically manipulating labels in R, do check out a previous post I've written on [manipulating labels in R](https://martinctc.github.io/blog/working-with-spss-labels-in-r/).
+
 ## Getting started
 
-To run this example, we’ll need to load {tidyverse}, {surveytoolbox}, and {haven}. In particular, I’m using {tidyverse} for its data manipulation functions, {surveytoolbox} for functions to set up variable/value labels, and finally {haven} to export the data as a .SAV file.
+To run this example, we’ll need to load [{tidyverse}](https://www.tidyverse.org/), [{surveytoolbox}](https://www.github.com/martinctc/surveytoolbox), and [{haven}](https://haven.tidyverse.org/). Specifically, I’m using {tidyverse} for its data manipulation functions, {surveytoolbox} for functions to set up variable/value labels, and finally {haven} to export the data as a .SAV file.
 
 Note that {surveytoolbox} is currently not available on CRAN yet, but you can install this by running `devtools::install_github("martinctc/surveytoolbox")`.
 
-In addition to loading the packages, let us also set the seed so that the simulated numbers can be reproducible:
+In addition to loading the packages, let us also [set the seed](https://stackoverflow.com/questions/13605271/reasons-for-using-the-set-seed-function) with `set.seed()` so that the simulated numbers are reproducible:
 
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(surveytoolbox) # Install with devtools::install_github("martinctc/surveytoolbox")
 library(haven)
 
-set.seed(100) # Enable reproducibility
+set.seed(100) # Enable reproducibility - 100 is arbitrary
 ```
 
 ## Create individual vectors
-To make it easier to control for the individual variables of the labelled dataset, I will take the approach of first setting up individual variables as labelled vectors, and then binding them together at the end into a data frame.   
+To make it easier to control for the individual variables of the labelled dataset, my approach will be to first set up individual variables as labelled vectors, and then bind them together at the end into a data frame. To adorn variable and value labels to a numeric vector, I will use `set_varl()` and `set_vall()` from {surveytoolbox} to do this respectively.
 
 To start with, I will create `v_id` as an ID variable running from 1 to 1000, which can simply be generated with the `seq()` function. I can then use `set_varl()` from {surveytoolbox} to set a variable label for the `v_id` vector. 
-
 
 ```{r message=FALSE, warning=FALSE}
 #### Create individual vectors ####
@@ -57,17 +60,30 @@ To start with, I will create `v_id` as an ID variable running from 1 to 1000, wh
 v_id <-
   seq(1, 1000) %>%
   set_varl("Record Identifier")
+```
 
+The same goes for `v_gender`, but this time I want to also (1) apply an arbitrary probability to the distribution, and (2) give each value in the vector a value label ("Male", "Female", "Other"). 
+
+To do (1), I pass a numeric vector to the `prob` argument to represent the probabilities that 1, 2, and 3 will fall out for n = 1000.
+
+To do (2), I run `set_vall()` and pass the desired labels to the `value_labels` argument. 
+
+Finally, I run `set_varl()` again to make sure that a variable label is present.
+
+```{r message=FALSE, warning=FALSE}
 ## Gender
 v_gender <-
-  sample(1:3, 1000, replace = TRUE, prob = c(.48, .48, .4)) %>%
+  sample(1:3, 1000, replace = TRUE,
+         prob = c(.48, .48, .04)) %>% # arbitrary probability
   set_vall(value_labels = c("Male" = 1,
                             "Female" = 2,
                             "Other" = 3)) %>%
   set_varl("Q1. Gender")
 ```
 
-The next step is a bit more tricky. I wanted to create a 5-point scale KPI variable (which could represent _customer satisfaction_ or _likelihood to recommend_. One way to do this is to simply run `sample()` again:
+Now that we've got our ID variable and a basic grouping variable (gender), let's also create some mock metric variables. 
+
+I want to create a 5-point scale KPI variable (which could represent _customer satisfaction_ or _likelihood to recommend_). One way to do this is to simply run `sample()` again, and do the same thing we did for `v_gender`:
 
 ```{r message=FALSE, warning=FALSE}
 ## KPI - #1 simple sampling
@@ -83,11 +99,11 @@ v_kpi <-
   set_varl("Q2. KPI")
 ```
 
-Whilst the above approach is straightforward, the downside is that the numbers are likely to look completely random if we try to actually analyse the results (which is what `sample()` is supposed to do).
+Whilst the above approach is straightforward, the downside is that the numbers are likely to look completely random if we try to actually analyse the results (which is what `sample()` is supposed to do) - which isn't ideal. 
 
 I wanted to simulate numbers that are more realistic, i.e. data which will form a discernible pattern when grouping and summarising by gender. What I'll therefore do is to iterate through each number in `v_gender`, and sample numbers based on the gender of the 'respondent'. 
 
-The `prob` argument within `sample()` are completely made up, but are designed to generate results where a bigger KPI value is more likely if `v_gender == 1`, followed by `v_gender == 3`, then `v_gender == 2`.
+The `prob` argument within `sample()` are completely arbitrary, but are designed to generate results where a bigger KPI value is more likely if `v_gender == 1`, followed by `v_gender == 3`, then `v_gender == 2`.
 
 ```{r message=FALSE, warning=FALSE}
 ## KPI - #2 gender-dependent sampling
@@ -97,16 +113,16 @@ v_kpi <-
     if(x == 1){
       sample(1:5,
              size = 1,
-             prob = c(2, 3, 3, 5, 5))
+             prob = c(10, 17, 17, 28, 28))
     } else if(x == 2){
       sample(1:5,
              size = 1,
-             prob = c(2, 4, 5, 4, 3))
+             prob = c(11, 22, 28, 22, 17))
 
     } else {
       sample(1:5,
              size = 1,
-             prob = c(2, 3, 3, 4, 3))
+             prob = c(13, 20, 20, 27, 20))
     }
   }) %>%
   set_vall(value_labels = c("Extremely dissatisfied" = 1,
@@ -117,28 +133,49 @@ v_kpi <-
   set_varl("Q2. KPI")
 ```
 
-For completeness...
+For completeness, let me also simulate a mock NPS variable. Although 
+
 
 ```{r message=FALSE, warning=FALSE}
+## Generate skew inputs for sample probability
+##
+## `n` specifies number of values to return
+## `values` requires a numeric vector of length 3
+## to generate the skewed probabilities
+##
+skew_inputs <- function(values){
+  
+  all_n <-
+  c(rep(values[[1]], 7), # 0 - 6
+    rep(values[[2]], 2), # 7 - 8
+    rep(values[[3]], 2)) # 9 - 10
+  
+  return(sort(all_n))
+}
+
 ## Outcome KPI - NPS
 v_nps <-
   v_gender %>%
-  map_dbl(function(x){
+  map2_dbl(.y = 1:1000, function(x, y){
+    
+    set.seed(y)
+           
     if(x == 1){
-      sample(0:10,
-             size = 1,
-             prob = c(1, 2, 2, 5, 4, 3, 5, 8, 9, 8, 9))
+      
+      sample(0:10, size = 1, prob = skew_inputs(c(1, 1, 10)))
 
     } else if(x == 2){
 
-      sample(0:10,
-             size = 1,
-             prob = c(1, 3, 4, 3, 2, 2, 2, 7, 6, 5, 6))
+      sample(0:10, size = 1, prob = skew_inputs(c(1, 3, 3)))
 
+    } else if(x == 3){
+      
+      sample(0:10, size = 1, prob = skew_inputs(c(1, 5, 10)))
+      
     } else {
-      sample(0:10,
-             size = 1,
-             prob = c(1, 2, 2, 3, 2, 4, 3, 7, 8, 9, 8))
+      
+      stop("Error - check x")
+      
     }
   }) %>%
   as_nps() %>%
@@ -158,6 +195,16 @@ combined_df <-
 ```
 
 Looking at the result
+
+```{r message=FALSE, warning=FALSE}
+combined_df %>%
+  group_by(gender) %>%
+  summarise(n = n_distinct(id),
+            kpi = mean(kpi),
+            nps = mean(nps))
+```
+
+
 
 ```{r message=FALSE, warning=FALSE}
 combined_df %>% varl_tb()
