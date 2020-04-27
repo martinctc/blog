@@ -145,7 +145,7 @@ tags: interviews
 </div>
 <div id="m-this-ties-back-with-what-you-mentioned-about-blind-spots.-being-on-the-ground-helps-you-spot-them-too-right" class="section level4">
 <h4>M: This ties back with what you mentioned about ‘blind spots’. Being on the ground helps you spot them, too, right?</h4>
-<p>N: Correct, and it also helps with finding alternative solutions in case Plan A didn’t work in the first place."</p>
+<p>N: Correct, and it also helps with finding alternative solutions in case Plan A didn’t work in the first place.</p>
 </div>
 <div id="m-what-is-your-vision-for-your-business" class="section level4">
 <h4>M: What is your vision for your business?</h4>
