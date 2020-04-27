@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Martin Chan" />
+
+<meta name="date" content="2020-04-27" />
+
+<title>Data Chats: An Interview on Data-Driven Campaigns, Bias &amp; Ethics</title>
+
+<script src="data-chats-analytics-and-politics_an-interview_20200427_files/header-attrs-2.1.1/header-attrs.js"></script>
+
+
+
+
+
+<link rel="stylesheet" href="data-chats-analytics-and-politics_an-interview_20200427_files/style.css" type="text/css" />
+
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<section class="page-header">
+<h1 class="title toc-ignore project-name">Data Chats: An Interview on Data-Driven Campaigns, Bias &amp; Ethics</h1>
+<h4 class="author project-author">Martin Chan</h4>
+<h4 class="date project-date">April 27, 2020</h4>
+</section>
+
+
+
+<section class="main-content">
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>One of the motives for starting the <em>Data Chats</em> interview series was to shed light on the many ways in which data and analytics professionals operate across different fields and cultures. Previously, <a href="https://martinctc.github.io/blog/data-chats-an-interview-with-avision-ho/">Avision Ho</a> (Senior Data Scientist at the British Department for Education at the time) and <a href="https://martinctc.github.io/blog/data-chats-from-physics-student-to-data-science-consultant/">Abhishek Modi</a> (Data Science Consultant at Deloitte at the time) described the data science career <em>journey</em> and answered technology-specific questions (e.g. favourite R packages). So I thought I’d do an interview on how analytics is applied in a very different, yet important, setting: politics.</p>
+<p>This time, I have the pleasure to speak with <a href="https://www.linkedin.com/in/treshan">Christopher Treshan Perera</a> and <a href="https://de.linkedin.com/in/da-nanthida-rakwong-27784915a">Nanthida Rakwong</a> from <a href="https://worldacquire.com/">Worldacquire</a>, a digital consultancy with politics as a core practice area. They launched with a mission to use analytics and digital tech in <em>political campaigns</em>, <em>public affairs</em> and <em>human rights</em>. They notably managed campaigns at the <em>2019 Thailand general election</em> and the <em>2019 Hong Kong District Council elections</em>; at the latter, they <strong>helped a pro-democracy candidate defeat a long-standing incumbent</strong>. Their co-founders have spoken at the <em>United Nations</em> and the <em>UK Parliament</em> on ethical issues in technology and society<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and managed research for <em>Konrad-Adenauer-Stiftung</em>, Germany’s governing party think tank.</p>
+<p>In this in-depth interview, Christopher and Nanthida discuss how they navigate analytics and politics, challenges they encountered (e.g. how to obtain reliable data in Thailand), ethical questions (Cambridge Analytica, GDPR) and other practical considerations.</p>
+<p><img src="https://images.unsplash.com/photo-1558685203-2c1f7ee563c3?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+</div>
+<div id="the-interview" class="section level2">
+<h2>The Interview</h2>
+<div id="m-its-great-to-have-you-guys-here.-tell-me-a-bit-about-worldacquire-and-your-journey-to-bringing-together-analytics-and-politics" class="section level4">
+<h4>M: It’s great to have you guys here. Tell me a bit about Worldacquire and your journey to bringing together analytics and politics!</h4>
+<p>C: We launched two years ago to explore how AI and data-driven technology could enhance democracy - whether by helping aspiring politicians win elections or by supporting research and campaigning efforts of parties and public organisations.</p>
+<p>N: I grew up in Thailand, but moved to London in 2010 to work as a political consultant for <em>Amsterdam and Partners</em>, an international law firm representing political figures. My most important case was in Thai politics - <a href="https://www.spiegel.de/international/world/red-shirt-lawyer-to-file-complaint-with-icc-thai-pm-gave-carte-blanche-order-to-massacre-civilians-a-742653.html">bringing the Thai junta (military government) to justice</a> at the <em>International Criminal Court (ICC)</em> over the <a href="https://amsterdamandpartners.com/white-papers/thailand-the-bangkok-massacres-a-call-for-accountability/">2010 Bangkok Massacres</a>. I also advised the “Red Shirts” pro-democracy movement in Thailand and various other political parties around the world.</p>
+<p><img src="https://live.staticflickr.com/4584/38794179861_8c07bb0c0f_b.jpg" /></p>
+<p>C: I have a more corporate and techie background. My career started as a data analyst at <em>Bloomberg</em> in London, followed by several years at <em>viagogo</em>, an online marketplace for sports and show tickets, where I rose from digital marketing exec to global advertising management. It is common to wear many hats at a tech startup and mine included data analysis, business intelligence, product management and algorithm design for marketing APIs. Then I moved to <em>American Express</em> where my task was to transfer digital marketing know-how from the tech world to “big finance”.</p>
+<p>Before Worldacquire I already wanted to connect tech with social causes. Back in 2015 I founded <a href="https://outreachdigital.org/">Outreach Digital</a>, an entirely volunteer-run association making digital skills more accessible; it has since become the <a href="https://www.meetup.com/Digital/">largest meetup group</a> in London’s tech and digital space.</p>
+<p><img src="https://pbs.twimg.com/media/D2l0lc8XQAAtxYN?format=png&amp;name=small" /></p>
+</div>
+<div id="m-thats-a-great-fusion-of-politics-and-digital-marketing.-also-chris---we-first-met-at-one-of-those-meetup-groups-which-makes-a-great-case-for-their-networking-value.-so-what-exactly-got-you-thinking-wow-it-would-be-great-to-merge-analytics-and-political-consulting" class="section level4">
+<h4>M: That’s a great fusion of politics and digital marketing. Also, Chris - we first met at one of those meetup groups, which makes a great case for their networking value. So what exactly got you thinking: wow, it would be great to merge analytics and political consulting?</h4>
+<p>N: While I was advising the Thai pro-democracy movement, I realized how crucial it was to understand a situation in real-time in order to make better decisions. By collecting a lot of data, compiling and analysing it faster, we could operate in a more efficient and scalable way. That led to my interest in data, analytical technologies and AI, and I immediately saw their dangers, too: the <a href="https://www.wired.com/amp-stories/cambridge-analytica-explainer/">Cambridge Analytica scandal</a>, for example, was a misuse of those technologies. But you can change something for the better only if you engage and participate in shaping it.</p>
+</div>
+<div id="m-using-ai-and-data-to-make-better-decisions---could-you-describe-how-you-can-do-that-in-politics-how-do-other-organizations-do-that-today" class="section level4">
+<h4>M: Using AI and data to make better decisions - could you describe how you can do that in politics? How do other organizations do that today?</h4>
+<p>N: Let’s say you want to understand millions of people including your potential voters. By gathering data from multiple sources, including Facebook, Twitter, forums, emails and more, you can find new paths to make everyone work together towards the same goal. If you want to run a political campaign of any kind but don’t understand what exactly people want, it’s very hard to bring them together.</p>
+<p>Moreover, you always need to identify new supporters. There may be people who are unsure about your cause or movement - perhaps they are friends of your ardent supporters - but they hesitate to join because they don’t understand it well enough. You can use AI and data technology to understand what they need and how to best communicate with them.</p>
+<p><img src="https://images.unsplash.com/photo-1553268169-8232852a2377?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+<p>C: One of the things Cambridge Analytica did was to uncover a blind spot in the political “market share” or electorate and target those swing voters (and people who never wanted to vote) using unethical advertising methods, including fake news.</p>
+<p>This raises the question of whether the technology can be used in an ethical and transparent way. If everyone was aware of the practices, if parties or candidates communicated transparently about them, then perhaps we’d have a different situation even in the UK right now. The other consideration is which specific AI and analytics methods to apply: you could implement recommendation systems, pattern recognition techniques or combine existing methods.</p>
+<p>N: And use them to spread truth and support good causes, rather than rumours, disinformation and division.</p>
+<p><img src="https://images.unsplash.com/photo-1572356722933-adf495627701?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+</div>
+<div id="m-so-you-do-the-opposite-of-what-cambridge-analytica-did-by-using-the-technologies-in-a-more-ethical-and-transparent-way" class="section level4">
+<h4>M: So you do the opposite of what Cambridge Analytica did by using the technologies in a more ethical and transparent way?</h4>
+<p>N: That’s right. If we do not engage in this game, we basically allow malicious or unethical players to misuse it. If we withdraw we cannot help shape new solutions and perspectives.</p>
+<p>C: Think practically! Advertising has a very long history - newspaper, TV, radio and billboards. Over the decades every new medium got increasingly regulated, but advertising still exists and it has arguably become more transparent and ethical. <strong>If traditional advertising channels can improve over time, so can digital advertising</strong>.</p>
+</div>
+<div id="m-you-also-believe-that-by-using-these-techniques-for-a-good-cause-we-can-make-our-democratic-systems-more-resilient-and-less-prone-to-being-abused" class="section level4">
+<h4>M: You also believe that by using these techniques for a good cause, we can make our democratic systems more resilient and less prone to being abused?</h4>
+<p>C&amp;N: Correct! Moreover, they can also be used to <a href="https://worldacquire.com/2020/02/14/thai-mass-shooting-a-case-for-microtargeting-in-emergencies/">improve public services and government-to-citizen communications, especially during a crisis</a>.</p>
+</div>
+<div id="m-it-is-interesting-that-you-mention-the-blind-spot-in-the-market-share.-the-common-wisdom-is-that-the-results-of-political-campaigning-remain-unknown-until-after-the-election.-political-polling-is-known-to-be-inaccurate.-transparency-could-be-a-game-changer." class="section level4">
+<h4>M: It is interesting that you mention the blind spot in the market share. The common wisdom is that the results of political campaigning remain unknown until after the election. Political polling is known to be inaccurate. Transparency could be a game-changer.</h4>
+</div>
+<div id="m-now-lets-talk-about-the-election-campaign-that-you-guys-managed-in-thailand.-could-you-tell-me-more-about-it" class="section level4">
+<h4>M: Now let’s talk about the election campaign that you guys managed in Thailand. Could you tell me more about it?</h4>
+<p>N: First of all, it was <a href="https://www.bbc.com/news/world-asia-47664201">a long-awaited election</a> because Thailand has been ruled by an authoritarian military junta since 2014. We advised a first-time candidate from a new party standing for MP in Bangkok. Candidates were given only six weeks to campaign - a major challenge considering this was one of the largest constituencies.</p>
+<p>Without any data to start with, we went to the local administration office to request the electoral register, but they essentially refused to share anything. We suspected this happened because of the deep influence of the incumbent. We had to think differently!</p>
+<p><img src="https://images.unsplash.com/photo-1571467046329-3ae3dc7430da?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+<p>We could have started canvassing (surveying and campaigning) from door to door, but this would have been an issue for several reasons: firstly, Thai people don’t vote based on where they reside, but where their home was registered. Thus, people who live in a constituency may not have the right to vote there. Secondly, the dangerous political climate and <a href="https://www.hrw.org/report/2019/10/24/speak-out-dangerous/criminalization-peaceful-expression-thailand">Thailand’s harsh censorship laws</a> made people extremely wary of sharing their political views or past voting behaviour.</p>
+<p>Another option was to collect data and communicate online through social media advertising. Unfortunately the party leadership wasn’t willing to invest in it. They preferred to play it safe and spend money on leaflets and billboards instead.</p>
+<p>We ultimately went for <a href="https://worldacquire.com/2019/04/11/advancing-democracy-with-digital-at-the-2019-thailand-election/">a sampling method using <strong>fieldwork mapping</strong></a>: we divided the constituency into smaller areas based on the polling stations that cover them and interviewed a sample of people in each area (this was still challenging considering how wary people were!) and built our understanding of the overall constituency based on data. We facilitated this by using <a href="https://www.mela.work/">an app called <em>Mela</em></a>.</p>
+<p><img src="https://raw.githubusercontent.com/martinctc/blog/master/images/Da-Thai-Campaign.jpg" /><img src="https://raw.githubusercontent.com/martinctc/blog/master/images/Worldacquire-client-MELA.png" alt="Mela" /></p>
+<p>C: We didn’t use any advanced AI magic in this instance, but the project highlighted how important it is to get the right data and to ensure that the initial dataset is clean. <strong>What data scientists often do is go on the internet and pick whatever datasets are available online - but these are often outdated, incomplete or even biased</strong>.</p>
+<p>Especially in a developing country with poor accountability and no balance of powers, it is hard to verify if research and survey data is correct. You have to go hands-on and create the conditions for people to share their genuine views. Once the data is accurate, you can start doing advanced stuff.</p>
+<p>N: We would have certainly received more valuable insights had the party leadership approved social media advertising. It takes more effort to measure the conversion rate of leaflets and billboards. Especially if you only have six weeks to campaign.</p>
+<p>C: Nonetheless we were able to run a smaller-scale test and get accurate social insights. Ideally, we would have gathered enough data to run prediction and network algorithms to evaluate the profile, behaviour and preferences of each constituency sub-area, and thereby understand which political issues mattered to them the most. Then we could have tailored the messages that would best resonate with each group. Despite the small amount of data, it was enough to draw some important conclusions about the potential voters.</p>
+<p><img src="https://images.unsplash.com/photo-1507611268508-bf74edce9029?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+</div>
+<div id="m-why-was-the-party-leadership-reluctant-to-invest-in-social-media" class="section level4">
+<h4>M: Why was the party leadership reluctant to invest in social media?</h4>
+<p>C: It was mainly about the social media <em>advertising</em> budget.</p>
+<p>N: We did have social media (everyone in Thailand does) but without proper <em>advertising</em> campaigns aimed at targeted data collection and communication. Most politicians in Thailand only engage in one-way communication and are not interested in understanding their audience.</p>
+<p>C: When I used to work in tech and finance, I spent a lot of time with Google Ads and Facebook Ads. A major lesson that applies here, too, is that you can post social and blog content to build an online presence and get visitor traffic data over time. But <strong>when you face tight time constraints, the data you can get through online advertising is significantly more valuable</strong>; all activity is tracked, timely, more relevant and more accurate than anything you can get through “organic” or “earned” marketing. The same goes with building an audience in such a short time. That is simply how digital platforms work today.</p>
+<p>Many colleagues in digital marketing will confess that it can take weeks (or months) to build a robust presence, let alone become “number one” on Google or Facebook results. Unless you are really lucky and go “viral”.</p>
+<p>So when you do an election campaign, when you only have six weeks and you’re a newcomer challenging powerful incumbents, it is unwise to rely on “organic” or “earned” marketing. Paid advertising gives you immediate data and immediate results.</p>
+<p><img src="https://images.unsplash.com/photo-1579869847514-7c1a19d2d2ad?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+</div>
+<div id="m-it-really-makes-sense-when-facing-such-time-constraints-so-its-a-shame-that-this-is-underutilized-in-election-campaigns.-chris-what-is-the-biggest-difference-between-digital-advertising-in-a-commercial-vs-a-political-setting" class="section level4">
+<h4>M: It really makes sense when facing such time constraints, so it’s a shame that this is underutilized in election campaigns. Chris, what is the biggest difference between digital advertising in a commercial vs a political setting?</h4>
+<p>C: In business you have more wiggle space for your message choice. You can use superlatives like “best tickets” or “best concerts”. In politics people do that, too, but it can be dangerous; think about the Brexit bus with the exaggerated claim about the NHS money. There will also be very different budgets due to both internal and external factors. Businesses are often more willing to invest in advertising as it leads to direct and immediate sales. In politics, the “sales cycle” can take much longer.</p>
+<p>N: In many countries, including Thailand, there’s also a legal cap on campaigning spend.</p>
+<p>C: Another issue is visibility. <strong>Most digital platforms decide which content to display based on ranking algorithms</strong>; <strong>one factor that influences those algorithms is pre-existing activity and performance</strong>. For example, if you want to advertise a car on Google, and you build a Google Ads campaigns around the keyword “car”, Google’s algorithms will already know that this is something businesses want to advertise based on historic performance data. The algorithms will also know that people click on those ads after searching “car”. On the contrary, if a keyword was never used before or isn’t typically associated with people clicking on ads, <a href="https://support.google.com/google-ads/answer/2616014?hl=en">Google will wait a little longer before displaying ads for it</a>. So there can be some delays before an ad for a new politician is actually visible, but it is still faster than trying to get a blog post go viral.</p>
+</div>
+<div id="m-so-theres-both-a-legal-and-a-search-engine-strategy-aspect.-how-about-analytics-in-business-vs-politics" class="section level4">
+<h4>M: So there’s both a legal and a search engine strategy aspect. How about analytics in business vs politics?</h4>
+<p>C: There are many similarities. You just need to translate a concept from one field into another. In business, KPIs and metrics are formed around impressions, actions (sales), CTR and conversion rates. In politics it’s more about long-term performance, maybe along the lines of CLV (customer lifetime value).</p>
+<p>N: Having many clicks on your ad or post doesn’t necessarily translate into votes. It could even be negative - think about Prince Andrew!</p>
+</div>
+<div id="m-what-were-your-top-challenges-at-the-thai-election" class="section level4">
+<h4>M: What were your top challenges at the Thai election?</h4>
+<p>N: The lack of accurate data and the poor awareness about the importance of data by the leadership - especially current or real-time data. People still rely on old reports and outdated information.</p>
+</div>
+<div id="m-what-was-the-outcome-of-the-election-campaign" class="section level4">
+<h4>M: What was the outcome of the election campaign?</h4>
+<p>N: Our candidate lost, but exceeded our expectations. More importantly, the winning candidate was from the <em>Future Forward Party</em>, another new and allied party that <em>did</em> invest significantly in its social media at a national level. We observed that they also used tailored, targeted advertising and A/B-testing to gather data about voter preferences. The political party’s image really helped that candidate. Like our candidate, he was not a resident of the constituency yet still won. This was the very first time that anyone used social media as a key channel for data collection in an election campaign in Thailand.</p>
+<p>C: Indeed, this was forward-thinking. <strong>Many political campaigners around the world use social media, but don’t make the most of its advanced algorithms and data-gathering capabilities</strong>. Considering the difficulties we had in accessing data, one of the biggest learnings is that even in the face of authoritarian red tape and bureaucracy, digital platforms can help overcome hurdles in understanding your audience.</p>
+<p><img src="https://images.unsplash.com/photo-1506801310323-534be5e7a730?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+</div>
+<div id="m-lets-talk-about-regulation-and-ethics.-is-data-is-the-new-oil-a-valuable-resource-that-helps-society-progress" class="section level4">
+<h4>M: Let’s talk about regulation and ethics. Is data is the new oil? A valuable resource that helps society progress?</h4>
+<p>C: Yes, it can be - depending on which society it will be used in. If a society has strong data protection and privacy laws, then data can be used hand-in-hand with democratic principles. If not, then it can be a very “bad oil”.</p>
+<p>Looking back in time, radio was “the new oil” at some point. TV, too. From a regulatory point of view, they all provoked concerns (including about propaganda), but over time different bodies and regulations were formed to address them, such as today’s ASA in the UK; and now for data and digital technologies, we have the ICO in the UK.</p>
+</div>
+<div id="m-what-is-your-position-regarding-gdpr-also-when-people-think-about-applying-analytics-in-political-advertising-many-worry-about-cambridge-analytica-and-brexit.-obviously-you-want-to-promote-good-causes-and-democracy---but-can-you-avoid-repeating-their-mistakes" class="section level4">
+<h4>M: What is your position regarding GDPR? Also, when people think about applying analytics in political advertising, many worry about Cambridge Analytica and Brexit. Obviously you want to promote good causes and democracy - but can you avoid repeating their mistakes?</h4>
+<p>N: Let’s start with Obama’s presidential campaign. Obama used similar tactics, but what did he do differently? He informed people about how their data would be used. So transparency is really a key factor.</p>
+<p><img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+<p>C: I think there can be some misunderstanding that influences the public’s perception, but also that of advertisers. Some advertisers (including businesses and politicians) can see GDPR as a nuisance, when in fact it is an opportunity. <strong>In the same way that media regulation helped build trust in radio and TV, GDPR and future internet or data protection laws will increase trust in digital spaces</strong>. Once people feel safe about the new media, they will feel even more comfortable using the platforms and sharing their data.</p>
+<p>When people know that there is a rule of law and accountability around data, they will feel less suspicious than with the dodgy websites today that say very little about data protection. At the same time, <a href="https://worldacquire.com/2018/03/24/cambridge-analytica-facebook-european-data-protection-law/">GDPR will push companies - including advertisers - to design their products, solutions and activities around privacy</a>. This should help encourage ethical uses of this “new oil”.</p>
+<p>As a matter of fact, there will be an increasing number of new regulations that will touch upon different issues in the realm of data-driven products, notably in AI. <a href="https://en.wikipedia.org/wiki/Algorithmic_bias">Algorithmic bias</a>, for instance, is one hot topic at the moment. Since AI is based on algorithms that learn from historical data, that data could reinforce existing social biases - whether it’s about predicting who will be the next criminal, or who deserves a visa or insurance. How to solve this? Regulation can and needs to answer this, whether by requiring AI products to make their program code public or by creating mechanisms to prevent or defeat the bias.</p>
+<p>N: People need to understand how software works. Once again, transparency is vital. <strong>Many of the issues around algorithms and the misperceptions of AI being dangerous come down to the fact that the technical issues are not properly explained</strong>. When AI experts and advocates come together and make an effort to ensure that biases and manipulation are eliminated from these algorithms, that’s when products and solutions based on AI can be more ethical and transparent.</p>
+<p><img src="https://images.unsplash.com/photo-1580894912989-0bc892f4efd0?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+</div>
+<div id="m-its-important-to-understand-where-all-the-data-people-provide-goes-and-i-believe-theres-also-the-question-of-consent-which-is-covered-by-gdpr.-what-i-find-really-interesting-is-algorithmic-bias-but-also-the-idea-that-people-can-better-judge-what-is-right-and-wrong-only-after-they-are-educated-about-how-the-algorithm-works." class="section level4">
+<h4>M: It’s important to understand where all the data people provide goes and I believe there’s also the question of consent, which is covered by GDPR. What I find really interesting is algorithmic bias, but also the idea that people can better judge what is right and wrong only after they are educated about how the algorithm works.</h4>
+<p>C: Exactly, and this is what regulators are starting - and <em>should</em> be starting - to think about.</p>
+<p>There are some who think that political advertising should be completely banned. <a href="https://techcrunch.com/2019/11/15/twitter-makes-its-political-ad-ban-official/">Twitter went down this road</a> and many applauded their decision, with the main perception being that data and algorithms can be misused the way Cambridge Analytica did. <strong>However, what was ignored was the fact that all these algorithms don’t <em>need</em> to work in a black box - in fact, they can be revealed, changed, overridden</strong>.</p>
+<p>For example, a recommendation system could, instead of saying “A is better than B”, explain “We recommend A over B because our algorithm observed that you like x, y and z.” Companies may be reluctant to fully reveal their algorithm code, but <strong>they could at least give an idea of what parameters are taken into account, what outcomes can be expected, and why</strong>. Once again, transparency is key.</p>
+<p>Another aspect ignored in the whole debate about political advertising is the fact that if digital platforms like Twitter ban them, newcomer politicians will struggle to gain a following or communicate with their target audience if they have a time constraint, like in the case of Thailand. <a href="https://www.brookings.edu/blog/techtank/2020/01/08/twitters-ban-on-political-advertisements-hurts-our-democracy/">Banning political ads carries huge disadvantages</a>, especially for politicians who already lack resources.</p>
+<p>The right approach would have been to push for more transparency - not only in advertising (“paid”) algorithms, but also in the “organic” and “earned” algorithms used on the very same social media platforms.</p>
+<p>N: Moreover, Twitter appears not to care as much as they say about what content is posted on the platform. If they can ban political ads, why do they do so little against hate speech and other online harms? <strong>Many, including myself, have experienced harassment and public death threats on Twitter, yet Twitter refused to cooperate swiftly and proactively with the British police - instead they shifted the burden of proof to the victims</strong>.</p>
+<p><img src="https://raw.githubusercontent.com/martinctc/blog/master/images/ChrisatUNIGF.PNG" /></p>
+<hr />
+</div>
+<div id="m-it-is-also-very-unclear-how-they-will-actually-implement-the-ban." class="section level4">
+<h4>M: It is also very unclear how they will actually implement the ban.</h4>
+<p>N: I honestly think it’s dangerous that Jack Dorsey (the CEO of Twitter) calls for “earned” popularity and encourages a culture of going viral. <strong>If a tweet goes viral does it really mean that it “earned” it? Is it really more accurate and correct than other tweets? More than a few times, a viral message has spread false accusations and fake news</strong>.</p>
+<p>C: To make things worse, <strong>going viral is <em>also</em> determined by algorithms</strong>. How does Twitter decide which content should get more visibility? Is it the likes, the retweets, the popularity of the tweet author and their followers? We have seen (and tested) how easily this can be manipulated.</p>
+<p>So banning political ads doesn’t solve the problem of powerful obscure algorithms, as organic content is decided by even less transparent ones! Typically, such algorithms seem to favour users who already have a strong following - in the case of an election, this is often the incumbent. Newcomers can be heavily penalized by this dynamic.</p>
+<p>Another issue are <strong>fake users and bots on Twitter</strong>. These can be bought in thousands or more to mass-like or mass-follow and exaggerate the popularity of a particular user or a post. Equally, <strong>your competitor could get 10,000 Twitter bots or fake users to report your public posts as spam or abusive</strong>. <a href="https://worldacquire.com/2020/02/27/online-disinformation-and-extremism-how-it-spreads-and-how-to-stop-it/">This is an easy way to manipulate the system (also tested in Thailand)</a>. The Twitter algorithm will likely disregard the fact that the users are fake and make the falsely reported tweet disappear even if it is genuine and popular.</p>
+<p><img src="https://images.unsplash.com/photo-1573152143286-0c422b4d2175?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+</div>
+<div id="m-this-is-something-i-have-seen-in-hong-kong-too.-do-you-think-censorship-is-a-solution" class="section level4">
+<h4>M: This is something I have seen in Hong Kong, too. Do you think censorship is a solution?</h4>
+<p>C: Did TVs ban political content? Do billboards ban political ads? Not really, so we really don’t think that banning political ads is a solution.</p>
+<p>N: It should be more about regulating content, what is not OK to say.</p>
+</div>
+<div id="m-how-do-you-differentiate-yourselves-from-other-consultancies-or-agencies-that-do-the-same-or-similar-things-as-you" class="section level4">
+<h4>M: How do you differentiate yourselves from other consultancies or agencies that do the same or similar things as you?</h4>
+<p>N: Firstly, aside from working on the big picture strategy we actually also implement it. Working hands-on gives us a much more tangible picture of the dynamics, limitations and issues that could be faced.</p>
+<p>C: When you hear academics, researchers and thought leaders jump enthusiastically to praise Jack Dorsey for banning political ads on Twitter, a practitioner who personally set up digital campaigns for politics will tell you how disastrous the effects of his decision can be. Our USP is that we work on the ground and thoroughly understand technical implications and their consequences.</p>
+</div>
+<div id="m-this-ties-back-with-what-you-mentioned-about-blind-spots.-being-on-the-ground-helps-you-spot-them-too-right" class="section level4">
+<h4>M: This ties back with what you mentioned about ‘blind spots’. Being on the ground helps you spot them, too, right?</h4>
+<p>N: Correct, and it also helps with finding alternative solutions in case Plan A didn’t work in the first place."</p>
+</div>
+<div id="m-what-is-your-vision-for-your-business" class="section level4">
+<h4>M: What is your vision for your business?</h4>
+<p>C: We truly believe that AI, data and digital technologies can be used for good causes - and we want to show that this is true and applies to anywhere around the world. It is also important for people to understand the uses of these technologies and the actors who control them. We want to help people understand both sides of the coin. Many governments and NGOs have digital and data on their agendas, but often seem to have a very superficial sense of the technologies - we want to help there. And we want to be involved in and lead the societal, political and ethical debates around these technologies, as well as demystify the exaggerated perceptions of danger.</p>
+<p><img src="https://raw.githubusercontent.com/martinctc/blog/master/images/Chris-at-KAS.jpg" /></p>
+</div>
+<div id="m-is-there-any-advice-you-have-for-data-scientists-who-aspire-to-work-on-political-projects-political-data-scientists-or-data-scientists-in-general" class="section level4">
+<h4>M: Is there any advice you have for data scientists who aspire to work on political projects, political data scientists, or data scientists in general?</h4>
+<p>C: <strong>Get the right data, know the sources and eliminate biases!</strong> This includes statistical bias (especially sampling, funding and reporting bias), cognitive bias and other social biases. Online datasets may be easier to obtain, but are outdated or not real time enough. Worse, they could be doctored to reflect the narratives of an authoritarian regime or lobbyist group.</p>
+<p>Ask yourselves: what were the context and conditions during the data collection process? What kind of limitations existed? Whether it’s data from a sentiment analysis report or a simple survey, what could be wrong with the data? Could there be any noise? Anything unusual?</p>
+<p>Also, the logic behind the metrics in a dataset can be misleading; think about GDP, a measure for economic growth. Does a growing GDP mean the country is improving and everyone is better off? Not really. If you look closer you might see that the GDP growth is distributed only to a small percentage of the population.</p>
+<p>How were survey responses recorded? Did the method change during the campaign? What’s the logic behind the metrics? What kind of issues may lead to the data being wrong? Could there be a situation of reluctant journalists or silenced human rights activists?</p>
+<p>Finally, ethics is not only for philosophers, but also for engineers. This will be a hot topic over the next years, and AI and data specialists will need to be able to explain to consumers and other stakeholders the different problems and solutions in algorithm-driven products.</p>
+<p>N: In politics and economics especially, <strong>it is really important to ask who created the dataset, who financed or sponsored it, and who really controls the overall character and narrative of the data</strong>.</p>
+<p>C: You should never be afraid to go out there on the field and collect the data by yourself - it can be really fun!</p>
+</div>
+<div id="m-thank-you-again-for-your-time-and-for-this-very-fascinating-interview." class="section level4">
+<h4>M: Thank you again for your time and for this very fascinating interview.</h4>
+<p><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" /></p>
+<hr />
+</div>
+</div>
+<div id="endnotes" class="section level2">
+<h2>Endnotes</h2>
+<p>What I thought was an interesting theme is the ubiquity in the application of analytics. But some of the data challenges that Nanthida and Chris raised are very real, and confirms the view that a considerable chunk of time in data analysis is spent on collecting, cleaning and getting the data right for analysis in the first place, not only the analysis itself.</p>
+<p>I hope you’ve enjoyed reading the above interview. If you would like to get in touch with Christopher and Nanthida, you may reach them through their website <a href="https://Worldacquire.com">here</a>. I’m also looking to do more interviews, so if you are a data / analytics practitioner and you think you have something interesting to share, please feel free to get in touch!</p>
+<p><small> Image credits: Artem Bryzgalov, Kelvin Yup, Frida Aguilar Estrada, Franz Wender, ThisisEngineering, camilo jimenez, dole777, jbdodane, History in HD, Jonathan Francisca, Carlos Muza </small></p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>See UN-related work on digital ethics and transparency, and on anti-disinformation: <a href="https://worldacquire.com/2019/12/09/worldacquire-at-the-united-nations-igf-2019/" class="uri">https://worldacquire.com/2019/12/09/worldacquire-at-the-united-nations-igf-2019/</a> and <a href="https://worldacquire.com/2020/02/27/online-disinformation-and-extremism-how-it-spreads-and-how-to-stop-it/" class="uri">https://worldacquire.com/2020/02/27/online-disinformation-and-extremism-how-it-spreads-and-how-to-stop-it/</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+</section>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
