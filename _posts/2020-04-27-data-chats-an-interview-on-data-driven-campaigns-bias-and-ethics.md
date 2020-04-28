@@ -4,7 +4,7 @@ title: "Data Chats: An Interview on Data-Driven Campaigns, Bias & Ethics"
 author: "Martin Chan"
 date: "April 27, 2020"
 layout: post
-tags: interviews
+tags: interviews surveys political-analytics data-collection
 ---
 
 <script src="{{ site.url }}{{ site.baseurl }}/knitr_files/data-chats-analytics-and-politics_an-interview_20200427_files/header-attrs-2.1.1/header-attrs.js"></script>
