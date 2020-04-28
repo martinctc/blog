@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "August 22, 2019"
 layout: post
 tags: tidyverse
+image: https://martinctc.github.io/blog/images/IMG_8041.jpg
 ---
 
 

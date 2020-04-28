@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "December 25, 2019"
 layout: post
 tags: vignettes rmarkdown excel
+image: https://raw.githubusercontent.com/martinctc/blog/master/images/dashboard-excel-flexdashboard-meme.jpg
 ---
 
 

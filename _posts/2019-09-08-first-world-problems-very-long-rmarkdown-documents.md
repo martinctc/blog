@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "September 8, 2019"
 layout: post
 tags: vignettes rmarkdown
+image: https://martinctc.github.io/blog/images/fwp-rmarkdown.png
 ---
 
 

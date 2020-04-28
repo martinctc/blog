@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "April 27, 2020"
 layout: post
 tags: interviews surveys political-analytics data-collection
+image: https://images.unsplash.com/photo-1558685203-2c1f7ee563c3?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80
 ---
 
 <script src="{{ site.url }}{{ site.baseurl }}/knitr_files/data-chats-analytics-and-politics_an-interview_20200427_files/header-attrs-2.1.1/header-attrs.js"></script>
@@ -173,6 +174,9 @@ tags: interviews surveys political-analytics data-collection
 <p>What I thought was an interesting theme is the ubiquity in the application of analytics. But some of the data challenges that Nanthida and Chris raised are very real, and confirms the view that a considerable chunk of time in data analysis is spent on collecting, cleaning and getting the data right for analysis in the first place, not only the analysis itself.</p>
 <p>I hope you’ve enjoyed reading the above interview. If you would like to get in touch with Christopher and Nanthida, you may reach them through their website <a href="https://Worldacquire.com">here</a>. I’m also looking to do more interviews, so if you are a data / analytics practitioner and you think you have something interesting to share, please feel free to get in touch!</p>
 <p><small> Image credits: Artem Bryzgalov, Kelvin Yup, Frida Aguilar Estrada, Franz Wender, ThisisEngineering, camilo jimenez, dole777, jbdodane, History in HD, Jonathan Francisca, Carlos Muza </small></p>
+
+<p><small><b>Themes</b>: political analytics, political data science, microtargeting, political advertising, data collection, social analytics, data bias, data integrity, algorithmic bias, statistical bias, sample bias, observer bias, bias, data ethics, data regulation, privacy, AI ethics, gdpr, tech for good, surveys, cambridge analytica, thailand, algorithm design, botnets, disinformation</small></p>
+
 </div>
 <div class="footnotes">
 <hr />

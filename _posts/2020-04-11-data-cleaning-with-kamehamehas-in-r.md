@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "April 11, 2020"
 layout: post
 tags: learning-r vignettes tidyverse
+image: https://raw.githubusercontent.com/martinctc/blog/master/images/kamehameha.gif
 ---
 
 <script src="{{ site.url }}{{ site.baseurl }}/knitr_files/strongest-kamehameha_20200223_files/header-attrs-2.1.1/header-attrs.js"></script>

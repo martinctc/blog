@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "April 27, 2019"
 layout: post
 tags: excel
+image: https://martinctc.github.io/blog/knitr_files/Favourite_Alternative_Excel_26-04-19_files/figure-html/meme-1.png
 ---
 
 

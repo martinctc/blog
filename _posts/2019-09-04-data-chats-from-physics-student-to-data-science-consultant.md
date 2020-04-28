@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "September 4, 2019"
 layout: post
 tags: interviews learning-r tidyverse rdatatable
+image: https://martinctc.github.io/blog/images/abhishek.jpeg
 ---
 
 

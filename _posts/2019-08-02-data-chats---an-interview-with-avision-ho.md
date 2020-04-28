@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "August 2, 2019"
 layout: post
 tags: interviews tidyverse
+image: https://martinctc.github.io/blog/images/avision-profile.jpeg
 ---
 
 

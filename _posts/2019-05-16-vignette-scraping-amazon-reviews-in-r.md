@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "May 16, 2019"
 layout: post
 tags: vignettes
+image: http://martinctc.github.io/blog/images/amazon_got.PNG
 ---
 
 <section class="main-content">

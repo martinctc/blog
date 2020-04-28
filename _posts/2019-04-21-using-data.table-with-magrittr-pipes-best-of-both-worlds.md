@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "April 21, 2019"
 layout: post
 tags: rdatatable tidyverse
+image: http://martinctc.github.io/blog/images/r-datatable.png
 ---
 
 

@@ -5,6 +5,7 @@ author: "Martin Chan"
 date: "January 23, 2020"
 layout: post
 tags: learning-r vignettes
+image: https://raw.githubusercontent.com/martinctc/blog/master/images/RPROJECT_2000dpi.png
 ---
 
 
