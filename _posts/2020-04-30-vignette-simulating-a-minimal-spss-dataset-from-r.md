@@ -12,7 +12,7 @@ image: https://raw.githubusercontent.com/martinctc/blog/master/images/surveysays
 
 <section class="main-content">
 <div id="tldr" class="section level2">
-<h2>TL;DR 📖</h2>
+<h2>What this is about 📖</h2>
 <p>I will simulate a minimal <strong>labelled survey</strong> dataset that can be exported as a SPSS (.SAV) file (with full variable and value labels) in R. I will also attempt to fabricate ‘meaningful patterns’ to the dataset such that it can be more effectively used for creating demo examples.</p>
 <div class="figure">
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/surveysays.gif" alt="" />
