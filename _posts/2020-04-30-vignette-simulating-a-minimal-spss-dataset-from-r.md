@@ -1,145 +1,19 @@
-<!DOCTYPE html>
+---
+title: "Vignette: Simulating a minimal SPSS dataset from R"
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+author: "Martin Chan"
+date: "April 30, 2020"
+layout: post
+tags: surveys vignettes tidyverse
+image: https://raw.githubusercontent.com/martinctc/blog/master/images/surveysays.gif
+---
 
-<head>
-
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<meta name="author" content="Martin Chan" />
-
-<meta name="date" content="2020-04-30" />
-
-<title>Vignette: Simulating a minimal SPSS dataset from R</title>
-
-<script src="minimal-sav_22-04-2020_files/header-attrs-2.1.1/header-attrs.js"></script>
-
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
-/* A workaround for https://github.com/jgm/pandoc/issues/4278 */
-a.sourceLine {
-  pointer-events: auto;
-}
-
-</style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
-</script>
-
-
-
-<link rel="stylesheet" href="minimal-sav_22-04-2020_files/style.css" type="text/css" />
-
-
-
-
-
-</head>
-
-<body>
-
-
-
-
-<section class="page-header">
-<h1 class="title toc-ignore project-name">Vignette: Simulating a minimal SPSS dataset from R</h1>
-<h4 class="author project-author">Martin Chan</h4>
-<h4 class="date project-date">April 30, 2020</h4>
-</section>
-
-
+<script src="{{ site.url }}{{ site.baseurl }}/knitr_files/minimal-sav_22-04-2020_files/header-attrs-2.1.1/header-attrs.js"></script>
 
 <section class="main-content">
 <div id="tldr" class="section level2">
 <h2>TL;DR 📖</h2>
-<p>In this post, I will simulate a minimal <strong>labelled survey</strong> dataset that can be exported as a SPSS (.SAV) file (with full variable and value labels) in R. I will also attempt to arbitrarily introduce ‘meaningful patterns’ to the dataset such that it can be more effectively used for creating demo examples.</p>
+<p>I will simulate a minimal <strong>labelled survey</strong> dataset that can be exported as a SPSS (.SAV) file (with full variable and value labels) in R. I will also attempt to fabricate ‘meaningful patterns’ to the dataset such that it can be more effectively used for creating demo examples.</p>
 <div class="figure">
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/surveysays.gif" alt="" />
 <p class="caption">image from Giphy</p>
@@ -147,10 +21,12 @@ a.sourceLine {
 </div>
 <div id="background" class="section level2">
 <h2>Background</h2>
-<p>Simulating data is one of the most useful skills to have in R. For one, it is helpful when you’re debugging code, and you want to create a <strong>reprex</strong> (reproducible example) to ask for help more effectively ( <em>help others help you</em> ).<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> However, regardless of whether you’re a researcher or a business analyst, the data associated with your code is likely to be either <strong>confidential</strong> so you cannot share it on <a href="https://stackoverflow.com/">Stack Overflow</a>, or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem.</p>
+<p>Simulating data is one of the most useful skills to have in R. For one, it is helpful when you’re debugging code, and you want to create a <strong>reprex</strong> (reproducible example) to ask for help more effectively (<em>help others help you </em>, as the saying goes.)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> However, regardless of whether you’re a researcher or a business analyst, the data associated with your code is likely to be either <strong>confidential</strong> so you cannot share it on <a href="https://stackoverflow.com/">Stack Overflow</a>, or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem.</p>
 <p>Data simulation is slightly more tricky with <strong>survey datasets</strong>, which are characterised by (1) <strong>labels on both variable and values/codes</strong>, and (2) <strong>a large proportion of ordinal / categorical variables</strong>.</p>
 <p>For instance, a Net Promoter Score (NPS) variable is usually accompanied with the variable label <em>“On a scale of 0-10, how likely are you to recommend X to a friend or family?”</em> (i.e. the actual question asked in a survey), and is itself an instance of an ordinal variable. If you are trying to produce an example that hinges on an issue where labels are relevant, you would also need to simulate the labels as well.</p>
-<p>There are also <em>educational</em> reasons for simulating data: it is useful to simulate data to demo an analysis or a function, because this makes it easy for the audience to reproduce the example. For this purpose, it would be especially beneficial if you can simulate a dataset where there you can introduce some arbitrary relationships between the variables, rather than them being completely random (<code>sample()</code> all the way). Personally, I have in the past found it a pain to simulate datasets which are suited for demo-ing survey related functions, especially when I was working on examples for the <a href="https://www.github.com/martinctc/surveytoolbox">{surveytoolbox}</a> package 📦. Hence, this is partly an attempt to simulate a labelled dataset that is minimally sufficient for demonstrating some of the <a href="https://www.github.com/martinctc/surveytoolbox">{surveytoolbox}</a> functions.</p>
+<p>There are also <em>educational</em> reasons for simulating data: it is useful to simulate data to demo an analysis or a function, because this makes it easy for the audience to reproduce the example. For this purpose, it would be especially beneficial if you can simulate a dataset where there you can introduce some arbitrary relationships between the variables, rather than them being completely random (<code>sample()</code> all the way).</p> 
+
+<p>Personally, I have in the past found it a pain to simulate datasets which are suited for demo-ing survey related functions, especially when I was working on examples for the <a href="https://www.github.com/martinctc/surveytoolbox">{surveytoolbox}</a> package 📦. Hence, this is partly an attempt to simulate a labelled dataset that is minimally sufficient for demonstrating some of the <a href="https://www.github.com/martinctc/surveytoolbox">{surveytoolbox}</a> functions.</p>
 <p>🏷 For more information specifically on manipulating labels in R, do check out a previous post I’ve written on <a href="https://martinctc.github.io/blog/working-with-spss-labels-in-r/">working with SPSS labels in R</a>.</p>
 </div>
 <div id="getting-started" class="section level2">
@@ -377,18 +253,3 @@ a.sourceLine {
 </ol>
 </div>
 </section>
-
-
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
-
-</body>
-</html>

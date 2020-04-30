@@ -1,7 +1,7 @@
 ---
 title: "Vignette: Simulating a minimal SPSS dataset from R"
 author: "Martin Chan"
-date: "April 22, 2020"
+date: "April 30, 2020"
 output:                    # DO NOT CHANGE
   prettydoc::html_pretty:  # DO NOT CHANGE
     theme: cayman          # DO NOT CHANGE
@@ -9,37 +9,38 @@ output:                    # DO NOT CHANGE
 ---
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
-library(tidyverse)
-# prettyjekyll::FormatPost("_knitr/First_Post_13-04-19.Rmd")
+# prettyjekyll::FormatPost("_knitr/minimal-sav_22-04-2020.Rmd")
 ```
 
 ## TL;DR `r emo::ji("open_book")`
 
-In this post, I will simulate a _minimal_ labelled survey dataset that can be exported as a SPSS (.SAV) file, with full variable and value labels. I will also attempt to arbitrarily introduce 'meaning' to the dataset such that it can be more effectively used for creating demo examples.
+In this post, I will simulate a minimal **labelled survey** dataset that can be exported as a SPSS (.SAV) file (with full variable and value labels) in R. I will also attempt to arbitrarily introduce 'meaningful patterns' to the dataset such that it can be more effectively used for creating demo examples.
 
 ![image from Giphy](https://raw.githubusercontent.com/martinctc/blog/master/images/surveysays.gif)
 
 ## Background
 
-Simulating data is one of the most useful skills to have in R. For one, it is helpful when you're debugging code, and you have to create a **reprex** (reproducible example) so you can communicate your problem to others for help.[^1] Whether you're a researcher or a business analyst, the data associated with your code is likely to be either confidential so you cannot share it on [Stack Overflow](https://stackoverflow.com/), or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem. 
+Simulating data is one of the most useful skills to have in R. For one, it is helpful when you're debugging code, and you want to create a **reprex** (reproducible example) to ask for help more effectively ( _help others help you_ ).[^1] However, regardless of whether you're a researcher or a business analyst, the data associated with your code is likely to be either **confidential** so you cannot share it on [Stack Overflow](https://stackoverflow.com/), or way too large or complex for you to upload anyway. Creating an example dataset from a few lines of code which you can safely share is an effective way to get around this problem. 
 
-[^1]: Check out [this RStudio Community thread](https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-do-one/5219) to find out more about **reprex** (Allegedly, the portmanteau _reprex_ is coined by [Romain Francois](https://twitter.com/romain_francois/status/530011023743655936))
+[^1]: Check out [this RStudio Community thread](https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-do-one/5219) to learn more about **reprex** (the portmanteau _reprex_ is coined by [Romain Francois](https://twitter.com/romain_francois/status/530011023743655936))
 
-Data simulation is slightly less straightforward with **survey datasets**, which are characterised by (1) **variables having labels attached (for both the variable itself and the codes)**, and (2) **a large proportion of ordinal / categorical variables**. 
+Data simulation is slightly more tricky with **survey datasets**, which are characterised by (1) **labels on both variable and values/codes**, and (2) **a large proportion of ordinal / categorical variables**. 
 
-For instance, a Net Promoter Score (NPS) question/variable is usually accompanied with the variable label _"On a scale of 0-10, how likely are you to recommend X to a friend or family?"_, and is itself an instance of an ordinal variable. If you are trying to produce an example that hinges on an issue relating to labels, you would also need to simulate the labels as well. 
+For instance, a Net Promoter Score (NPS) variable is usually accompanied with the variable label _"On a scale of 0-10, how likely are you to recommend X to a friend or family?"_ (i.e. the actual question asked in a survey), and is itself an instance of an ordinal variable. If you are trying to produce an example that hinges on an issue where labels are relevant, you would also need to simulate the labels as well. 
 
-Simulating data is also useful for demo-ing an analysis or a function, because you'd want to make it easy for your audience to reproduce your example. For this purpose, it would be especially beneficial if you can simulate a dataset where there is some arbitrarily 'meaningful' relationship between variables, rather than them being completely random. Personally, I've in the past found it a pain to simulate datasets which are suited for demo-ing survey related functions, especially when I was working on examples for the [{surveytoolbox}](https://www.github.com/martinctc/surveytoolbox) package `r emo::ji("package")`. Hence, this is partly an attempt to simulate a labelled dataset that is minimally sufficient for demonstrating [{surveytoolbox}](https://www.github.com/martinctc/surveytoolbox) functions.
+There are also _educational_ reasons for simulating data: it is useful to simulate data to demo an analysis or a function, because this makes it easy for the audience to reproduce the example. For this purpose, it would be especially beneficial if you can simulate a dataset where there you can introduce some arbitrary relationships between the variables, rather than them being completely random (`sample()` all the way). Personally, I have in the past found it a pain to simulate datasets which are suited for demo-ing survey related functions, especially when I was working on examples for the [{surveytoolbox}](https://www.github.com/martinctc/surveytoolbox) package `r emo::ji("package")`. Hence, this is partly an attempt to simulate a labelled dataset that is minimally sufficient for demonstrating some of the [{surveytoolbox}](https://www.github.com/martinctc/surveytoolbox) functions.
 
-`r emo::ji("label")` For more on specifically manipulating labels in R, do check out a previous post I've written on [manipulating labels in R](https://martinctc.github.io/blog/working-with-spss-labels-in-r/).
+`r emo::ji("label")` For more information specifically on manipulating labels in R, do check out a previous post I've written on [working with SPSS labels in R](https://martinctc.github.io/blog/working-with-spss-labels-in-r/).
 
 ## Getting started
 
 To run this example, we’ll need to load [{tidyverse}](https://www.tidyverse.org/), [{surveytoolbox}](https://www.github.com/martinctc/surveytoolbox), and [{haven}](https://haven.tidyverse.org/). Specifically, I’m using {tidyverse} for its data manipulation functions, {surveytoolbox} for functions to set up variable/value labels, and finally {haven} to export the data as a .SAV file.
 
-Note that {surveytoolbox} is currently not available on CRAN yet, but you can install this by running `devtools::install_github("martinctc/surveytoolbox")`.
+Note that {surveytoolbox} is currently not available on CRAN yet, but you can install this by running `devtools::install_github("martinctc/surveytoolbox")`. You'll need {devtools} installed, if you haven't got it already.
 
-In addition to loading the packages, let us also [set the seed](https://stackoverflow.com/questions/13605271/reasons-for-using-the-set-seed-function) with `set.seed()` so that the simulated numbers are reproducible:
+In addition to loading the packages, we will also set the seed[^2] with `set.seed()` to make the simulated numbers  reproducible:
+
+[^2]: If you're not familiar with this concept / approach, I'd recommend checking out [this Stack Overflow thread](https://stackoverflow.com/questions/13605271/reasons-for-using-the-set-seed-function).
 
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -50,30 +51,33 @@ set.seed(100) # Enable reproducibility - 100 is arbitrary
 ```
 
 ## Create individual vectors
-To make it easier to control for the individual variables of the labelled dataset, my approach will be to first set up individual variables as labelled vectors, and then bind them together at the end into a data frame. To adorn variable and value labels to a numeric vector, I will use `set_varl()` and `set_vall()` from {surveytoolbox} to do this respectively.
 
-To start with, I will create `v_id` as an ID variable running from 1 to 1000, which can simply be generated with the `seq()` function. I can then use `set_varl()` from {surveytoolbox} to set a variable label for the `v_id` vector. 
+For the purpose of clarity and ease of debugging, my approach will be to first set up each simulated variable as individual labelled vectors, and then bind them together into a data frame at the end. To adorn variable and value labels to a numeric vector, I will use `set_varl()` and `set_vall()` from {surveytoolbox} to do these tasks respectively.
+
+I want to create a dataset with 1000 observations, so I will start with creating `v_id` as an ID variable running from 1 to 1000, which can simply be generated with the `seq()` function.[^3] I will then use `set_varl()` from {surveytoolbox} to set a variable label for the `v_id` vector. The second argument of `set_varl()` takes in a character vector and assigns it as the variable label of the target variable - super straightforward.
+
+[^3]: For those who are more ambitious, I would recommend checking out the [{uuid} package](https://cran.r-project.org/web/packages/uuid/index.html) for generating proper GUIDs (Globally Unique Identifier). However, this then wouldn't be _minimal_, so I would just stick with running a simple `seq()` sequence.
 
 ```{r message=FALSE, warning=FALSE}
-#### Create individual vectors ####
 ## Record Identifier
 v_id <-
   seq(1, 1000) %>%
   set_varl("Record Identifier")
 ```
 
-The same goes for `v_gender`, but this time I want to also (1) apply an arbitrary probability to the distribution, and (2) give each value in the vector a value label ("Male", "Female", "Other"). 
+The same goes for `v_gender`, but this time I want to also (1) _apply an arbitrary probability to the distribution_, and (2) _give each value in the vector a value label ("Male", "Female", "Other")_. 
 
 To do (1), I pass a numeric vector to the `prob` argument to represent the probabilities that 1, 2, and 3 will fall out for n = 1000.
 
-To do (2), I run `set_vall()` and pass the desired labels to the `value_labels` argument. 
+To do (2), I run `set_vall()` and pass the desired labels to the `value_labels` argument. `set_vall()` acccepts a named character vector to be assigned as value labels. 
 
 Finally, I run `set_varl()` again to make sure that a variable label is present.
 
 ```{r message=FALSE, warning=FALSE}
 ## Gender
 v_gender <-
-  sample(1:3, 1000, replace = TRUE,
+  sample(x = 1:3,
+         size = 1000, replace = TRUE,
          prob = c(.48, .48, .04)) %>% # arbitrary probability
   set_vall(value_labels = c("Male" = 1,
                             "Female" = 2,
@@ -99,11 +103,13 @@ v_kpi <-
   set_varl("Q2. KPI")
 ```
 
-Whilst the above approach is straightforward, the downside is that the numbers are likely to look completely random if we try to actually analyse the results (which is what `sample()` is supposed to do) - which isn't ideal. 
+Whilst the above approach is straightforward, the downside is that the numbers are likely to look completely random if we try to actually analyse the results - which is what `sample()` is supposed to do - but clearly isn't ideal. 
 
-I wanted to simulate numbers that are more realistic, i.e. data which will form a discernible pattern when grouping and summarising by gender. What I'll therefore do is to iterate through each number in `v_gender`, and sample numbers based on the gender of the 'respondent'. 
+I want to simulate numbers that are more realistic, i.e. data which will form a discernible pattern when grouping and summarising by gender. What I'll therefore do is to iterate through each number in `v_gender`, and sample numbers based on the gender of the 'respondent'. 
 
-The `prob` argument within `sample()` are completely arbitrary, but are designed to generate results where a bigger KPI value is more likely if `v_gender == 1`, followed by `v_gender == 3`, then `v_gender == 2`.
+The values that are passed below to the `prob` argument within `sample()` are completely arbitrary, but are designed to generate results where a bigger KPI value is more likely if `v_gender == 1`, followed by `v_gender == 3`, then `v_gender == 2`.
+
+Note that I've used `map2_dbl()` here (from the {purrr} package, part of {tidyverse}), which "loops" through `v_gender` and returns a numeric value for each iteration.
 
 ```{r message=FALSE, warning=FALSE}
 ## KPI - #2 gender-dependent sampling
@@ -113,16 +119,16 @@ v_kpi <-
     if(x == 1){
       sample(1:5,
              size = 1,
-             prob = c(10, 17, 17, 28, 28))
+             prob = c(10, 17, 17, 28, 28)) # Sum to 100
     } else if(x == 2){
       sample(1:5,
              size = 1,
-             prob = c(11, 22, 28, 22, 17))
+             prob = c(11, 22, 28, 22, 17)) # Sum to 100
 
     } else {
       sample(1:5,
              size = 1,
-             prob = c(13, 20, 20, 27, 20))
+             prob = c(13, 20, 20, 27, 20)) # Sum to 100
     }
   }) %>%
   set_vall(value_labels = c("Extremely dissatisfied" = 1,
@@ -133,22 +139,22 @@ v_kpi <-
   set_varl("Q2. KPI")
 ```
 
-For completeness, let me also simulate a mock NPS variable. Although 
+To add a level of complexity, let me also simulate a mock NPS variable. One way to do this is to punch in random numbers like how it is done above with `v_kpi`, but this will involve a lot more random punching than is desirable for a 11-point scale NPS variable. 
 
+I will therefore instead write a custom function called `skew_inputs()` that 'expands' three arbitrary input numbers into 11 numbers, which will then serve as the probability anchors for my `sample()` functions later on. 
 
 ```{r message=FALSE, warning=FALSE}
 ## Generate skew inputs for sample probability
 ##
-## `n` specifies number of values to return
-## `values` requires a numeric vector of length 3
-## to generate the skewed probabilities
+## `value1`, `value2` and `value3`
+## generate the skewed probabilities
 ##
-skew_inputs <- function(values){
+skew_inputs <- function(value1, value2, value3){
   
   all_n <-
-  c(rep(values[[1]], 7), # 0 - 6
-    rep(values[[2]], 2), # 7 - 8
-    rep(values[[3]], 2)) # 9 - 10
+  c(rep(value1, 7), # 0 - 6
+    rep(value2, 2), # 7 - 8
+    rep(value3, 2)) # 9 - 10
   
   return(sort(all_n))
 }
@@ -156,33 +162,44 @@ skew_inputs <- function(values){
 ## Outcome KPI - NPS
 v_nps <-
   v_gender %>%
-  map2_dbl(.y = 1:1000, function(x, y){
-    
-    set.seed(y)
-           
+  map_dbl(function(x){
     if(x == 1){
-      
-      sample(0:10, size = 1, prob = skew_inputs(c(1, 1, 10)))
+
+      sample(0:10, size = 1, prob = skew_inputs(1, 1, 8))
 
     } else if(x == 2){
 
-      sample(0:10, size = 1, prob = skew_inputs(c(1, 3, 3)))
+      sample(0:10, size = 1, prob = skew_inputs(2, 3, 5))
 
     } else if(x == 3){
-      
-      sample(0:10, size = 1, prob = skew_inputs(c(1, 5, 10)))
-      
+
+      sample(0:10, size = 1, prob = skew_inputs(1, 3, 6))
+
     } else {
-      
+
       stop("Error - check x")
-      
+
     }
   }) %>%
-  as_nps() %>%
   set_varl("Q3. NPS")
 ```
 
+Admittedly that the above procedure isn't _minimal_, but note that this is a trade-off to introduce some arbitrary patterns to the data. A 'quick and dirty' alternative simulation would simply be to run `sample(x = 0:10, size = 1000, replace = TRUE)` for `v_nps`.
+
+There is one slight technicality: the so-called NPS question is strictly speaking a _likelihood to recommend_ question which ranges from 0 to 10, and the **Net Promoter Score** itself is calculated on a recoded version of that question where _Detractors_ (scoring 0 to 6) have to be coded as -100, _Passives_ (scoring 7 to 8) as 0, and _Promoters_ (scoring 9 to 10) as +100. The **Net Promoter Score** is simply calculated as a mean of those recoded values.
+
+Fortunately, the {surveytoolbox} package comes shipped with a `as_nps()` function that does this recoding for you, and also automatically applies the value labels. let's call this new variable `v_nps2`:
+
+```{r}
+## Outcome KPI - Recoded NPS (NPS2)
+
+v_nps2 <- as_nps(v_nps) %>% set_varl("Q3X. Recoded NPS")
+```
+
+
 ## Combine vectors
+
+Now that all the individual variables are set up, I can simply combine them all into a tibble in one swift movement[^4]:
 
 ```{r message=FALSE, warning=FALSE}
 #### Combine individual vectors ####
@@ -190,25 +207,51 @@ combined_df <-
   tibble(id = v_id,
          gender = v_gender,
          kpi = v_kpi,
-         nps = v_nps)
-
+         nps = v_nps,
+         nps2 = v_nps2)
 ```
 
-Looking at the result
+[^4]: I shouldn't need to footnote this, but here's a Rocky Flintstone tribute for any Belinkers out there. `r emo::ji("laugh")`
+
+## Results!
+
+![image from Giphy](https://media.giphy.com/media/IgLnqEAUh3XP6dagEk/giphy.gif)
+
+Let's run a few checks on our dataset to confirm that everything has worked out okay.
+
+The classic {dplyr} `glimpse()`:
+
+```{r}
+combined_df %>% glimpse()
+```
+
+Then `head()` to see the first five rows:
+
+```{r}
+combined_df %>% head()
+```
+
+So it appears that the value labels have been properly attached, and the range of values are what we'd expect. Now what about the "fake patterns"?
+
+Looking at the topline result of the data, we seem to have succeeded in fabricating some sensible patterns in the data. It appears that this company X will need to work harder at winning over its female customers, who have rated them lower on two KPI metrics:
 
 ```{r message=FALSE, warning=FALSE}
 combined_df %>%
   group_by(gender) %>%
   summarise(n = n_distinct(id),
             kpi = mean(kpi),
-            nps = mean(nps))
+            nps2 = mean(nps2))
 ```
 
+## Check the labels `r emo::ji("label")``r emo::ji("label")``r emo::ji("label")`
 
+Finally I'd like to share a couple of functions that enable you to explore the labels in a labelled dataset. `surveytoolbox::varl_tb()` accepts a labelled data frame, and returns a two-column data frame with the variable name and its corresponding variable label:
 
 ```{r message=FALSE, warning=FALSE}
 combined_df %>% varl_tb()
 ```
+
+`surveytoolbox::data_dict()` takes this further, and shows also the value labels as a third column. This is what effectively what's typically referred to as a **code frame** in a market research context: 
 
 ```{r message=FALSE, warning=FALSE}
 combined_df %>%
@@ -216,12 +259,21 @@ combined_df %>%
   data_dict()
 ```
 
+I would also highly recommend the `view_df()` function from {sjPlot}, which exports a similar overview of variables and labels in a nicely formatted HTML table. For huge labelled datasets, this offers a fantastic light-weight way to browse through your variables and labels.
+
 ```{r eval=FALSE}
-combined_df %>%
-  sjPlot::view_df()
+combined_df %>% sjPlot::view_df()
 ```
+
+Once we've checked all the labels and we're happy with everything, we can then export our dataset with `haven::write_sav()`! If everything's worked properly, all the labels should appear properly if you choose to open your example dataset in SPSS, or Q:
 
 ```{r eval=FALSE}
 combined_df %>% haven::write_sav("Simulated Dataset.sav")
 ```
+
+## End notes
+
+I hope you've found this vignette useful!
+
+If you ever get a chance to try out [{surveytoolbox}](https://www.github.com/martinctc/surveytoolbox), I would really appreciate if you can submit any [issues/feedback on GitHub](https://github.com/martinctc/surveytoolbox/issues), or get in touch with me directly. I'm looking for collaborators to make the package more user-friendly and powerful, so if you're interested,  please don't be shy and give me a shout! `r emo::ji("smile")`
 
