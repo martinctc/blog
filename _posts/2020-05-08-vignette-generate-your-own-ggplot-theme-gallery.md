@@ -191,7 +191,7 @@ image: https://media.giphy.com/media/dmypi9dyBfmOQ/giphy.gif
 <div id="run-your-ggplot-gallery" class="section level3">
 <h3>3. Run your ggplot gallery!</h3>
 <p>The final step is to create the ggplot “gallery”.</p>
-<p>I used <code>purrr::pmap()</code> on <code>iter_df</code>, which applies a function to each column, using the values in each column as inputs to the arguments of the function. You will see that:</p>
+<p>I used <code>purrr::pmap()</code> on <code>iter_df</code>, which applies a function to the data frame, using the values in each column as inputs to the arguments of the function. You will see that:</p>
 <ul>
 <li><code>iter_label</code> is ultimately used as the names for the list of plots (<code>plot_gallery</code>).</li>
 <li><code>label</code> within the function is used for populating the subtitles of the plots</li>
