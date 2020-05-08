@@ -1,0 +1,222 @@
+---
+title: "Vignette: Generate your own ggplot theme gallery"
+author: "Martin Chan"
+date: "May 8, 2020"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# prettyjekyll::FormatPost("_knitr/generate-your-own-ggplot-gallery_20200508.Rmd")
+```
+
+## Background
+
+![](https://raw.githubusercontent.com/martinctc/blog/master/images/diy-ggplot-theme.png)
+
+I've always found it a bit of a pain to explore and choose from all the different themes available out there for {ggplot2}.
+
+Yes I know, I know - there are probably tons of websites out there with a ggplot theme gallery which I can Google,[^1] but it's always more fun if you can create your own. So here's my attempt to do this, on a lockdown Bank Holiday afternoon. 
+
+[^1]: See https://ggplot2.tidyverse.org/reference/ggtheme.html and https://cmdlinetips.com/2019/10/8-ggplot2-themes/ for instance.
+
+
+## DIY ggplot theme gallery `r emo::ji("bar_chart")`
+
+### 1. Start with a list of plots and a list of themes
+
+The outcome I want to achieve from this is to create something that would make it easier to decide which ggplot theme to pick for the visualisation at hand. The solution doesn't need to be fancy: it would be helpful enough to generate all the combinations of plot types X themes, so I can browse through them and get inspirations more easily.
+
+I took a leaf out of [Shayne Lynn's book/blog](https://www.shanelynn.ie/themes-and-colours-for-r-ggplots-with-ggthemr/) and created a couple of "base plots" using `iris` (yes, boring, but it works). I did these for four types of plots:
+
+1. scatter plot
+2. bar plot
+3. box plot
+4. density plot
+
+I then assigned these four plots into a list object called `plot_list`, and converted them into a tibble (`plot_base`) that I could use for joining afterwards. 
+
+This step is then repeated for themes, where I virtually punched in all the existing themes in {ggplot2} and {ggthemes} into a named list (`theme_list`), and also create a tibble (`theme_base`). You can make this list as long and exhaustive as you want, but for this example I didn't want to go into overkill. 
+
+You'll see that I've made the names quite elaborate in terms of specifying the package source. The reason for this is because these names will be used afterwards in the plot output, and it will be helpful for identifying the function for generating the theme in the gallery.
+
+```{r message=FALSE, warning=FALSE}
+#### Load packages ####
+library(tidyverse)
+library(ggthemes) # Optional - only for testing additional themes
+
+
+#### Create base plots ####
+## scatter plot
+point_plot <-
+  ggplot(iris, aes(x=jitter(Sepal.Width),
+                   y=jitter(Sepal.Length),
+                   col=Species)) +
+  geom_point() +
+  labs(x="Sepal Width (cm)",
+       y="Sepal Length (cm)",
+       col="Species",
+       title="Iris Dataset - Scatter plot")
+
+## bar plot
+bar_plot <-
+  iris %>%
+  group_by(Species) %>%
+  summarise(Sepal.Width = mean(Sepal.Width)) %>%
+  ggplot(aes(x=Species, y=Sepal.Width, fill=Species)) +
+  geom_col() +
+  labs(x="Species",
+       y="Mean Sepal Width (cm)",
+       fill="Species",
+       title="Iris Dataset - Bar plot")
+
+## box plot
+box_plot <- ggplot(iris,
+                   aes(x=Species,
+                       y=Sepal.Width,
+                       fill=Species)) +
+  geom_boxplot() +
+  labs(x="Species",
+       y="Sepal Width (cm)",
+       fill="Species",
+       title="Iris Dataset - Box plot")
+
+## density plot
+density_plot <-
+  iris %>%
+  ggplot(aes(x = Sepal.Length, fill = Species)) +
+  geom_density() +
+  facet_wrap(.~Species) +
+  labs(x="Sepal Length (cm)",
+       y="Density",
+       fill="Species",
+       title="Iris Dataset - Density plot")
+
+#### Create iteration table ####
+## Put all base plots in a list
+plot_list <-
+  list("bar plot" = bar_plot,
+       "box plot" = box_plot,
+       "scatter plot" = point_plot,
+       "density plot" = density_plot)
+
+## Convert list into a tibble
+plot_base <-
+  tibble(plot = plot_list,
+         plot_names = names(plot_list))
+
+## Put all themes to test in a named list
+## names will be fed into subtitles
+theme_list <-
+  list("ggplot2::theme_minimal()" = theme_minimal(),
+       "ggplot2::theme_classic()" = theme_classic(),
+       "ggplot2::theme_bw()" = theme_bw(),
+       "ggplot2::theme_gray()" = theme_gray(),
+       "ggplot2::theme_linedraw()" = theme_linedraw(),
+       "ggplot2::theme_light()" = theme_light(),
+       "ggplot2::theme_dark()" = theme_dark(),
+       "ggthemes::theme_economist()" = ggthemes::theme_economist(),
+       "ggthemes::theme_economist_white()" = ggthemes::theme_economist_white(),
+       "ggthemes::theme_calc()" = ggthemes::theme_calc(),
+       "ggthemes::theme_clean()" = ggthemes::theme_clean(),
+       "ggthemes::theme_excel()" = ggthemes::theme_excel(),
+       "ggthemes::theme_excel_new()" = ggthemes::theme_excel_new(),
+       "ggthemes::theme_few()" = ggthemes::theme_few(),
+       "ggthemes::theme_fivethirtyeight()" = ggthemes::theme_fivethirtyeight(),
+       "ggthemes::theme_foundation()" = ggthemes::theme_foundation(),
+       "ggthemes::theme_gdocs()" = ggthemes::theme_gdocs(),
+       "ggthemes::theme_hc()" = ggthemes::theme_hc(),
+       "ggthemes::theme_igray()" = ggthemes::theme_igray(),
+       "ggthemes::theme_solarized()" = ggthemes::theme_solarized(),
+       "ggthemes::theme_solarized_2()" = ggthemes::theme_solarized_2(),
+       "ggthemes::theme_solid()" = ggthemes::theme_solid(),
+       "ggthemes::theme_stata()" = ggthemes::theme_stata(),
+       "ggthemes::theme_tufte()" = ggthemes::theme_tufte(),
+       "ggthemes::theme_wsj()" = ggthemes::theme_wsj())
+
+## Convert list into a tibble
+theme_base <-
+  tibble(theme = theme_list,
+         theme_names = names(theme_list))
+
+plot_base
+theme_base
+```
+
+### 2. Create an iteration table
+
+The next step is to create what I call an iteration table. Here I use `tidyr::expand_grid()`, which **creates a tibble from all combinations of inputs**. Actually you can use either `tidyr::expand_grid()` or the base function `expand.grid()`, but I like the fact that the former returns a tibble rather than a data frame. 
+
+The output is `all_combos`, which is a two column tibble with all combinations of `theme_names` and `plot_names`, as character vectors. I then use `left_join()` twice to bring in the themes and the base plots:
+
+```{r}
+## Create an iteration data frame
+## Use `expand_grid()` to generate all combinations
+## of themes and plots
+
+all_combos <-
+  expand_grid(plot_names = plot_base$plot_names,
+              theme_names = theme_base$theme_names)
+  
+iter_df <-
+  all_combos %>%
+  left_join(plot_base, by = "plot_names") %>%
+  left_join(theme_base, by = "theme_names") %>%
+  select(theme_names, theme, plot_names, plot) # Reorder columns
+
+iter_df
+```
+
+
+### 3. Run your ggplot gallery!
+
+The final step is to create the ggplot "gallery". 
+
+I used `purrr::pmap()` on `iter_df`, which applies a function to each column, using the values in each column as inputs to the arguments of the function. You will see that:
+
+- `iter_label` is ultimately used as the names for the list of plots (`plot_gallery`).
+- `label` within the function is used for populating the subtitles of the plots
+- `output_plot` is the plot that is created within the function
+
+```{r}
+#### Run plots ####
+## Use `pmap()` to run all the plots-theme combinations
+
+## Create labels to be used as names for `plot_gallery`
+iter_label <-
+  paste0("Theme: ",
+         iter_df$theme_names,
+         "; Plot type: ",
+         iter_df$plot_names)
+
+## Create a list of plots
+plot_gallery <-
+  iter_df %>%
+  pmap(function(theme_names, theme, plot_names, plot){
+    
+    label <- 
+      paste0("Theme: ",
+             theme_names,
+             "\nPlot type: ",
+             plot_names)
+
+    output_plot <-
+      plot +
+      theme +
+      labs(subtitle = label)
+    
+    return(output_plot)
+  }) %>%
+  set_names(iter_label)
+
+
+plot_gallery
+```
+
+### End Notes
+
+And here it is! That didn't take that many lines of code, but you can already generate a great number of plots with `expand_grid()` and `pmap()`. 
+
+I should also caveat that this is by no means a "pretty" gallery; it's very much a minimal implementation, but is good enough for my own consumption. 
