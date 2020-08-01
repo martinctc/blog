@@ -19,7 +19,7 @@ this project is an attempt to bring together the two spheres of programming and
 
 ## The App
 
-xx
+<Describe the layout of the app>
 
 ## Data Collection and Cleaning
 
@@ -32,3 +32,4 @@ xx
 ## Shape Files
 
 xx
+
