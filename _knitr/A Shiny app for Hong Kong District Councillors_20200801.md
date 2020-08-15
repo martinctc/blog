@@ -9,12 +9,14 @@ output:                    # DO NOT CHANGE
 ---
 
 ## TL;DR
+We built an R Shiny app to improve access to information on Hong Kong's local politicians so that voters can make more informed choices. This combines information on each politician alongside their Facebook updates and illustrative maps of their district.
 
-There is a significant barrier in accessing updates from local politicians in Hong Kong. In this project, we tackled this problem by creating a Shiny app in R, which brings together the Facebook feeds and constituency information for Hong Kong's district councillors in one place. 
+## Overview
+There is a significant barrier in accessing updates from local politicians in Hong Kong. In this project, we tackled this problem by creating a Shiny app in R, which brings together the Facebook feeds and constituency information for Hong Kong's district councillors in one place. In this way, people will have access to this disparate information in a web app.
 
 You can access the app [here](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/), and view our GitHub repository [here](https://github.com/avisionh/dashboard-hkdistrictcouncillors).
 
-Whether you are more of an R enthusiast or simply someone who has an interest in Hong Kong politics (hopefully both!), we hope this post will bring you some inspiration on how you can use R _not just_ as a great tool for data analysis, but also as an enabler for you to do something tangible for your community and causes you care about. 
+Whether you are more of an R enthusiast or simply someone who has an interest in Hong Kong politics (hopefully both!), we hope this post will bring you some inspiration on how you can use R _not just_ as a great tool for data analysis, but also as an enabler for you to do something tangible for your community and contribute to causes you care about. 
 
 ## Background
 
