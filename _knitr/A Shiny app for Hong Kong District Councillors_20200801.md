@@ -18,7 +18,7 @@ There is a significant barrier in accessing updates from local politicians in Ho
 
 You can access:
 
-- The app [here](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/), 
+- The app [here](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/). 
 - Our GitHub repository [here](https://github.com/avisionh/dashboard-hkdistrictcouncillors). 
 - Don't forget to also provide some feedback to the Shiny app [here](https://hkdistrictsinfo.typeform.com/to/gFHC02gE)!
 
@@ -46,25 +46,30 @@ Specifically, there are several key components that were used on top of the incr
 - [sf](https://github.com/r-spatial/sf) and [leaflet](https://github.com/rstudio/leaflet): For importing geographic data and creating interactive maps.
 - [rintrojs](https://github.com/carlganz/rintrojs): For interactive tutorials
 
-## Data Collection and Cleaning
+### Data Collection and Cleaning
 <Insert screenshot>
 - Where the data came from
 - Deliberated to using Google Sheets to avoid bulking up the repo, and also enable participation from those who do not code
 
-## A solution for getting the Facebook feed
+### A solution for getting the Facebook feed
 <Insert screenshot>
 - Talk about challenges of getting the Facebook API
 - Found a workaround using just iframes - expedient but fit-for-purpose
 
-## Interactive Map
+### Interactive Map
 
 <Insert screenshot>
 - Talk about how we started off dealing with Shape files and a ggplot map, then moved to leaflet
 - Challenges and learnings
 
 ## What are our next steps?
+- Some cool stuff we have not been able to implement:
 
-## How you can get involved
+    + [precommit hooks](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/17): Those familiar with Python may be aware of pre-commit hooks as ways to automatically detect whether your repo contains anything sensitive like a `.secrets` file. Setting this up will enable us to have automated checks run each time we make a commit to assure we are follow specified standards.
+    + [codecov](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/33): Allows us to robustly test the functions in our code so that they work under a multitude of scenarios such as when users encounter problems.
+    + [modularise shiny code](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/26): Ensures our Shiny code is more easier to follow.
+
+## Want to get involved?
 - Be a 'reveiwer' or help with coding
 - Send an email to hkdistricts.info@gmail.com
 
