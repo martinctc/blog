@@ -39,9 +39,12 @@ The District Council is the most local level of government in which people can i
 
 The Shiny app is built like a dashboard which combines information about each district councillor alongside their Facebook page posts (if it exists) and the district they serve, illustrated on an interactive map.
 
-Specifically, there are several key components that were used:
+Specifically, there are several key components that were used on top of the incredible [shiny](https://github.com/rstudio/shiny) package:
 
-- 
+- [shinydashboard](https://github.com/rstudio/shinydashboard): For mobile-friendly dashboard layout.
+- [googlesheets4](https://github.com/tidyverse/googlesheets4): For seamless access to GoogleSheets.
+- [sf](https://github.com/r-spatial/sf) and [leaflet](https://github.com/rstudio/leaflet): For importing geographic data and creating interactive maps.
+- [rintrojs](https://github.com/carlganz/rintrojs): For interactive tutorials
 
 ## Data Collection and Cleaning
 <Insert screenshot>
