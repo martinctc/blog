@@ -42,12 +42,21 @@ The Shiny app is built like a dashboard which combines information about each di
 Specifically, there are several key components that were used on top of the incredible [shiny](https://github.com/rstudio/shiny) package:
 
 - [shinydashboard](https://github.com/rstudio/shinydashboard): For mobile-friendly dashboard layout.
+    + We understood that our users, primarily HK citizens, frequently use mobiles. Thus, to ensure this app was useful to them, we centred our design on how the app looked on their mobile browsers.
+    
 - [googlesheets4](https://github.com/tidyverse/googlesheets4): For seamless access to GoogleSheets.
+    + We understood that our users are not all technical so we stored the core data in a format and platform familiar and accessible to most people, Google Sheets.
+    
 - [sf](https://github.com/r-spatial/sf) and [leaflet](https://github.com/rstudio/leaflet): For importing geographic data and creating interactive maps.
-- [rintrojs](https://github.com/carlganz/rintrojs): For interactive tutorials
+    + We understood that our users may want to explore other parts of Hong Kong but may not know the names of each constituency. Thus, we provided a map functionality to improve the ease they can learn more about different parts of Hong Kong.
+
+- [rintrojs](https://github.com/carlganz/rintrojs): For interactive tutorials.
+    + We understood that our users are not necessarily keen to read pages of instructions on how to use the app, especially if they are on mobile. Thus, we implemented a dynamic feature that walks them through visually each component of the app.
 
 ## How was the data collected?
+
 <Insert screenshot>
+
 - Data on each district councillor, their constituency, the party they belong to and their Facebook page was all collected manually through a combination of Wikipedia and Facebook.
     + We kept the data outside of the repo to keep the memory size small.
     + Stored it in GoogleSheets so non-technical users can access the data too.
@@ -59,7 +68,7 @@ Specifically, there are several key components that were used on top of the incr
 - Talk about challenges of getting the Facebook API
 - Found a workaround using just iframes - expedient but fit-for-purpose
 
-### Interactive Map
+### Visualising the shapefiles 
 
 <Insert screenshot>
 
@@ -79,7 +88,8 @@ Specifically, there are several key components that were used on top of the incr
     + [precommit hooks](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/17): Those familiar with Python may be aware of pre-commit hooks as ways to automatically detect whether your repo contains anything sensitive like a `.secrets` file. Setting this up will enable us to have automated checks run each time we make a commit to assure we are follow specified standards.
     + [codecov](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/33): Allows us to robustly test the functions in our code so that they work under a multitude of scenarios such as when users encounter problems.
     + [modularise shiny code](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/26): Ensures our Shiny code is more easier to follow.
-
+    + [language selection](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/36): Currently the app is a smorgasbord of English and Chinese. Consequently, it looks messy. We want to implement the ability for the user to choose which language they want to see the app in and the app's language will update accordingly.
+    
 ## Want to get involved?
 - Be a 'reveiwer' or help with coding
 - Send an email to hkdistricts.info@gmail.com
