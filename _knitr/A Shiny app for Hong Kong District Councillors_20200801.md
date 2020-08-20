@@ -63,7 +63,7 @@ Specifically, there are several key components that were used on top of the incr
 - Data on each district councillors contact details were web-scraped from ...
 - Boundaries for each constituency were obtained through a FOI request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
 
-### A solution for getting the Facebook feed
+### Linking to Facebook
 <Insert screenshot>
 - Talk about challenges of getting the Facebook API
 - Found a workaround using just iframes - expedient but fit-for-purpose
@@ -89,8 +89,9 @@ Specifically, there are several key components that were used on top of the incr
     + [codecov](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/33): Allows us to robustly test the functions in our code so that they work under a multitude of scenarios such as when users encounter problems.
     + [modularise shiny code](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/26): Ensures our Shiny code is more easier to follow.
     + [language selection](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/36): Currently the app is a smorgasbord of English and Chinese. Consequently, it looks messy. We want to implement the ability for the user to choose which language they want to see the app in and the app's language will update accordingly.
+    + Release to alpha testers to get early feedback.
     
 ## Want to get involved?
-- Be a 'reveiwer' or help with coding
+- Be a 'reviewer' or help with coding
 - Send an email to hkdistricts.info@gmail.com
 
