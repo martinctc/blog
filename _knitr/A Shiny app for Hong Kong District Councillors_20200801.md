@@ -9,7 +9,7 @@ output:                    # DO NOT CHANGE
 ---
 
 ## TL;DR
-We built an R Shiny app to improve access to information on Hong Kong's local politicians so that voters can make more informed choices. This combines information on each politician alongside their Facebook updates and illustrative maps of their district.
+We built an R Shiny app to improve access to information on Hong Kong's local politicians. This is so that voters can make more informed choices. This combines information on each politician alongside their Facebook updates and illustrative maps of their district.
 
 > *This project is an attempt to help make a difference with R programming. It's an opportunity for us to learn, to code, to have fun, and to make a difference.*
 
@@ -24,7 +24,7 @@ You can access:
 
 Whether you are more of an R enthusiast or simply someone who has an interest in Hong Kong politics (hopefully both!), we hope this post will bring you some inspiration on how you can use R _not just_ as a great tool for data analysis, but also as an enabler for you to do something tangible for your community and contribute to causes you care about. 
 
-## What is the background to this?
+## Why develop this app?
 There are heightened levels of political engagement in Hong Kong in the recent years, which is leading to a surge in demand for information and knowledge about how people can make a difference. 
 
 The District Council is the most local level of government in which people can influence change.
@@ -35,7 +35,7 @@ The District Council is the most local level of government in which people can i
 - Justin
 - Tiffany
 
-## Can we describe the app?
+## What is in the app?
 
 The Shiny app is built like a dashboard which combines information about each district councillor alongside their Facebook page posts (if it exists) and the district they serve, illustrated on an interactive map.
 
@@ -46,10 +46,13 @@ Specifically, there are several key components that were used on top of the incr
 - [sf](https://github.com/r-spatial/sf) and [leaflet](https://github.com/rstudio/leaflet): For importing geographic data and creating interactive maps.
 - [rintrojs](https://github.com/carlganz/rintrojs): For interactive tutorials
 
-### Data Collection and Cleaning
+## How was the data collected?
 <Insert screenshot>
-- Where the data came from
-- Deliberated to using Google Sheets to avoid bulking up the repo, and also enable participation from those who do not code
+- Data on each district councillor, their constituency, the party they belong to and their Facebook page was all collected manually through a combination of Wikipedia and Facebook.
+    + We kept the data outside of the repo to keep the memory size small.
+    + Stored it in GoogleSheets so non-technical users can access the data too.
+- Data on each district councillors contact details were web-scraped from ...
+- Boundaries for each constituency were obtained through a FOI request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
 
 ### A solution for getting the Facebook feed
 <Insert screenshot>
