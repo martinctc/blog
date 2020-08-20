@@ -62,8 +62,16 @@ Specifically, there are several key components that were used on top of the incr
 ### Interactive Map
 
 <Insert screenshot>
-- Talk about how we started off dealing with Shape files and a ggplot map, then moved to leaflet
-- Challenges and learnings
+
+> The first rule of optimisation is you don't.
+>
+> --- *Michael A. Jackson*
+
+- To rapidly get a Proof of Concept up using the shapefiles, we created a static ggplot map.
+- This was to quickly visualise the districts and how they look in relation to the Shiny app.
+- Once we settled on how the map looked in relation to the Shiny app, we then spent some additional time and effort to investigate using [leaftet](https://github.com/rstudio/leaflet)
+- We moved to `leaflet` maps because of their interactivity. 
+     + We understood our users would want to explore the HK map interactively to find out what consituency they belong to or to find out one that was of interest. This was because we were aware that people may know what region they live in but they may not know the name of the consituency.
 
 ## What are our next steps?
 - Some cool stuff we have not been able to implement:
