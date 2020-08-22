@@ -80,7 +80,26 @@ Based on user feedback, we started with Phase #2 of data collection, which invol
 - Office address
 - Number of votes, and share of votes won in 2019
 
-All of the above data is available and accessible in the public domain, where we simply took an extra step to improve the accessibility.[^2] The Phase #2 data was used in the final app to provide more information to the user when a particular constituency or District Councillor is selected.
+A function that was extremely helpful for figuring out the URL of the District Councillors' individual official pages is the following. What this does is to run a Bing search on the https://www.districtcouncils.gov.hk website, and scrape from the search result any links which match what we want (based on what the URL string looks like). Although this doesn't always work, it helped us a long way with the 452 District Councillors.
+
+```
+scrape_dcs <- function(search_term){
+  
+  query_string <- paste("site: https://www.districtcouncils.gov.hk", search_term)
+  
+  squery <- URLencode(query_string)
+  
+  squeryfull <- paste0("https://www.bing.com/search?q=", squery)
+  
+  main_page <- xml2::read_html(squeryfull)
+  
+  temp <- html_nodes(main_page, '.b_title a') %>%
+    html_attr("href")
+  
+  temp[grepl("member_id=", temp)]
+}
+```
+One key thing to note is that all of the above data we compiled is available and accessible in the public domain, where we simply took an extra step to improve the accessibility.[^2] The Phase #2 data was used in the final app to provide more information to the user when a particular constituency or District Councillor is selected.
 
 [^2]: This is in compliance with the ICO's description of the 'public domain', i.e. that _information is only in the public domain if it is realistically accessible to a member of the general public at the time of the request. It must be available in practice, not just in theory_.
 
