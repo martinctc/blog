@@ -61,7 +61,10 @@ Specifically, there are several key components that were used on top of the incr
     + We kept the data outside of the repo to keep the memory size small.
     + Stored it in GoogleSheets so non-technical users can access the data too.
 - Data on each district councillors contact details were web-scraped from ...
-- Boundaries for each constituency were obtained through a FOI request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
+- Boundaries for each constituency were obtained through a Freedom of Information (FOI) request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
+
+### Creating a data package
+From sharing our project with friends, we were approached to help with another project to visualise Hong Kong traffic collisions. As part of this, we obtained this data via an FOI request on traffic collisions. In the interests of open-source, we developed an R package, [hkdatasets](https://github.com/Hong-Kong-Districts-Info/hkdatasets) that stores these datasets, all themed around Hong Kong.
 
 ### Linking to Facebook
 <Insert screenshot>
@@ -94,4 +97,3 @@ Specifically, there are several key components that were used on top of the incr
 ## Want to get involved?
 - Be a 'reviewer' or help with coding
 - Send an email to hkdistricts.info@gmail.com
-
