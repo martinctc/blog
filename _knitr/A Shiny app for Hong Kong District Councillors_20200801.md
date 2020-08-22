@@ -14,7 +14,9 @@ We built an R Shiny app to improve access to information on Hong Kong's local po
 > *This project is an attempt to help make a difference with R programming. It's an opportunity for us to learn, to code, to have fun, and to make a difference.*
 
 ## Overview
-There is a significant barrier in accessing updates from local politicians in Hong Kong. In this project, we tackled this problem by creating a Shiny app in R, which brings together the Facebook feeds and constituency information for Hong Kong's district councillors in one place. In this way, people will have access to this disparate information in a web app.
+Our project was mainly motivated by one observation: that there is a significant barrier in accessing updates from local politicians in Hong Kong. Historically, the work of district councillors are neither widely known nor closely held to account, and most did not use webpages or Facebook pages to share their work. 
+
+In this project, we tackled this problem by creating a Shiny app in R, which brings together the Facebook feeds and constituency information for Hong Kong's district councillors in one place. In this way, people will have access to this disparate information in a web app.
 
 You can access:
 
