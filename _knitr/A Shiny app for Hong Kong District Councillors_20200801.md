@@ -113,7 +113,17 @@ Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info
 
 - Make it easier for learners and students in the R community to practise with the datasets we've put together, without having to learn about the **googlesheets4** package. Our thinking is that this would benefit others as other data packages like **nycflights13** and **babynames** have benefitted us as we learned R.
 
-**hkdatasets** is currently only available on GitHub, and our aim is to release it on CRAN so that more R users to take advantage of it.
+**hkdatasets** is currently only available on GitHub, and our aim is to release it on CRAN in the future so that more R users to take advantage of it. You can install the package now with: 
+
+```
+devtools::install_github("Hong-Kong-Districts-Info/hkdatasets")
+```
+and explore the 2019 District Councillors dataset with:
+
+```
+library(hkdatasets)
+head(hkdc)
+```
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdatasets-hex.png" width=200>
 
