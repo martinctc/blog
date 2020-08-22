@@ -17,7 +17,7 @@ We built an [R Shiny app](https://hkdistricts-info.shinyapps.io/dashboard-hkdist
 This blog post is originally published on https://martinctc.github.io/blog/, and co-authored by Martin Chan and Avision Ho.
 
 ## 💻 Overview
-Our project was mainly motivated by an observation, i.e. **that the engagement of the Hong Kong public with their local politicians is very low.**[^1] Historically, the work of Hong Kong's District Councillors (DCs) are neither widely known nor closely scrutinised by the public media. Until recently, most District Councillors did not use webpages or Facebook pages to share their work, but instead favour distributing physical copies of 'work reports' via Direct Mail. A hypothesis is that this has changed significantly with the 2019 District Council election, where turnout has jumped to 71% (from 47% in 2015). For context, Hong Kong's District Councils is the most local level of government, and is the only level in which there is full universal suffrage for all candidates.
+Our project was mainly motivated by an observation **that the engagement of the Hong Kong public with their local politicians is very low.**[^1] Historically, the work of Hong Kong's District Councillors (DCs) are neither widely known nor closely scrutinised by the public media. Until recently, most District Councillors did not use webpages or Facebook pages to share their work, but instead favour distributing physical copies of 'work reports' via Direct Mail. A hypothesis is that this has changed significantly with the 2019 District Council election, where turnout has jumped to 71% (from 47% in 2015). For context, Hong Kong's District Councils is the most local level of government, and is the only level in which there is full universal suffrage for all candidates.
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/18-district-council.png" alt="A map of Hong Kong's 18 District Councils. Illustration by Ocean Cheung" style="max-width:300px;">
 
@@ -46,8 +46,9 @@ Specifically, there are several key components that were used on top of the incr
 - [shinydashboard](https://github.com/rstudio/shinydashboard): For mobile-friendly dashboard layout.
     + We understood that our users, primarily HK citizens, frequently use mobiles. Thus, to ensure this app was useful to them, we centred our design on how the app looked on their mobile browsers.
     
-- [googlesheets4](https://github.com/tidyverse/googlesheets4): For seamless access to GoogleSheets.
+- [googlesheets4](https://github.com/tidyverse/googlesheets4): For seamless access to Google Sheets.
     + We understood that our users are not all technical so we stored the core data in a format and platform familiar and accessible to most people, Google Sheets.
+    + At a later stage of the app development, we migrated to storing the data in an R package we wrote, called [{hkdatasets}](https://github.com/hong-Kong-Districts-Info/hkdatasets) as we sought to keep the data in one place. However, the Google Sheets implementation worked very well, and the app could be deployed with no impact on performance or user experience.
     
 - [sf](https://github.com/r-spatial/sf) and [leaflet](https://github.com/rstudio/leaflet): For importing geographic data and creating interactive maps.
     + We understood that our users may want to explore other parts of Hong Kong but may not know the names of each constituency. Thus, we provided a map functionality to improve the ease they can learn more about different parts of Hong Kong.
@@ -61,7 +62,7 @@ Specifically, there are several key components that were used on top of the incr
 
 - Data on each district councillor, their constituency, the party they belong to and their Facebook page was all collected manually through a combination of Wikipedia and Facebook.
     + We kept the data outside of the repo to keep the memory size small.
-    + Stored it in GoogleSheets so non-technical users can access the data too.
+    + Stored it in Google Sheets so non-technical users can access the data too.
 - Data on each district councillors contact details were web-scraped from ...
 - Boundaries for each constituency were obtained through a Freedom of Information (FOI) request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
 
