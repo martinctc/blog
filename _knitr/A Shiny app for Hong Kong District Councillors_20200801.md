@@ -37,7 +37,7 @@ Whether you are more of an R enthusiast or simply someone who has an interest in
 
 ## 🔍 What is in the app?
 
-![](https://raw.githubusercontent.com/martinctc/blog/master/images/hkdc-app-example.png)
+<img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdc-app-example.png" width=500>
 
 The Shiny app is built like a dashboard which combines information about each district councillor alongside their Facebook page posts (if it exists) and the district they serve, illustrated on an interactive map.
 
@@ -60,15 +60,15 @@ Specifically, there are several key components that were used on top of the incr
 
 ## 🗄️ How was the data collected?
 
-<img src="https://raw.githubusercontent.com/martinctc/blog/master/images/googlesheet-example.png" width=300>
-
 Since there was no existing single data source on the DCs, we had to put this togther ourselves. All the data on each District Councillor, their constituency, the party they belong to, and their Facebook page was all collected manually through a combination of Wikipedia and Facebook. The data was initially housed on Google Sheets, for multiple reasons: 
 
 1. Using Google Sheets made it easy for multiple people to collaborate on data entry.
 2. Keeping the data outside of the repo has the advantage of keeping the memory size minimal, in line with best practices.
 3. By storing the data in Google Sheets, non-technical users would also be able to access the data too.
 
-This Google Sheet is available [here](https://docs.google.com/spreadsheets/d/1007RLMHSukSJ5OfCcDJdnJW5QMZyS2P-81fe7utCZwk/).
+Most of all, it was plain easy to access the Google Sheets data with the {googlesheets4} package! A key function is `googlesheets4::gs4_auth()`, which directs the developer to a web browser, asked to sign in to their Google account, and to grant googlesheets4 permission to operate on their behalf with Google Sheets. This Google Sheet is available [here](https://docs.google.com/spreadsheets/d/1007RLMHSukSJ5OfCcDJdnJW5QMZyS2P-81fe7utCZwk/).
+
+<img src="https://raw.githubusercontent.com/martinctc/blog/master/images/googlesheet-example.png" width=500>
 
 Creating a map with constituency boundaries also required additional data. Boundaries for each constituency were obtained through a Freedom of Information (FOI) request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
 
@@ -84,9 +84,17 @@ All of the above data is available and accessible in the public domain, where we
 
 [^2]: This is in compliance with the ICO's description of the 'public domain', i.e. that _information is only in the public domain if it is realistically accessible to a member of the general public at the time of the request. It must be available in practice, not just in theory_.
 
-### Creating a data package
+### 📦 Creating a data package
 
-From sharing our project with friends, we were approached to help with another project to visualise Hong Kong traffic collisions data, repo is [here](https://github.com/Hong-Kong-Districts-Info/hktrafficcollisions). As part of this, we obtained this data via an FOI request on traffic collisions. In the interests of open-source, we developed an R package, [hkdatasets](https://github.com/Hong-Kong-Districts-Info/hkdatasets) that stores these datasets, all themed around Hong Kong.
+Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info/hkdatasets), is to some extent a spin-off of this project. We decided to migrate from Google Sheets to an R data package approach, for the following reasons: 
+
+- An R data package could allow us to provide more detailed documentation and tracking of how the data would change over time. If we choose to expand the dataset in the future, we can easily add this to the package release notes.
+
+- An R data package would fit well with our broader ambition to work on other Hong Kong themed, open-source projects. From sharing our project with friends, we were approached to help with another project to visualise Hong Kong traffic collisions data, where the repo is [here](https://github.com/Hong-Kong-Districts-Info/hktrafficcollisions). As part of this, we obtained this data via an FOI request on traffic collisions, where the data is also available through **hkdatasets**.
+
+- Make it easier for learners and students in the R community to practise with the datasets we've put together, without having to learn about the **googlesheets4** package. Our thinking is that this would benefit others as other data packages like **nycflights13** and **babynames** have benefitted us as we learned R.
+
+**hkdatasets** is currently only available on GitHub, and our aim is to release it on CRAN so that more R users to take advantage of it.
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdatasets-hex.png" width=200>
 
