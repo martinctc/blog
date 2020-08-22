@@ -16,35 +16,28 @@ We built an [R Shiny app](https://hkdistricts-info.shinyapps.io/dashboard-hkdist
 
 This blog post is originally published on https://martinctc.github.io/blog/.
 
-## Overview
-Our project was mainly motivated by an observation, i.e. **that the engagement of the Hong Kong public with their local politicians is very low.**[^1] Historically, the work of Hong Kong's District Councillors (DCs) are neither widely known nor closely scrutinised by the public media. Until recently, most District Councillors did not use webpages or Facebook pages to share their work, but instead favour distributing physical copies of 'work reports' via Direct Mail. A hypothesis is that this has changed significantly with the 2019 District Council election, where turnout has jumped to 71% (from 47% in 2015).
+## 💻 Overview
+Our project was mainly motivated by an observation, i.e. **that the engagement of the Hong Kong public with their local politicians is very low.**[^1] Historically, the work of Hong Kong's District Councillors (DCs) are neither widely known nor closely scrutinised by the public media. Until recently, most District Councillors did not use webpages or Facebook pages to share their work, but instead favour distributing physical copies of 'work reports' via Direct Mail. A hypothesis is that this has changed significantly with the 2019 District Council election, where turnout has jumped to 71% (from 47% in 2015). For context, Hong Kong's District Councils is the most local level of government, and is the only level in which there is full universal suffrage for all candidates.
 
 [^1]: There are many reasons for this, and arguably a similar phenomenon can be observed in most local elections in other countries. See Lee, F. L., & Chan, J. M. (2008). Making sense of participation: The political culture of pro-democracy demonstrators in Hong Kong. *The China Quarterly*, 84-101.
 
-As at the summer of 2020, we identified that 96% (434) of the 452 District Councillors elected in 2019 actually have a dedicated Facebook page for delivering updates to and engaging with local residents. However, these Facebook pages have to be manually searched for online, and there is not a readily available tool where people can quickly map a District to a District Councillor and to their Facebook feeds. 
+As of the summer of 2020, we identified that 96% (434) of the 452 District Councillors elected in 2019 actually have a dedicated Facebook page for delivering updates to and engaging with local residents. However, these Facebook pages have to be manually searched for online, and there is not a readily available tool where people can quickly map a District to a District Councillor and to their Facebook feeds. 
 
-In this project, we tackled this problem by creating a Shiny app in R, which brings together the Facebook feeds and constituency information for Hong Kong's district councillors in one place. In this way, people will have access to this disparate information in a web app.
+> As a wise person once said, "If you can solve a problem effectively in R, why the hell not?" 
+
+We tackled this problem by creating a Shiny app in R, which brings together the Facebook feeds and constituency information for Hong Kong's district councillors in one place. In this way, people will be able to access the currently disparately stored information in a single web app.
 
 You can access:
 
-- The app [here](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/). 
-- Our GitHub repository [here](https://github.com/avisionh/dashboard-hkdistrictcouncillors). 
+- The Shiny app [here](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/). 
+- Our GitHub repository [here](https://github.com/avisionh/dashboard-hkdistrictcouncillors/). 
 - Don't forget to also provide some feedback to the Shiny app [here](https://hkdistrictsinfo.typeform.com/to/gFHC02gE)!
 
 Whether you are more of an R enthusiast or simply someone who has an interest in Hong Kong politics (hopefully both!), we hope this post will bring you some inspiration on how you can use R _not just_ as a great tool for data analysis, but also as an enabler for you to do something tangible for your community and contribute to causes you care about. 
 
-## Why develop this app?
-There are heightened levels of political engagement in Hong Kong in the recent years, which is leading to a surge in demand for information and knowledge about how people can make a difference. 
 
-The District Council is the most local level of government in which people can influence change.
 
-## Who is behind this?
-- Avision Ho, a data scientist whom I had [previously interviewed.](https://martinctc.github.io/blog/data-chats-an-interview-with-avision-ho/)
-- Ocean
-- Justin
-- Tiffany
-
-## What is in the app?
+## 🔍 What is in the app?
 
 The Shiny app is built like a dashboard which combines information about each district councillor alongside their Facebook page posts (if it exists) and the district they serve, illustrated on an interactive map.
 
@@ -102,6 +95,13 @@ From sharing our project with friends, we were approached to help with another p
     + [modularise shiny code](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/26): Ensures our Shiny code is more easier to follow.
     + [language selection](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/36): Currently the app is a smorgasbord of English and Chinese. Consequently, it looks messy. We want to implement the ability for the user to choose which language they want to see the app in and the app's language will update accordingly.
     + Release to alpha testers to get early feedback.
+    
+## Who is behind this?
+
+Multiple people contributed to this work. **Avision Ho** is a data scientist who wrote the majority of the Shiny app, and who was also [previously interviewed on this blog](https://martinctc.github.io/blog/data-chats-an-interview-with-avision-ho/). Avision is a co-author on this post. **Ocean Cheung** came up with the original idea of this app, and made it all possible with his knowledge and network with District Councillors. We would also like to credit **Justin Yim**, **Tiffany Chau**, and **Gabriel Tam** for their 
+feedback and advice on the scope and the direction of this app. We are currently working on a number of other projects, which you can find out more from our website: https://hong-kong-districts-info.github.io/.
+
+(Disclaimer! We are not affiliated to any political individuals nor movements. We are simply some people who'd like to contribute to society through code and open-source projects.)
     
 ## Want to get involved?
 - Be a 'reviewer' or help with coding
