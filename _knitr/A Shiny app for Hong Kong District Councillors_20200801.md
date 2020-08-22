@@ -46,9 +46,11 @@ Specifically, there are several key components that were used on top of the incr
 - [shinydashboard](https://github.com/rstudio/shinydashboard): For mobile-friendly dashboard layout.
     + We understood that our users, primarily HK citizens, frequently use mobiles. Thus, to ensure this app was useful to them, we centred our design on how the app looked on their mobile browsers.
     
+<img src="https://raw.githubusercontent.com/martinctc/blog/master/images/googlesheets4.png" width=200>
+   
 - [googlesheets4](https://github.com/tidyverse/googlesheets4): For seamless access to Google Sheets.
     + We understood that our users are not all technical so we stored the core data in a format and platform familiar and accessible to most people, Google Sheets.
-    + At a later stage of the app development, we migrated to storing the data in an R package we wrote, called [{hkdatasets}](https://github.com/hong-Kong-Districts-Info/hkdatasets) as we sought to keep the data in one place. However, the Google Sheets implementation worked very well, and the app could be deployed with no impact on performance or user experience.
+    + At a later stage of the app development, we migrated to storing the data in an R package we wrote, called [**hkdatasets**](https://github.com/hong-Kong-Districts-Info/hkdatasets) as we sought to keep the data in one place. However, the Google Sheets implementation worked very well, and the app could be deployed with no impact on performance or user experience.
     
 - [sf](https://github.com/r-spatial/sf) and [leaflet](https://github.com/rstudio/leaflet): For importing geographic data and creating interactive maps.
     + We understood that our users may want to explore other parts of Hong Kong but may not know the names of each constituency. Thus, we provided a map functionality to improve the ease they can learn more about different parts of Hong Kong.
@@ -56,18 +58,37 @@ Specifically, there are several key components that were used on top of the incr
 - [rintrojs](https://github.com/carlganz/rintrojs): For interactive tutorials.
     + We understood that our users are not necessarily keen to read pages of instructions on how to use the app, especially if they are on mobile. Thus, we implemented a dynamic feature that walks them through visually each component of the app.
 
-## How was the data collected?
+## 🗄️ How was the data collected?
 
-<Insert screenshot>
+<img src="https://raw.githubusercontent.com/martinctc/blog/master/images/googlesheet-example.png" width=300>
 
-- Data on each district councillor, their constituency, the party they belong to and their Facebook page was all collected manually through a combination of Wikipedia and Facebook.
-    + We kept the data outside of the repo to keep the memory size small.
-    + Stored it in Google Sheets so non-technical users can access the data too.
-- Data on each district councillors contact details were web-scraped from ...
-- Boundaries for each constituency were obtained through a Freedom of Information (FOI) request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
+Since there was no existing single data source on the DCs, we had to put this togther ourselves. All the data on each District Councillor, their constituency, the party they belong to, and their Facebook page was all collected manually through a combination of Wikipedia and Facebook. The data was initially housed on Google Sheets, for multiple reasons: 
+
+1. Using Google Sheets made it easy for multiple people to collaborate on data entry.
+2. Keeping the data outside of the repo has the advantage of keeping the memory size minimal, in line with best practices.
+3. By storing the data in Google Sheets, non-technical users would also be able to access the data too.
+
+This Google Sheet is available [here](https://docs.google.com/spreadsheets/d/1007RLMHSukSJ5OfCcDJdnJW5QMZyS2P-81fe7utCZwk/).
+
+Creating a map with constituency boundaries also required additional data. Boundaries for each constituency were obtained through a Freedom of Information (FOI) request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
+
+This was pretty much Phase #1 of data collection, where we had single Google Sheet with basic information about the District Councillors and their Facebook feeds, which enabled us to create a proof of concept of the Shiny app, i.e. making sure that we can set up a mechanism where the user can select a constituency and the app returns the corresponding Facebook feed of the District Councillor.
+
+Based on user feedback, we started with Phase #2 of data collection, which involved a web-scraping exercise on the official [Hong Kong District Council website](https://www.districtcouncils.gov.hk/index.html) and the [HK01 News Page on the 2019 District Council elections](https://dce2019.hk01.com/) to get extra data points, such as:
+- Contact email address
+- Contact number
+- Office address
+- Number of votes, and share of votes won in 2019
+
+All of the above data is available and accessible in the public domain, where we simply took an extra step to improve the accessibility.[^2] The Phase #2 data was used in the final app to provide more information to the user when a particular constituency or District Councillor is selected.
+
+[^2]: This is in compliance with the ICO's description of the 'public domain', i.e. that _information is only in the public domain if it is realistically accessible to a member of the general public at the time of the request. It must be available in practice, not just in theory_.
 
 ### Creating a data package
+
 From sharing our project with friends, we were approached to help with another project to visualise Hong Kong traffic collisions data, repo is [here](https://github.com/Hong-Kong-Districts-Info/hktrafficcollisions). As part of this, we obtained this data via an FOI request on traffic collisions. In the interests of open-source, we developed an R package, [hkdatasets](https://github.com/Hong-Kong-Districts-Info/hkdatasets) that stores these datasets, all themed around Hong Kong.
+
+<img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdatasets-hex.png" width=200>
 
 ### Linking to Facebook
 <Insert screenshot>
