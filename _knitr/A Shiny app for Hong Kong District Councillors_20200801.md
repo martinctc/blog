@@ -64,7 +64,7 @@ Specifically, there are several key components that were used on top of the incr
 - Boundaries for each constituency were obtained through a Freedom of Information (FOI) request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
 
 ### Creating a data package
-From sharing our project with friends, we were approached to help with another project to visualise Hong Kong traffic collisions. As part of this, we obtained this data via an FOI request on traffic collisions. In the interests of open-source, we developed an R package, [hkdatasets](https://github.com/Hong-Kong-Districts-Info/hkdatasets) that stores these datasets, all themed around Hong Kong.
+From sharing our project with friends, we were approached to help with another project to visualise Hong Kong traffic collisions data, repo is [here](https://github.com/Hong-Kong-Districts-Info/hktrafficcollisions). As part of this, we obtained this data via an FOI request on traffic collisions. In the interests of open-source, we developed an R package, [hkdatasets](https://github.com/Hong-Kong-Districts-Info/hkdatasets) that stores these datasets, all themed around Hong Kong.
 
 ### Linking to Facebook
 <Insert screenshot>
