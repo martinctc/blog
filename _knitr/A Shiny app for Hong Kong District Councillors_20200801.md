@@ -8,13 +8,20 @@ output:                    # DO NOT CHANGE
     highlight: github      # DO NOT CHANGE
 ---
 
-## TL;DR
-We built an R Shiny app to improve access to information on Hong Kong's local politicians. This is so that voters can make more informed choices. This combines information on each politician alongside their Facebook updates and illustrative maps of their district.
+# 👀 TL;DR
+
+We built an [R Shiny app](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/) to improve access to information on Hong Kong's local politicians. This is so that voters can make more informed choices. The app shows basic information on each politician, alongside a live feed of their Facebook page and illustrative maps of their district.
 
 > *This project is an attempt to help make a difference with R programming. It's an opportunity for us to learn, to code, to have fun, and to make a difference.*
 
+This blog post is originally published on https://martinctc.github.io/blog/.
+
 ## Overview
-Our project was mainly motivated by one observation: that there is a significant barrier in accessing updates from local politicians in Hong Kong. Historically, the work of district councillors are neither widely known nor closely held to account, and most did not use webpages or Facebook pages to share their work. 
+Our project was mainly motivated by an observation, i.e. **that the engagement of the Hong Kong public with their local politicians is very low.**[^1] Historically, the work of Hong Kong's District Councillors (DCs) are neither widely known nor closely scrutinised by the public media. Until recently, most District Councillors did not use webpages or Facebook pages to share their work, but instead favour distributing physical copies of 'work reports' via Direct Mail. A hypothesis is that this has changed significantly with the 2019 District Council election, where turnout has jumped to 71% (from 47% in 2015).
+
+[^1]: There are many reasons for this, and arguably a similar phenomenon can be observed in most local elections in other countries. See Lee, F. L., & Chan, J. M. (2008). Making sense of participation: The political culture of pro-democracy demonstrators in Hong Kong. *The China Quarterly*, 84-101.
+
+As at the summer of 2020, we identified that 96% (434) of the 452 District Councillors elected in 2019 actually have a dedicated Facebook page for delivering updates to and engaging with local residents. However, these Facebook pages have to be manually searched for online, and there is not a readily available tool where people can quickly map a District to a District Councillor and to their Facebook feeds. 
 
 In this project, we tackled this problem by creating a Shiny app in R, which brings together the Facebook feeds and constituency information for Hong Kong's district councillors in one place. In this way, people will have access to this disparate information in a web app.
 
