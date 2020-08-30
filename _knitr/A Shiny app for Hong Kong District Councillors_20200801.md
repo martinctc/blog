@@ -39,7 +39,7 @@ Whether you are more of an R enthusiast or simply someone who has an interest in
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdc-app-example.png" width=500>
 
-The Shiny app is built like a dashboard which combines information about each district councillor alongside their Facebook page posts (if it exists) and the district they serve, illustrated on an interactive map.
+The Shiny app is built like a dashboard which combines information about each district councillor alongside their Facebook page posts (if it exists) and the district they serve, illustrated on an interactive map. By using the District and Constituency dropdown lists, you can retrieve information about and the Facebook feed of the District Councillor of the selected Constituency.
 
 Specifically, there are several key components that were used on top of the incredible [shiny](https://github.com/rstudio/shiny) package:
 
