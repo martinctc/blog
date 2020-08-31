@@ -66,7 +66,9 @@ Since there was no existing single data source on the DCs, we had to put this to
 2. Keeping the data outside of the repo has the advantage of keeping the memory size minimal, in line with best practices.
 3. By storing the data in Google Sheets, non-technical users would also be able to access the data too.
 
-Most of all, it was easy to access the Google Sheets data with the {googlesheets4} package! A key function is `googlesheets4::gs4_auth()`, which directs the developer to a web browser, asked to sign in to their Google account, and to grant googlesheets4 permission to operate on their behalf with Google Sheets. This Google Sheet is available [here](https://docs.google.com/spreadsheets/d/1007RLMHSukSJ5OfCcDJdnJW5QMZyS2P-81fe7utCZwk/).
+Most of all, it was easy to access the Google Sheets data with the {googlesheets4} package! For editing the data for _pre-processing_, a key function is `googlesheets4::gs4_auth()`, which directs the developer to a web browser, asked to sign in to their Google account, and to grant googlesheets4 permission to operate on their behalf with Google Sheets. We then set up the main Google Sheet - the nicely formatted version intended for the app to ingest - to provide read-only access to anyone with the link, and used `googlesheets4::gs4_deauth()` to access the public Google Sheet in a _de-authorised_ state. The Shiny app itself does not have any particular Google credentials stored alongside it (which it shouldn't, for security reasons), and this workflow allows  (i) collaborators/developers to edit the data from R and (ii) for the app to access the Google Sheet data without any need for users to login.
+
+This Google Sheet is available [here](https://docs.google.com/spreadsheets/d/1007RLMHSukSJ5OfCcDJdnJW5QMZyS2P-81fe7utCZwk/).
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/googlesheet-example.png" width=500>
 
@@ -113,23 +115,16 @@ Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info
 
 - Make it easier for learners and students in the R community to practise with the datasets we've put together, without having to learn about the **googlesheets4** package. Our thinking is that this would benefit others as other data packages like **nycflights13** and **babynames** have benefitted us as we learned R.
 
-**hkdatasets** is currently only available on GitHub, and our aim is to release it on CRAN in the future so that more R users to take advantage of it. You can install the package now with: 
-
-```
-devtools::install_github("Hong-Kong-Districts-Info/hkdatasets")
-```
-and explore the 2019 District Councillors dataset with:
-
-```
-library(hkdatasets)
-head(hkdc)
-```
+**hkdatasets** is currently only available on GitHub, and our aim is to release it on CRAN in the future so that more R users to take advantage of it. Check out our  [GitHub repo](https://github.com/hong-Kong-Districts-Info/hkdatasets) to find out more about it.
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdatasets-hex.png" width=200>
 
 ### Linking to Facebook
 <Insert screenshot>
 - Talk about challenges of getting the Facebook API
+
+When we first conceptualised this project, our aim has always been to make the Facebook Page content the centre piece of the app. This was contingent on using some form of Facebook API to access content on the District Councillors' Public Pages, which we initially thought would be easy as Public Page content is 'out there', and shouldn't require any additional permissions or approvals. 
+  
 - Found a workaround using just iframes - expedient but fit-for-purpose
 
 ### Visualising the shapefiles 
