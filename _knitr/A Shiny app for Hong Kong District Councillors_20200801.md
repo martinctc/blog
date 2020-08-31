@@ -66,7 +66,7 @@ Since there was no existing single data source on the DCs, we had to put this to
 2. Keeping the data outside of the repo has the advantage of keeping the memory size minimal, in line with best practices.
 3. By storing the data in Google Sheets, non-technical users would also be able to access the data too.
 
-Most of all, it was plain easy to access the Google Sheets data with the {googlesheets4} package! A key function is `googlesheets4::gs4_auth()`, which directs the developer to a web browser, asked to sign in to their Google account, and to grant googlesheets4 permission to operate on their behalf with Google Sheets. This Google Sheet is available [here](https://docs.google.com/spreadsheets/d/1007RLMHSukSJ5OfCcDJdnJW5QMZyS2P-81fe7utCZwk/).
+Most of all, it was easy to access the Google Sheets data with the {googlesheets4} package! A key function is `googlesheets4::gs4_auth()`, which directs the developer to a web browser, asked to sign in to their Google account, and to grant googlesheets4 permission to operate on their behalf with Google Sheets. This Google Sheet is available [here](https://docs.google.com/spreadsheets/d/1007RLMHSukSJ5OfCcDJdnJW5QMZyS2P-81fe7utCZwk/).
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/googlesheet-example.png" width=500>
 
