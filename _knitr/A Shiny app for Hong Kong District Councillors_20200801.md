@@ -154,7 +154,7 @@ head(hkdc)
     + [codecov](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/33): Allows us to robustly test the functions in our code so that they work under a multitude of scenarios such as when users encounter problems.
 - [modularise shiny code](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/26): Ensures our Shiny code is more easier to follow.
 - [language selection](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/36): Currently the app is a smorgasbord of English and Chinese. Consequently, it looks messy. We want to implement the ability for the user to choose which language they want to see the app in and the app's language will update accordingly.
-    + Release to alpha testers to get early feedback.
+- Release to alpha testers to get early feedback.
     
 ## Who is behind this?
 
