@@ -119,11 +119,14 @@ Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdatasets-hex.png" width=200>
 
-### Linking to Facebook
+### Linking our Shiny App to Facebook
 <Insert screenshot>
-- Talk about challenges of getting the Facebook API
 
 When we first conceptualised this project, our aim has always been to make the Facebook Page content the centre piece of the app. This was contingent on using some form of Facebook API to access content on the District Councillors' Public Pages, which we initially thought would be easy as Public Page content is 'out there', and shouldn't require any additional permissions or approvals. 
+
+It turns out, in order to read public posts from Facebook Pages that we do not have admin access to requires a certain permission called **Page Public Content Access**, which in turn requires us to submit our app to Facebook for review. Reading several threads (such as [this](https://developers.facebook.com/community/threads/385801828797027/)) online soon convinced us that this would be a fairly challenging process, as we need to effectively submit a proposal on why we had to request this permission. To add to the difficulty, we understood that the App Review process had been put on pause at the time, due to the re-allocation of resourcing during COVID-19. 
+
+This drove us to search for a workaround, and this is where we stumbled across _iframes_ as a solution. An _iframe_ is basically a frame that enables you embed a HTML document within another HTML document (they've existed for a long time, as I recall using them in the really early GeoCities and Xanga websites).
   
 - Found a workaround using just iframes - expedient but fit-for-purpose
 
