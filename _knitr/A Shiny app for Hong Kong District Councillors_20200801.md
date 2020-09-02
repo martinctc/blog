@@ -146,7 +146,7 @@ This drove us to search for a workaround, and this is where we stumbled across _
 
 ## What are our next steps?
 
-There were some cool features that we would have liked to, but have not been able to implement. One of the things that we wanted to try out with this open-source project is to adhere to some DevOps best practices, yet unfortunately some of these were either easier to set up from the beginning, or require more time and knowledge (on our part) to set up:  
+There were some cool features that we would have liked to, but have not been able to implement:  
 
 - [precommit hooks](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/17): Those familiar with Python may be aware of pre-commit hooks as ways to automatically detect whether your repo contains anything sensitive like a `.secrets` file. Setting this up will enable us to have automated checks run each time we make a commit to assure we are follow specified standards.
     + Unfortunately, we named our repo with a hyphen so the pre-commit hooks won't work.
@@ -154,6 +154,8 @@ There were some cool features that we would have liked to, but have not been abl
 - [modularise shiny code](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/26): Ensures our Shiny code is more easier to follow.
 - [language selection](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/36): Currently the app is a smorgasbord of English and Chinese. Consequently, it looks messy. We want to implement the ability for the user to choose which language they want to see the app in and the app's language will update accordingly.
 - Release to alpha testers to get early feedback.
+
+One of the things that we wanted to try out with this open-source project is to adhere to some DevOps best practices, yet unfortunately some of these were either easier to set up from the beginning, or require more time and knowledge (on our part) to set up. As we develop a V2 of this Shiny App and work on [other projects](https://hong-kong-districts-info.github.io/portfolio/), we hope to find the opportunity to implement more of the above features.
     
 ## Who is behind this?
 
