@@ -140,12 +140,13 @@ This drove us to search for a workaround, and this is where we stumbled across _
 
 - To rapidly get a Proof of Concept up using the shapefiles, we created a static ggplot map.
 - This was to quickly visualise the districts and how they look in relation to the Shiny app.
-- Once we settled on how the map looked in relation to the Shiny app, we then spent some additional time and effort to investigate using [leaftet](https://github.com/rstudio/leaflet)
+- Once we settled on how the map looked in relation to the Shiny app, we then spent some additional time and effort to investigate using [leaflet](https://github.com/rstudio/leaflet)
 - We moved to `leaflet` maps because of their interactivity. 
      + We understood our users would want to explore the HK map interactively to find out what consituency they belong to or to find out one that was of interest. This was because we were aware that people may know what region they live in but they may not know the name of the consituency.
 
 ## What are our next steps?
-- Some cool stuff we have not been able to implement:
+
+There were some cool features that we would have liked to, but have not been able to implement. One of the things that we wanted to try out with this open-source project is to adhere to some DevOps best practices, yet unfortunately some of these were either easier to set up from the beginning, or require more time and knowledge (on our part) to set up:  
 
 - [precommit hooks](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/17): Those familiar with Python may be aware of pre-commit hooks as ways to automatically detect whether your repo contains anything sensitive like a `.secrets` file. Setting this up will enable us to have automated checks run each time we make a commit to assure we are follow specified standards.
     + Unfortunately, we named our repo with a hyphen so the pre-commit hooks won't work.
