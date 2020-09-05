@@ -184,7 +184,7 @@ There were also a number of features that we have implemented, but were not deta
 
 - Adding a searchable DataTable with information on the District Councillors, with the **DT** package
 - Embedding a user survey within the Shiny app
-- Adding a tutorial to go through features of the Shiny app, using the **shinyhelper** package
+- Adding a tutorial to go through features of the Shiny app, using the **rintrojs** package
 - Adding loader animations with **shinycssloaders**
 
 We will cover more of that detail in a Part 2 of this blog, so watch this space!
@@ -198,6 +198,6 @@ feedback and advice on the scope and the direction of this app. We are currently
     
 ## ✋ Want to get involved?
 
-We're looking for collaborators or reviewers, so please send us an email (hkdistricts.info@gmail.com), or comment down below if you are interested! We would also appreciate any feedback or questions, which you could either comment below or respond to our [in-app survey](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/).
+We're looking for collaborators or reviewers, so please send us an email (hkdistricts.info@gmail.com), or comment down below if you are interested! We would also appreciate any feedback or questions, which you could either comment below or respond to our [in-app survey](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/). You can also get an idea of things we are planning to work on through our Trello board [here](https://trello.com/b/n5l7DMS5/doing).
 
-When we first started out, we were just a couple of people who wanted to learn and practise a new skill (e.g. building a Shiny app, implementing best practices), and wanted a meaningful open-source project that we could work on. Read more about [our Vision Statement here](https://hong-kong-districts-info.github.io/about/).
+When we first started out, we were just a couple of people who wanted to learn and practise a new skill (e.g. building a Shiny app, implementing best practices), and wanted a meaningful open-source project that we could work on. Read more about [our Vision Statement here](https://hong-kong-districts-info.github.io/about/). 
