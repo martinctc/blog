@@ -10,7 +10,7 @@ output:                    # DO NOT CHANGE
 
 ## 👀 TL;DR
 
-We built an [R Shiny app](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/) to improve access to information on Hong Kong's local politicians. This is so that voters can make more informed choices. The app shows basic information on each politician, alongside a live feed of their Facebook page and illustrative maps of their district. We took advantage of this project to test out the **a range of R packages and techniques** and to **implement some DevOps best practices**, which we will discuss in this post. 
+We built an [R Shiny app](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/) to improve access to information on Hong Kong's local politicians. This is so that voters can make more informed choices. The app shows basic information on each politician, alongside a live feed of their Facebook page and illustrative maps of their district. We took advantage of this project to test out **a range of R packages and techniques** and to **implement some DevOps best practices**, which we will discuss in this post. 
 
 > *This project is an attempt to help make a difference with R programming. It's an opportunity for us to learn, to code, to have fun, and to make a difference.*
 
@@ -200,5 +200,4 @@ feedback and advice on the scope and the direction of this app. We are currently
 We're looking for collaborators or reviewers, so please send us an email (hkdistricts.info@gmail.com), or comment down below if you are interested! We would also appreciate any feedback or questions, which you could either comment below or respond to our [in-app survey](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/).
 
 When we first started out, we were just a couple of people who wanted to learn and practise a new skill (e.g. building a Shiny app, implementing best practices), and wanted a meaningful open-source project that we could work on. Read more about [our Vision Statement here](https://hong-kong-districts-info.github.io/about/).
-
 
