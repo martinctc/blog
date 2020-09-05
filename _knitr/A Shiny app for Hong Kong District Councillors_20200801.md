@@ -174,7 +174,7 @@ There were some cool features that we would have liked to, but have not been abl
     + This makes the overall code easier to follow as it separates the objects that are connected from those that are not. It also makes testing easier because you can test each isolated chunk.
 - [language selection](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/36): Currently the app is a smorgasbord of English and Chinese. Consequently, it looks messy. We want to implement the ability for the user to choose which language they want to see the app in and the app's language will update accordingly.
 - Release to alpha testers to get early feedback.
-- More or our enhancements / spikes are listed here on [GitHub](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues)
+- More of our enhancements / spikes are listed here on [GitHub](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues)
 
 One of the things that we wanted to try out with this open-source project is to adhere to some DevOps best practices, yet unfortunately some of these were either easier to set up from the beginning, or require more time and knowledge (on our part) to set up. As we develop a V2 of this Shiny App and work on [other projects](https://hong-kong-districts-info.github.io/portfolio/), we hope to find the opportunity to implement more of the above features.
 
