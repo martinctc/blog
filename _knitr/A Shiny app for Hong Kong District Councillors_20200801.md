@@ -60,7 +60,7 @@ Specifically, there are several key components that were used on top of the incr
 
 ## 🗄️ How was the data collected?
 
-Since there was no existing single data source on the DCs, we had to put this togther ourselves. All the data on each District Councillor, their constituency, the party they belong to, and their Facebook page was all collected manually through a combination of Wikipedia and Facebook. The data was initially housed on Google Sheets, for multiple reasons: 
+Since there was no existing single data source on the DCs, we had to put this together ourselves. All the data on each DC, their constituency, the party they belong to, and their Facebook page was all collected manually through a combination of Wikipedia and Facebook. The data was initially housed on Google Sheets, for multiple reasons: 
 
 1. Using Google Sheets made it easy for multiple people to collaborate on data entry.
 2. Keeping the data outside of the repo has the advantage of keeping the memory size minimal, in line with best practices.
