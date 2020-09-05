@@ -144,8 +144,22 @@ Although the `iframe` solution comes with its own challenges, such as the diffic
 >
 > --- *Michael A. Jackson*
 
-- To rapidly get a Proof of Concept up using the shapefiles, we created a static ggplot map.
-- This was to quickly visualise the districts and how they look in relation to the Shiny app.
+We acquired shapefiles in order to be able to visualise the individual Disticts on a map. A shapefile is, according to [the ArcGIS website](https://desktop.arcgis.com/en/arcmap/10.3/manage-data/shapefiles/what-is-a-shapefile.htm):
+
+> ... a simple, nontopological format for storing the geometric location and attribute information of geographic features. Geographic features in a shapefile can be represented by points, lines, or polygons (areas).
+
+To rapidly get a Proof of Concept up using the shapefiles, we created a static ggplot map with `geom_sf()` from **ggplot2**. This was to quickly visualise the districts and how they look in relation to the Shiny app.
+
+![](https://user-images.githubusercontent.com/25527485/88489291-6891a280-cf8b-11ea-8c0e-eb48a5af5094.png)
+(Image shows an earlier iteration of the app)
+
+The code we used was as follows:
+```
+map_hk_districts <- ggplot() +
+  geom_sf(data = shape_hk, fill = '#009E73') +
+  geom_sf(data = shape_district, fill = '#56B4E9', alpha = 0.2, linetype = 'dotted', size = 0.2)
+```  
+
 - Once we settled on how the map looked in relation to the Shiny app, we then spent some additional time and effort to investigate using [leaflet](https://github.com/rstudio/leaflet)
 - We moved to `leaflet` maps because of their interactivity. 
      + We understood our users would want to explore the HK map interactively to find out what consituency they belong to or to find out one that was of interest. This was because we were aware that people may know what region they live in but they may not know the name of the consituency.
