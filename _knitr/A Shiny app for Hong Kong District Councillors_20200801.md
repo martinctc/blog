@@ -1,7 +1,7 @@
 ---
 title: "A Shiny app on Hong Kong District Councillors"
 author: "Martin Chan, Avision Ho"
-date: "August 31, 2020"
+date: "September 6, 2020"
 output:                    # DO NOT CHANGE
   prettydoc::html_pretty:  # DO NOT CHANGE
     theme: cayman          # DO NOT CHANGE
@@ -30,7 +30,7 @@ As a wise person once said, "If you can solve a problem effectively in R, why th
 You can access:
 
 - The Shiny app [here](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/). 
-- Our GitHub repository [here](https://github.com/avisionh/dashboard-hkdistrictcouncillors/). 
+- Our GitHub repository [here](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors). 
 - Don't forget to also provide some feedback to the Shiny app [here](https://hkdistrictsinfo.typeform.com/to/gFHC02gE)!
 
 Whether you are more of an R enthusiast or simply someone who has an interest in Hong Kong politics (hopefully both!), we hope this post will bring you some inspiration on how you can use R _not just_ as a great tool for data analysis, but also as an enabler for you to do something tangible for your community and contribute to causes you care about. 
