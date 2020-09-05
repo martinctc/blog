@@ -176,6 +176,17 @@ There were some cool features that we would have liked to, but have not been abl
 - Release to alpha testers to get early feedback.
 
 One of the things that we wanted to try out with this open-source project is to adhere to some DevOps best practices, yet unfortunately some of these were either easier to set up from the beginning, or require more time and knowledge (on our part) to set up. As we develop a V2 of this Shiny App and work on [other projects](https://hong-kong-districts-info.github.io/portfolio/), we hope to find the opportunity to implement more of the above features.
+
+## Other features
+
+There were also a number of features that we have implemented, but were not detailed in this post. For instance:
+
+- Adding a searchable DataTable with information on the District Councillors, with the **DT** package
+- Embedding a user survey within the Shiny app
+- Adding a tutorial to go through features of the Shiny app, using the **shinyhelper** package
+- Adding loader animations with **shinycssloaders**
+
+We will cover more of that detail in a Part 2 of this blog, so watch this space!
     
 ## Who is behind this?
 
@@ -185,5 +196,9 @@ feedback and advice on the scope and the direction of this app. We are currently
 (Disclaimer! We are not affiliated to any political individuals nor movements. We are simply some people who'd like to contribute to society through code and open-source projects.)
     
 ## Want to get involved?
-- Be a 'reviewer' or help with coding
-- Send an email to hkdistricts.info@gmail.com
+
+We're looking for collaborators or reviewers, so please send us an email (hkdistricts.info@gmail.com), or comment down below if you are interested! We would also appreciate any feedback or questions, which you could either comment below or respond to our [https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/](in-app survey).
+
+When we first started out, we were just a couple of people who wanted to learn and practise a new skill (e.g. building a Shiny app, implementing best practices), and wanted a meaningful open-source project that we could work on. Read more about [our Vision Statement here](https://hong-kong-districts-info.github.io/about/).
+
+
