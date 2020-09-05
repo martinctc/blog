@@ -121,7 +121,7 @@ Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info
 
 ### Linking our Shiny App to Facebook
 
-![](https://hong-kong-districts-info.github.io/images/DCAppDemo3.gif)
+<img src="https://github.com/Hong-Kong-Districts-Info/hong-kong-districts-info.github.io/raw/master/images/DCAppDemo3.gif" width=500>
 
 When we first conceptualised this project, our aim has always been to make the Facebook Page content the centre piece of the app. This was contingent on using some form of Facebook API to access content on the District Councillors' Public Pages, which we initially thought would be easy as Public Page content is 'out there', and shouldn't require any additional permissions or approvals. 
 
@@ -161,9 +161,7 @@ map_hk_districts <- ggplot() +
   geom_sf(data = shape_district, fill = '#56B4E9', alpha = 0.2, linetype = 'dotted', size = 0.2)
 ```  
 
-- Once we settled on how the map looked in relation to the Shiny app, we then spent some additional time and effort to investigate using [leaflet](https://github.com/rstudio/leaflet)
-- We moved to `leaflet` maps because of their interactivity. 
-     + We understood our users would want to explore the HK map interactively to find out what consituency they belong to or to find out one that was of interest. This was because we were aware that people may know what region they live in but they may not know the name of the consituency.
+Once we settled on how the map looked in relation to the Shiny app, we then spent some additional time and effort to investigate using [leaflet](https://github.com/rstudio/leaflet). The reason for moving to **leaflet** maps because of their interactivity: we understood our users would want to explore the HK map interactively to find out what consituency they belong to or to find out one that was of interest. This was because we were aware that people may know what region they live in but they may not know the name of the consituency.
 
 ## What are our next steps?
 
@@ -175,6 +173,7 @@ There were some cool features that we would have liked to, but have not been abl
 - [modularise shiny code](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/26): Ensures our Shiny code is more easier to follow.
 - [language selection](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/36): Currently the app is a smorgasbord of English and Chinese. Consequently, it looks messy. We want to implement the ability for the user to choose which language they want to see the app in and the app's language will update accordingly.
 - Release to alpha testers to get early feedback.
+- More or our enhancements / spikes are listed here on [GitHub](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues)
 
 One of the things that we wanted to try out with this open-source project is to adhere to some DevOps best practices, yet unfortunately some of these were either easier to set up from the beginning, or require more time and knowledge (on our part) to set up. As we develop a V2 of this Shiny App and work on [other projects](https://hong-kong-districts-info.github.io/portfolio/), we hope to find the opportunity to implement more of the above features.
 
