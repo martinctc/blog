@@ -8,7 +8,7 @@ output:                    # DO NOT CHANGE
     highlight: github      # DO NOT CHANGE
 ---
 
-# 👀 TL;DR
+## 👀 TL;DR
 
 We built an [R Shiny app](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/) to improve access to information on Hong Kong's local politicians. This is so that voters can make more informed choices. The app shows basic information on each politician, alongside a live feed of their Facebook page and illustrative maps of their district.
 
@@ -105,7 +105,7 @@ One key thing to note is that all of the above data we compiled is available and
 
 [^2]: This is in compliance with the ICO's description of the 'public domain', i.e. that _information is only in the public domain if it is realistically accessible to a member of the general public at the time of the request. It must be available in practice, not just in theory_.
 
-### 📦 Creating a data package
+## 📦 Creating a data package
 
 Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info/hkdatasets), is to some extent a spin-off of this project. We decided to migrate from Google Sheets to an R data package approach, for the following reasons: 
 
@@ -119,7 +119,7 @@ Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdatasets-hex.png" width=200>
 
-### Linking our Shiny App to Facebook
+## 🔗 Linking our Shiny App to Facebook
 
 <img src="https://github.com/Hong-Kong-Districts-Info/hong-kong-districts-info.github.io/raw/master/images/DCAppDemo3.gif" width=500>
 
@@ -137,7 +137,7 @@ iframe <- paste0(chunk1, FacebookURL, chunk3)
 ```
 Although the `iframe` solution comes with its own challenges, such as the difficulty in making it truly responsive / mobile-optimised, it was nonetheless an expedient and effective workaround that allowed us to produce a proof-of-concept; the alternative was to splash around in Facebook's API documentation and discussion boards for at least another month to achieve the App Approval (bearing in mind that we were working on this in our own free time, with limited resources).
 
-### Visualising the shapefiles 
+## 🌍 Visualising the shapefiles 
 
 <Insert screenshot>
 
@@ -163,7 +163,7 @@ map_hk_districts <- ggplot() +
 
 Once we settled on how the map looked in relation to the Shiny app, we then spent some additional time and effort to investigate using [leaflet](https://github.com/rstudio/leaflet). The reason for moving to **leaflet** maps because of their interactivity: we understood our users would want to explore the HK map interactively to find out what consituency they belong to or to find out one that was of interest. This was because we were aware that people may know what region they live in but they may not know the name of the consituency.
 
-## What are our next steps?
+## 💭 What are our next steps?
 
 There were some cool features that we would have liked to, but have not been able to implement:  
 
@@ -177,7 +177,7 @@ There were some cool features that we would have liked to, but have not been abl
 
 One of the things that we wanted to try out with this open-source project is to adhere to some DevOps best practices, yet unfortunately some of these were either easier to set up from the beginning, or require more time and knowledge (on our part) to set up. As we develop a V2 of this Shiny App and work on [other projects](https://hong-kong-districts-info.github.io/portfolio/), we hope to find the opportunity to implement more of the above features.
 
-## Other features
+## 🔥 Other features in the app
 
 There were also a number of features that we have implemented, but were not detailed in this post. For instance:
 
@@ -188,14 +188,14 @@ There were also a number of features that we have implemented, but were not deta
 
 We will cover more of that detail in a Part 2 of this blog, so watch this space!
     
-## Who is behind this?
+## 💪 Who is behind this?
 
 Multiple people contributed to this work. **Avision Ho** is a data scientist who wrote the majority of the Shiny app, and who was also [previously interviewed on this blog](https://martinctc.github.io/blog/data-chats-an-interview-with-avision-ho/). Avision is a co-author on this post. **Ocean Cheung** came up with the original idea of this app, and made it all possible with his knowledge and network with District Councillors. We would also like to credit **Justin Yim**, **Tiffany Chau**, and **Gabriel Tam** for their 
 feedback and advice on the scope and the direction of this app. We are currently working on a number of other projects, which you can find out more from our website: https://hong-kong-districts-info.github.io/.
 
 (Disclaimer! We are not affiliated to any political individuals nor movements. We are simply some people who'd like to contribute to society through code and open-source projects.)
     
-## Want to get involved?
+## ✋ Want to get involved?
 
 We're looking for collaborators or reviewers, so please send us an email (hkdistricts.info@gmail.com), or comment down below if you are interested! We would also appreciate any feedback or questions, which you could either comment below or respond to our [https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/](in-app survey).
 
