@@ -39,7 +39,7 @@ Whether you are more of an R enthusiast or simply someone who has an interest in
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdc-app-example.png" width=500>
 
-The Shiny app is built like a dashboard which combines information about each district councillor alongside their Facebook page posts (if it exists) and the district they serve, illustrated on an interactive map. By using the District and Constituency dropdown lists, you can retrieve information about and the Facebook feed of the District Councillor of the selected Constituency.
+The Shiny app is built like a dashboard which combines information about each district councillor alongside their Facebook page posts (if it exists) and the district they serve, illustrated on an interactive map. By using the District and Constituency dropdown lists, you can retrieve information about the District Councillor and their Facebook feed.
 
 Specifically, there are several key components that were used on top of the incredible [shiny](https://github.com/rstudio/shiny) package:
 
@@ -200,4 +200,3 @@ feedback and advice on the scope and the direction of this app. We are currently
 We're looking for collaborators or reviewers, so please send us an email (hkdistricts.info@gmail.com), or comment down below if you are interested! We would also appreciate any feedback or questions, which you could either comment below or respond to our [in-app survey](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/).
 
 When we first started out, we were just a couple of people who wanted to learn and practise a new skill (e.g. building a Shiny app, implementing best practices), and wanted a meaningful open-source project that we could work on. Read more about [our Vision Statement here](https://hong-kong-districts-info.github.io/about/).
-
