@@ -72,7 +72,7 @@ This Google Sheet is available [here](https://docs.google.com/spreadsheets/d/100
 
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/googlesheet-example.png" width=500>
 
-Creating a map with constituency boundaries also required additional data. Boundaries for each constituency were obtained through a Freedom of Information (FOI) request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c).
+Creating a map with constituency boundaries also required additional data. Boundaries for each constituency were obtained through a Freedom of Information (FOI) request by a member of the public [here](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c) (see discussion of _shapefiles_ below).
 
 This was pretty much Phase #1 of data collection, where we had single Google Sheet with basic information about the District Councillors and their Facebook feeds, which enabled us to create a proof of concept of the Shiny app, i.e. making sure that we can set up a mechanism where the user can select a constituency and the app returns the corresponding Facebook feed of the District Councillor.
 
@@ -145,14 +145,11 @@ Although the `iframe` solution comes with its own challenges, such as the diffic
 >
 > --- *Michael A. Jackson*
 
-We acquired shapefiles in order to be able to visualise the individual Disticts on a map. A shapefile is, according to [the ArcGIS website](https://desktop.arcgis.com/en/arcmap/10.3/manage-data/shapefiles/what-is-a-shapefile.htm):
+We acquired shapefiles in order to be able to visualise the individual Disticts on a map, which we obtained from [AccessInfo.HK](https://accessinfo.hk/en/request/shapefileshp_for_2019_district_c). A shapefile is, according to [the ArcGIS website](https://desktop.arcgis.com/en/arcmap/10.3/manage-data/shapefiles/what-is-a-shapefile.htm):
 
 > ... a simple, nontopological format for storing the geometric location and attribute information of geographic features. Geographic features in a shapefile can be represented by points, lines, or polygons (areas).
 
-To rapidly get a Proof of Concept up using the shapefiles, we created a static ggplot map with `geom_sf()` from **ggplot2**. This was to quickly visualise the districts and how they look in relation to the Shiny app.
-
-![](https://user-images.githubusercontent.com/25527485/88489291-6891a280-cf8b-11ea-8c0e-eb48a5af5094.png)
-(Image shows an earlier iteration of the app)
+These shapefiles could be easily used as part of a **ggplot2** workflow, which we created with  `geom_sf()` to rapidly get a Proof of Concept. This was to quickly visualise the districts and how they look in relation to the Shiny app.
 
 The code we used was as follows:
 ```
@@ -160,6 +157,9 @@ map_hk_districts <- ggplot() +
   geom_sf(data = shape_hk, fill = '#009E73') +
   geom_sf(data = shape_district, fill = '#56B4E9', alpha = 0.2, linetype = 'dotted', size = 0.2)
 ```  
+
+![](https://user-images.githubusercontent.com/25527485/88489291-6891a280-cf8b-11ea-8c0e-eb48a5af5094.png)
+(Image shows an earlier iteration of the app)
 
 Once we settled on how the map looked in relation to the Shiny app, we then spent some additional time and effort to investigate using [leaflet](https://github.com/rstudio/leaflet). The reason for moving to **leaflet** maps because of their interactivity: we understood our users would want to explore the HK map interactively to find out what consituency they belong to or to find out one that was of interest. This was because we were aware that people may know what region they live in but they may not know the name of the consituency.
 
