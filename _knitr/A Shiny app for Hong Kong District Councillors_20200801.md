@@ -25,7 +25,7 @@ Our project was mainly motivated by an observation **that the engagement of the 
 
 As of the summer of 2020, we identified that 96% (434) of the 452 District Councillors elected in 2019 actually have a dedicated Facebook page for delivering updates to and engaging with local residents. However, these Facebook pages have to be manually searched for online, and there is not a readily available tool where people can quickly map a District to a District Councillor and to their Facebook feeds. 
 
-As a wise person once said, "If you can solve a problem effectively in R, why the hell not?" We tackled this problem by creating a Shiny app in R, which brings together the Facebook feeds and constituency information for Hong Kong's district councillors in one place. In this way, people will be able to access the currently disparately stored information in a single web app.
+As a wise person once said, *"If you can solve a problem effectively in R, why the hell not?"*. We tackled this problem by creating a Shiny app in R, which brings the Facebook feeds and constituency information for Hong Kong's district councillors in one place. In this way, people will be able to access the currently disparately stored information in a single web app.
 
 You can access:
 
