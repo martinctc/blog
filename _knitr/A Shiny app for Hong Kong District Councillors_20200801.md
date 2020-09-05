@@ -197,7 +197,7 @@ feedback and advice on the scope and the direction of this app. We are currently
     
 ## ✋ Want to get involved?
 
-We're looking for collaborators or reviewers, so please send us an email (hkdistricts.info@gmail.com), or comment down below if you are interested! We would also appreciate any feedback or questions, which you could either comment below or respond to our [https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/](in-app survey).
+We're looking for collaborators or reviewers, so please send us an email (hkdistricts.info@gmail.com), or comment down below if you are interested! We would also appreciate any feedback or questions, which you could either comment below or respond to our [in-app survey](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/).
 
 When we first started out, we were just a couple of people who wanted to learn and practise a new skill (e.g. building a Shiny app, implementing best practices), and wanted a meaningful open-source project that we could work on. Read more about [our Vision Statement here](https://hong-kong-districts-info.github.io/about/).
 
