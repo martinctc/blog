@@ -120,7 +120,8 @@ Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info
 <img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdatasets-hex.png" width=200>
 
 ### Linking our Shiny App to Facebook
-<Insert screenshot>
+
+![](https://hong-kong-districts-info.github.io/images/DCAppDemo3.gif)
 
 When we first conceptualised this project, our aim has always been to make the Facebook Page content the centre piece of the app. This was contingent on using some form of Facebook API to access content on the District Councillors' Public Pages, which we initially thought would be easy as Public Page content is 'out there', and shouldn't require any additional permissions or approvals. 
 
