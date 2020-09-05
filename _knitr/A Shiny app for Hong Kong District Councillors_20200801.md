@@ -10,7 +10,7 @@ output:                    # DO NOT CHANGE
 
 ## 👀 TL;DR
 
-We built an [R Shiny app](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/) to improve access to information on Hong Kong's local politicians. This is so that voters can make more informed choices. The app shows basic information on each politician, alongside a live feed of their Facebook page and illustrative maps of their district.
+We built an [R Shiny app](https://hkdistricts-info.shinyapps.io/dashboard-hkdistrictcouncillors/) to improve access to information on Hong Kong's local politicians. This is so that voters can make more informed choices. The app shows basic information on each politician, alongside a live feed of their Facebook page and illustrative maps of their district. We took advantage of this project to test out the **a range of R packages and techniques** and to **implement some DevOps best practices**, which we will discuss in this post. 
 
 > *This project is an attempt to help make a difference with R programming. It's an opportunity for us to learn, to code, to have fun, and to make a difference.*
 
