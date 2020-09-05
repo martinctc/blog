@@ -126,9 +126,15 @@ When we first conceptualised this project, our aim has always been to make the F
 
 It turns out, in order to read public posts from Facebook Pages that we do not have admin access to requires a certain permission called **Page Public Content Access**, which in turn requires us to submit our app to Facebook for review. Reading several threads (such as [this](https://developers.facebook.com/community/threads/385801828797027/)) online soon convinced us that this would be a fairly challenging process, as we need to effectively submit a proposal on why we had to request this permission. To add to the difficulty, we understood that the App Review process had been put on pause at the time, due to the re-allocation of resourcing during COVID-19. 
 
-This drove us to search for a workaround, and this is where we stumbled across _iframes_ as a solution. An _iframe_ is basically a frame that enables you embed a HTML document within another HTML document (they've existed for a long time, as I recall using them in the really early GeoCities and Xanga websites).
-  
-- Found a workaround using just iframes - expedient but fit-for-purpose
+This drove us to search for a workaround, and this is where we stumbled across _iframes_ as a solution. An _iframe_ is basically a frame that enables you embed a HTML document within another HTML document (they've existed for a long time, as I recall using them in the really early GeoCities and Xanga websites). 
+
+The `iframe` concept roughly works as follows. All the Facebook Page URLs are saved in a vector called `FacebookURL`, and this is "wrapped" with some HTML markup that enables it to be rendered within the Shiny App as an UI component (using `shiny::uiOutput()`:  
+```
+chunk1 <- '<iframe src="https://www.facebook.com/plugins/page.php?href='
+chunk3 <- '&tabs=timeline&width=400&height=800&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=3131730406906292" width="400" height="800" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>'
+iframe <- paste0(chunk1, FacebookURL, chunk3)
+```
+Although the `iframe` solution comes with its own challenges, such as the difficulty in making it truly responsive / mobile-optimised, it was nonetheless an expedient and effective workaround that allowed us to produce a proof-of-concept; the alternative was to splash around in Facebook's API documentation and discussion boards for at least another month to achieve the App Approval (bearing in mind that we were working on this in our own free time, with limited resources).
 
 ### Visualising the shapefiles 
 
