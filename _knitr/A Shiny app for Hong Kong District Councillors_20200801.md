@@ -170,7 +170,8 @@ There were some cool features that we would have liked to, but have not been abl
 - [precommit hooks](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/17): Those familiar with Python may be aware of pre-commit hooks as ways to automatically detect whether your repo contains anything sensitive like a `.secrets` file. Setting this up will enable us to have automated checks run each time we make a commit to assure we are follow specified standards.
     + Unfortunately, we named our repo with a hyphen so the pre-commit hooks won't work.
     + [codecov](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/33): Allows us to robustly test the functions in our code so that they work under a multitude of scenarios such as when users encounter problems.
-- [modularise shiny code](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/26): Ensures our Shiny code is more easier to follow.
+- [modularise shiny code](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/26): Ensures our Shiny code is chunked so individual pieces of logic are isolated. 
+    + This makes the overall code easier to follow as it separates the objects that are connected from those that are not. It also makes testing easier because you can test each isolated chunk.
 - [language selection](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues/36): Currently the app is a smorgasbord of English and Chinese. Consequently, it looks messy. We want to implement the ability for the user to choose which language they want to see the app in and the app's language will update accordingly.
 - Release to alpha testers to get early feedback.
 - More or our enhancements / spikes are listed here on [GitHub](https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/issues)
