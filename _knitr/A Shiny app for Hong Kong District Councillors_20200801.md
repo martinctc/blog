@@ -107,6 +107,8 @@ One key thing to note is that all of the above data we compiled is available and
 
 ## 📦 Creating a data package
 
+<img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdatasets-hex.png" width=200>
+
 Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info/hkdatasets), is to some extent a spin-off of this project. We decided to migrate from Google Sheets to an R data package approach, for the following reasons: 
 
 - An R data package could allow us to provide more detailed documentation and tracking of how the data would change over time. If we choose to expand the dataset in the future, we can easily add this to the package release notes.
@@ -116,8 +118,6 @@ Our data R package, [**hkdatasets**](https://github.com/hong-Kong-Districts-Info
 - Make it easier for learners and students in the R community to practise with the datasets we've put together, without having to learn about the **googlesheets4** package. Our thinking is that this would benefit others as other data packages like **nycflights13** and **babynames** have benefitted us as we learned R.
 
 **hkdatasets** is currently only available on GitHub, and our aim is to release it on CRAN in the future so that more R users to take advantage of it. Check out our  [GitHub repo](https://github.com/hong-Kong-Districts-Info/hkdatasets) to find out more about it.
-
-<img src="https://raw.githubusercontent.com/martinctc/blog/master/images/hkdatasets-hex.png" width=200>
 
 ## 🔗 Linking our Shiny App to Facebook
 
