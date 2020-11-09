@@ -1,0 +1,320 @@
+---
+title: "Comparing Common Operations in dplyr and data.table"
+author: "Martin Chan"
+date: "November 6, 2020"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# prettyjekyll::FormatPost("_knitr/common-operations-dplyr-datatable-09-11-2020.Rmd")
+```
+
+# Background
+
+This post compares common data manipulation operations in **dplyr** and **data.table**.
+
+```{r readexcel, echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
+knitr::include_graphics("../images/manipulate.gif")
+```
+
+For new-comers to R who are not aware, [there are _many_ ways to do the same thing in R](https://martinctc.github.io/blog/using-data.table-with-magrittr-pipes-best-of-both-worlds/). Depending on the purpose of the code (readability vs creating functions) and the size of the data, I for one often find myself switching from one flavour (or dialect) of R data manipulation to another. Generally, I prefer the **dplyr** style for its readability and intuitiveness (for myself), **data.table** for its speed in grouping and summarising operations,[^1] and **base R** when I am writing functions. This is by no means the R community consensus by the way (perfectly aware that I am venturing into a total minefield),[^2] but is more of a representation of how I personally navigate the messy (but awesome) R world.
+
+[^1]: Elio Campitelli has an [excellent blog post] on _Why I love data.table_, which is a nice short piece on why **data.table** is pretty awesome.
+
+[^2]: As noted in the [DS4PS blog](https://ds4ps.org/2019/04/20/datatable-vs-dplyr.html), the debate of **dplyr** versus **data.table** has resulted in "Twitter clashes, and even became an inspiration for memes."
+
+In this post, I am going to list out some of the most common data manipulations in both styles:
+
+1. `group_by()`, `summarise()` (a single column)
+2. `group_by()`, `summarise_at()` (multiple columns)
+3. `filter()`, `mutate()`
+4. `mutate_at()` (changing multiple columns)
+5. Row-wise operations
+6. Vectorised multiple if-else (`case_when()`)
+7. Function-writing: referencing a column with string
+
+There is a vast amount of resources out there on the internet on the comparison of **dplyr** and **data.table**. For those who love to get into the details, I would really recommend [Atrebas's seminal blog post](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/) that gives a comprehensive tour of **dplyr** and **data.table**, comparing the code side-by-side. I would also recommend [this comparison of the three R dialects](https://wetlandscapes.com/blog/a-comparison-of-r-dialects/) by Jason Mercer, which not only includes base R in its comparison, but also goes into a fair bit of detail on elements such as piping/chaining (`%>%`). There's also a very excellent cheat sheet from DataCamp, linked [here](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf).
+
+Why write a new blog post then, you ask? One key (selfish / self-centred) reason is that I myself often refer to my blog for an _aide-memoire_ on how to do a certain thing in R, and my notes are optimised to only contain my most frequently used code. They also contain certain idiosyncracies in the way that I code (e.g. using pipes with **data.table**), which I'd like to be upfront about - and would at the same time very much welcome any discussion on it. It is perhaps also justifiable that I at least attempted to build on and unify the work of others in this post, which I have argued as what is ultimately important [in relation of duplicated R artefacts](https://martinctc.github.io/blog/a-short-essay-on-duplicated-r-artefacts/).
+
+Rambling on... so here we go!
+
+To make it easy to reproduce results, I am going to just stick to the good ol' **mtcars** and **iris** datasets which come shipped with R. I will also err on the side of verbosity and load the  packages at the beginning of each code chunk, as if each code chunk is its own independent R session. 
+
+
+# 1. `group_by()`, `summarise()` (a single column)
+
+- **Analysis**: Maximum MPG (`mpg`) value for each cylinder type in the **mtcars** dataset.  
+- **Operations**: Summarise with the `max()` function by group.
+
+To group by and summarise values, you would run something like this in **dplyr**:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(dplyr)
+
+mtcars %>%
+	group_by(cyl) %>%
+	summarise(max_mpg = max(mpg), .groups = "drop_last")
+```
+
+You could do the same in **data.table**, and still use magrittr pipes:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(data.table)
+library(magrittr) # Or any package that imports the pipe (`%>%`)
+
+mtcars %>%
+	as.data.table() %>%
+	.[,.(max_mpg = max(mpg)), by = cyl]
+```
+
+# 2. `group_by()`, `summarise_at()` (multiple columns)
+
+- **Analysis**: Average mean value for `Sepal.Width` and `Sepal.Length` for each iris `Species` in the **iris** dataset.  
+- **Operations**: Summarise with the `mean()` function by group.
+
+Note: this is slightly different from the scenario above because the "summarisation" is applied to multiple columns.
+
+In **dplyr**:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(dplyr)
+
+# Option 1
+iris %>%
+	group_by(Species) %>%
+	summarise_at(vars(contains("Sepal")),~mean(.))
+
+# Option 2
+iris %>%
+  group_by(Species) %>%
+  summarise(across(contains("Sepal"), mean), .groups = "drop_last")
+```
+
+In **data.table** with pipes:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(data.table)
+library(magrittr) # Or any package that imports the pipe (`%>%`)
+
+# Option 1
+iris %>%
+	as.data.table() %>%
+	.[,lapply(.SD, mean), by = Species, .SDcols = c("Sepal.Length", "Sepal.Width")]
+	
+# Option 2
+iris %>%
+  as.data.table() %>%
+  .[,lapply(.SD, mean), by = Species, .SDcols = names(.) %like% "Sepal"]
+```
+
+
+# 3. `filter()`, `mutate()`
+
+- **Analysis**: Find out what the multiple of `Sepal.Width` and `Sepal.Length` would be for the iris species `setosa`.  
+- **Operations**: Filter by `Species=="setosa"` and create a new column called `Sepal_Index`.
+
+In **dplyr**:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(dplyr)
+
+iris %>%
+	filter(Species == "setosa") %>%
+	mutate(Sepal_Index = Sepal.Width * Sepal.Length)
+```
+
+In **data.table**:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(data.table)
+library(magrittr) # Or any package that imports the pipe (`%>%`)
+
+iris %>%
+	as.data.table() %>%
+	.[, Species := as.character(Species)] %>%
+	.[Species == "setosa"] %>%
+	.[, Sepal_Index := Sepal.Width * Sepal.Length] %>%
+  .[]
+```
+
+
+
+# 4. `mutate_at()` (changing multiple columns)
+
+- **Analysis**: Multiply `Sepal.Width` and `Sepal.Length` by 100.  
+- **Operations**: As above
+
+In **dplyr**:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(dplyr)
+
+# Option 1
+iris %>%
+	mutate_at(vars(Sepal.Length, Sepal.Width), ~.*100)
+
+# Option 2
+iris %>%
+  mutate(across(starts_with("Sepal"), ~.*100))
+```
+
+In **data.table** with pipes:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(data.table)
+library(magrittr) # Or any package that imports the pipe (`%>%`)
+
+
+sepal_vars <- c("Sepal.Length", "Sepal.Width")
+
+iris %>%
+  as.data.table() %>%
+  .[,as.vector(sepal_vars) := lapply(.SD, function(x) x * 100), .SDcols = sepal_vars] %>%
+  .[]
+```
+
+# 5. Row-wise operations
+
+This is always an awkward one, even for **dplyr**. For this, I will list a couple of options for row-wise calculations.
+
+- **Analysis**: Create a `TotalSize` column by summing all four columns of `Sepal.Length`, `Sepal.Width`, `Petal.Length`, and `Petal.Width`.
+- **Operations**: As above
+
+In **dplyr**:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(dplyr)
+
+# Option 1 - use `rowwise()`
+iris %>%
+  rowwise() %>%
+  mutate(TotalSize = sum(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width))
+
+# Option 2 - use `apply()` and `select()`
+# Select all columns BUT `Species`
+iris %>%
+  mutate(TotalSize = select(., -Species) %>% apply(MARGIN = 1, FUN = sum))
+
+# Option 3 - `rowwise()` and `c_across()`
+# Select all columns BUT `Species`
+iris %>%
+  rowwise() %>%
+  mutate(TotalSize = sum(c_across(-Species)))
+```
+
+In **data.table** with pipes:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(data.table)
+library(magrittr) # Or any package that imports the pipe (`%>%`)
+
+# Get all the column names in Species except for `Species`
+all_vars <- names(iris)[names(iris) != "Species"]
+
+iris %>%
+  as.data.table() %>%
+  .[, "Sepal_Total" := apply(.SD, 1, sum), .SDcols = all_vars] %>%
+  .[]              
+```
+
+# 6. Vectorised multiple if-else (`case_when()`)
+
+- **Analysis**: Classify an `Age` into different categories
+- **Operations**: Create a new column called `AgeLabel` based on the `Age` variable
+
+In **dplyr**:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(dplyr)
+
+age_data <- tibble(Age = seq(1, 100))
+
+age_data %>%
+  mutate(AgeLabel = case_when(Age < 18 ~ "0 - 17",
+                              Age < 35 ~ "18 - 34",
+                              Age < 65 ~ "35 - 64",
+                              TRUE ~ "65+"))
+
+```
+
+In **data.table**:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(data.table)
+library(magrittr) # Or any package that imports the pipe (`%>%`)
+
+# Option 1 - without pipes
+age_data <- data.table(Age = 0:100)
+age_data[, AgeLabel := "65+"]
+age_data[Age < 65, AgeLabel := "35-64"]
+age_data[Age < 35, AgeLabel := "18-34"]
+age_data[Age < 18, AgeLabel := "0-17"]        
+
+# Option 2 - with pipes
+age_data2 <- data.table(Age = 0:100)
+
+age_data2 %>%
+  .[, AgeLabel := "65+"] %>%
+  .[Age < 65, AgeLabel := "35-64"] %>%
+  .[Age < 35, AgeLabel := "18-34"] %>%
+  .[Age < 18, AgeLabel := "0-17"] %>%
+  .[]
+
+```
+
+One thing to note is that there are two options here - Option 2 _with_ and Option 1 _without_ using magrittr pipes. The reason why Option 1 is possible without any assignment (`<-`) is because of **reference semantics** in **data.table**. When `:=` is used in **data.table**, a change is made to the data.table object via 'modify by reference', without creating a copy of the data.table object; when you assign it to a new object, that is referred to as 'modify by copy'. 
+
+As [Tyson Barrett](https://tysonbarrett.com/jekyll/update/2019/07/12/datatable/) nicely summarises, this 'modifying by reference' behaviour in **data.table** is partly what makes it efficient, but can be surprising if you do not expect or understand it; however, the good news is that **data.table** gives you the option whether to modify by reference or by making a copy.
+
+# 7. Function-writing: referencing a column with string
+
+- **Requirement**: Create a function that will multiply a column by three. A string should be supplied to the argument to specify the column to be multiplied. The function returns the original data frame with the modified column.
+
+Here, I intentionally name the packages explicitly within the function and not load them, as it's best practice for functions to be able to run on their own without loading in an entire library.
+
+In **dplyr**:
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+
+multiply_three <- function(data, variable){
+  
+  dplyr::mutate(data, !!rlang::sym(variable) := !!rlang::sym(variable) * 3)
+}
+
+multiply_three(iris, "Sepal.Length")
+
+```
+
+In **data.table**:
+
+(See https://stackoverflow.com/questions/45982595/r-using-get-and-data-table-within-a-user-defined-function)
+
+```{r echo=TRUE, results = 'hide', message=FALSE, warning=FALSE}
+
+multiply_three <- function(data, variable){
+  
+  dt <- data.table::as.data.table(data)
+  dt[, as.character(substitute(variable)) := get(variable) * 3]
+  dt[] # Print
+}
+
+multiply_three(iris, "Sepal.Length")
+
+```
+
+# End Note
+
+This is it! For anything with greater detail, please consult the blogs and cheat sheets I recommended at the beginning of this blog post. I'd say this covers 65% (not a strictly empirical statistic) of my needs for data manipulation, so I hope this is of some help to you. (The `gather()` vs `melt()` vs `pivot_longer()` subject is a whole other beast, and ought to be dealt with in another post)
+
+
+
+
+
+
+
+
+
