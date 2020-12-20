@@ -19,9 +19,9 @@ html {
 
 body {
     background: $darkGray;
-  font: 18px/1.4 $trebuchet;
-  // color: $white;
-  color: #DEDEDE;
+    font: 18px/1.4 $trebuchet2;
+    // color: $white;
+    color: #DEDEDE;
 }
 
 .container {
@@ -32,7 +32,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $trebuchet;
+  font-family: $trebuchet2;
   color: $white;
 
   line-height: 1.7;
@@ -205,7 +205,7 @@ img {
   margin: 0;
   color: #D3D3D3;
   cursor: pointer;
-  font-family: $trebuchet;
+  font-family: $trebuchet2;
   font-weight: 300;
   font-size: 32px;
   letter-spacing: 1px;
@@ -224,7 +224,7 @@ img {
 nav {
   float: right;
   margin-top: 23px; // @TODO: Vertically middle align
-  font-family: $trebuchet;
+  font-family: $trebuchet2;
   // font-family: $helveticaNeue;
   font-size: 18px;
 
@@ -300,7 +300,7 @@ footer {
     background-color: #48585d; // slate grey
     border-radius: 10px; // creates rounded corners
     padding: 2px; /*add this if you want a bit of space around the text*/
-    font: 18px/1.4 $trebuchet;
+    font: 18px/1.4 $trebuchet2;
     color: #33CC99; // Defines colour of tag icons
     a {
         margin-left: 0px;
