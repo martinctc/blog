@@ -195,7 +195,7 @@ To add a pull request template, you'll need to add a file named `pull_request_te
 - Checks to perform when reviewing the pull request
 - What issues are linked to this pull request
 
-You can use [this version originally put together by Avision Ho]([hkdatasets/pull_request_template.md at master · Hong-Kong-Districts-Info/hkdatasets (github.com)](https://github.com/Hong-Kong-Districts-Info/hkdatasets/blob/master/.github/pull_request_template.md)) as a starting point for authoring your own templates.
+You can use [this version originally put together by Avision Ho](https://github.com/Hong-Kong-Districts-Info/hkdatasets/blob/master/.github/pull_request_template.md) as a starting point for authoring your own templates.
 
 ## 8. Add a hex sticker
 
@@ -240,7 +240,7 @@ Since the last tip was probably slightly less informative, I've decided to throw
 - Post your package release message on Twitter with the #rstats hashtag. This makes it much more likely for the package to be picked up by the R community. Note that the convention is to use #Rstats rather than #R as a hashtag - see <https://www.t4rstats.com/hashtags-what-are-they-good-for.html>.
 
 <blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">I declare <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> the official R statistical prog lang hashtag, pass it on to friends, family and Stata users</p>&mdash; Drew Conway (@drewconway) <a href="https://twitter.com/drewconway/status/1448027809?ref_src=twsrc%5Etfw">April 3, 2009</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  
+
 - If you use Reddit, consider posting in the [Rstats](https://www.reddit.com/r/rstats/) subreddit. 
 
 Finally, it's worth emphasising that the best way to learn how to improve your package is to look at how others do it. In the process of writing this post. I've learnt something myself when looking at the [sjmisc](https://github.com/strengejacke/sjmisc) package GitHub repository, i.e. a way to make it easy for others to cite your R package, with:
