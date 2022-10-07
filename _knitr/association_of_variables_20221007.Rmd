@@ -1,0 +1,119 @@
+---
+title: "Effect Size and Power"
+author: "Martin Chan"
+date: "October 7, 2022"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+# prettyjekyll::FormatPost("_knitr/association_of_variables_20221007.Rmd")
+```
+
+# Introduction
+
+This post will focus on statistical tests in R that you can perform to understand and validate the relationship between two variables. 
+
+Very statistics 101, you may be thinking. So why? This post is edited from my own notes from learning statistics and R. The primary goal of the post is to be practical enough for myself to refer to from time to time, as I do for all my other tutorials/posts in this blog. The secondary goal is that hopefully, as a side effect, that this post will benefit others who are learning statistics and R too. 
+
+To illustrate the R code, I will also be using a sample dataset `pq_data` from the package [**vivainsights**](https://microsoft.github.io/vivainsights/), which is a cross-sectional time-series dataset measuring the collaboration behaviour of simulated employees in an organization. Each row represents an employee on a certain week, with columns measuring behaviours such as total weekly time spent in email, meetings, chats, and so on. 
+
+# Loading the dataset
+
+The package **vivainsights** is available on CRAN, so you can install this with `install.packages("vivainsights")`.
+
+You can load the dataset in R with the following code: 
+```r
+library(vivainsights)
+pq_data
+```
+
+# Assocation between two variables
+
+One of the most basic tasks in statistics and data science is to understand the relationship between two variables. Sometimes the motivation is understand whether the relationship is causal, but this is not always the case. 
+
+In our dataset, we have two metrics of interest:
+  -  `Multitasking_hours` measures the total number of hours the person spent sending emails or instant messages during a meeting or a Teams call.
+  - `After_hours_collaboration_hours` measures the number of hours a person has spent in collaboration (meetings, emails, IMs, and calls) outside of working hours.[^1]
+
+[^1]: See <https://learn.microsoft.com/en-us/viva/insights/use/metric-definitions> for definitions.
+
+
+
+
+
+
+When inferring the relationship between two variables - whether a variable `x` has a causal effect on another variable `y` - statisticians and data scientists look at a number of tests and calculations. Here is a non-exhaustive list that you will likely have come across:
+  - Statistical significance
+  - Correlation
+  - Effect Size
+  - Statistical power
+  - Sample variability
+
+Correlation is a way to test if two variables have any kind of relationship, whereas p-value tells us if the result of an experiment is statistically significant. 
+
+## Correlations
+
+Correlation tests are used in statistics to measure how strong a relationship is between two variables, without hypothesising any causal effect between the variables. There are several types of correlation coefficients (e.g. Pearson's _r_, Kendall's _tau_, Spearman's _rho_), but the most commonly used is the Pearson's correlation coefficient.
+
+Correlation tests are a form of **non-parametric test**, which don't make as many assumptions about the data and are useful when one or more of the common statistical assumptions are violated. However, the inferences they make aren't as strong as with parametric tests.
+
+
+The statistical significance of a correlation can be evaluated with the t-statistic. This can be yielded with `cor.test()` in R:
+
+```r
+cor.test()
+```
+
+This output provides the correlation coefficient, the t-statistic, df, p-value, and the 95% confidence interval for the correlation coefficient. The two variables you supply to the function should both be continuous (most likely type `numeric`, `integer`, or `double` in R). 
+
+Note that the t statistic for the correlation depends on the magnitude of the correlation coefficient (r) and the **sample size**. With a large sample, even weak correlations can become statistically significant.
+
+### Relationship with simple linear regression
+
+One might also be led to believe that the correlation coefficient is similar to the slope of a simple linear regression. For one, the test for correlation will more or less lead to a similar conclusion as the test for slope. The sign of the slope (+/-ve) will be the same for correlation, and both values should indicate the direction of the relationship. 
+
+However, those two statistics are different: the correlation coefficient only tells you how closely your data fit on a line, so two datasets with the same correlation coefficient can have very different slopes. In other words, the value of the correlation indicates the _strength_ of the linear relationship. The value of the slope does not. Moreover, the slope interpretation tells you the change in the response for a one-unit increase in the predictor. Correlation does not have this kind of interpretation.
+
+
+### Pitfalls? 
+
+Outliers and non-linear relationships. 
+
+A simple way to evaluate whether a relationship is reasonably linear is to examine a scatter plot.
+
+P-value evaluates how well your data rejects the **null hypothesis**, which states that there is no relationship between two compared groups.
+
+p-value is the probability of obtaining results as extreme or more extreme, given the null hypothesis is true.
+
+## Effect size
+
+
+
+## Statistical power
+
+**Statistical power** is the probability of identifying an interaction effect on a dependent variable with the specified sample characteristics. The most common use of power calculations is to estimate how big a sample you will need.
+
+## Sample variance
+
+Examining in-sample variation and between-sample variation are both helpful when comparing means across two populations. 
+
+The f-statistic is in fact calculated by the between-group variance divided by the within-group variance. 
+
+This is where **ANOVA** (Analysis of Variance) comes into play here, where ANOVA is a statistical test used to analyze the difference between the means of more than two groups. The simple version is the one-way ANOVA, but you would also have come across two-way ANOVA which is used to estimate how the mean of a quantitative variable changes according to the levels of two categorical variables (e.g. rain/no-rain and weekend/weekday to predict ice cream sales).
+
+There are three assumptions in ANOVA:
+  - The responses for each factor level have a normal population distribution.
+  - These distributions have the same variance.
+  - The data are independent.
+
+The p-value is found using the f-statistic and the f-distribution.   
+
+## References
+
+- [Correlation and Regression](https://sphweb.bumc.bu.edu/otlt/MPH-Modules/PH717-QuantCore/PH717-Module9-Correlation-Regression/index.html)
+- [PennState STAT500](https://online.stat.psu.edu/stat500/lesson/9/9.4/9.4.2)
+- [Guide on when to use which statistical tests and when](https://www.scribbr.com/statistics/statistical-tests/)
