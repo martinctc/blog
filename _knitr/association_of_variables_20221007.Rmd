@@ -33,7 +33,7 @@ pq_data
 
 # Assocation between two variables
 
-One of the most basic tasks in statistics and data science is to understand the relationship between two variables. Sometimes the motivation is understand whether the relationship is causal, but this is not always the case. 
+One of the most basic tasks in statistics and data science is to understand the relationship between two variables. Sometimes the motivation is understand whether the relationship is causal, but this is not always the case (for instance, one may simply wish to test for multicollinearity when selecting predictors for a model).
 
 In our dataset, we have two metrics of interest:
   -  `Multitasking_hours` measures the total number of hours the person spent sending emails or instant messages during a meeting or a Teams call.
@@ -41,17 +41,20 @@ In our dataset, we have two metrics of interest:
 
 [^1]: See <https://learn.microsoft.com/en-us/viva/insights/use/metric-definitions> for definitions.
 
+The hypothesis here is that multitasking hours is correlated with hours that employees spend working beyond their normal working hours. What can we do to understand the relationship between the two? 
 
-
-
-
-
-When inferring the relationship between two variables - whether a variable `x` has a causal effect on another variable `y` - statisticians and data scientists look at a number of tests and calculations. Here is a non-exhaustive list that you will likely have come across:
-  - Statistical significance
-  - Correlation
+Here is a non-exhaustive list ot methods that you will likely have come across:
+  - Comparison tests
+  - Correlation tests
+  - Regression tests
   - Effect Size
   - Statistical power
   - Sample variability
+
+## Comparison tests
+
+See <https://www.scribbr.com/statistics/statistical-tests/>.
+
 
 Correlation is a way to test if two variables have any kind of relationship, whereas p-value tells us if the result of an experiment is statistically significant. 
 
