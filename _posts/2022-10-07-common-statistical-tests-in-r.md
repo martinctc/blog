@@ -1,0 +1,218 @@
+---
+title: "Common Statistical Tests in R"
+
+author: "Martin Chan"
+date: "October 7, 2022"
+layout: post
+---
+
+<script src="{{ site.url }}{{ site.baseurl }}/knitr_files/association_of_variables_20221007_files/header-attrs-2.16/header-attrs.js"></script>
+
+<section class="main-content">
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This post will focus on common statistical tests in R that you can
+perform to understand and validate the relationship between two
+variables.</p>
+<p>Very statistics 101, you may be thinking. So why? This post is edited
+from my own notes from learning statistics and R. The primary goal of
+the post is to be practical enough for myself to refer to from time to
+time, as I do for all my other tutorials/posts in this blog. The
+secondary goal is that hopefully, as a side effect, that this post will
+benefit others who are learning statistics and R too.</p>
+<p>To illustrate the R code, I will also be using a sample dataset
+<code>pq_data</code> from the package <a
+href="https://microsoft.github.io/vivainsights/"><strong>vivainsights</strong></a>,
+which is a cross-sectional time-series dataset measuring the
+collaboration behaviour of simulated employees in an organization. Each
+row represents an employee on a certain week, with columns measuring
+behaviours such as total weekly time spent in email, meetings, chats,
+and so on.</p>
+</div>
+<div id="loading-the-dataset" class="section level1">
+<h1>Loading the dataset</h1>
+<p>The package <strong>vivainsights</strong> is available on CRAN, so
+you can install this with
+<code>install.packages("vivainsights")</code>.</p>
+<p>You can load the dataset in R with the following code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vivainsights)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pq_data</span></code></pre></div>
+</div>
+<div id="assocation-between-two-variables" class="section level1">
+<h1>Assocation between two variables</h1>
+<p>One of the most basic tasks in statistics and data science is to
+understand the relationship between two variables. Sometimes the
+motivation is understand whether the relationship is causal, but this is
+not always the case (for instance, one may simply wish to test for
+multicollinearity when selecting predictors for a model).</p>
+<p>In our dataset, we have two metrics of interest: -
+<code>Multitasking_hours</code> measures the total number of hours the
+person spent sending emails or instant messages during a meeting or a
+Teams call. - <code>After_hours_collaboration_hours</code> measures the
+number of hours a person has spent in collaboration (meetings, emails,
+IMs, and calls) outside of working hours.<a href="#fn1"
+class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>Imagine then we have two questions to address:</p>
+<ol style="list-style-type: decimal">
+<li><p>We suspect that multitasking hours is correlated with after-hours
+working, as the former could be a symptom of excessive workload or
+sub-optimal time management which can explain after-hours working. What
+can we do to understand the relationship between the two?</p></li>
+<li><p>Do managers multi-task more than individual contributors
+(IC)?</p></li>
+</ol>
+<p>To answer these questions, there are a couple of common methods at
+our disposal. Here is a (non-exhaustive) list: - Comparison tests -
+Correlation tests - Regression tests - Effect Size - Statistical power -
+Sample variability</p>
+<p>It is worth noting that the first question postulates a relation
+between two <strong>continuous</strong> variables (multitasking hours,
+afterhours collaboration), whereas the second question a relation
+between a <strong>categorical</strong> variable (manager/IC) and a
+<strong>continuous</strong> variable (multitasking hours). The types of
+the variables in question help determine which tests are
+appropriate.</p>
+<div id="comparison-tests" class="section level2">
+<h2>Comparison tests</h2>
+<p>Two of the most common comparison tests would be the
+<strong>t-test</strong> and Analysis of Variance (ANOVA).</p>
+<p>A t-test can be paired or unpaired, where the former is used for
+comparing the means of two groups in the same population, and the latter
+for independent samples from two populations or groups. An unpaired
+(two-sample) t-test is therefore appropriate for the scenario in
+question two, as managers and ICs are two different populations.</p>
+<p>Since we are interested in the difference between managers and ICs,
+we will first need to create a factor variable from the data that has
+only two levels. In the below code, we create a new data frame called
+<code>pq_data_2</code> containing a new variable called
+<code>ManagerIndicator</code>. This new variable reclassifies any value
+that equals either “Manager” or “Manager+” to “Manager”, and has only
+two levels: “Individual Contributor” and “Manager”:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pq_data_2 <span class="ot">&lt;-</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  pq_data <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ManagerIndicator =</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">test =</span> SupervisorIndicator <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Manager&quot;</span>, <span class="st">&quot;Manager+&quot;</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">yes =</span> <span class="st">&quot;Manager&quot;</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">no =</span> SupervisorIndicator</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">factor</span>(<span class="at">levels =</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>               <span class="fu">c</span>(<span class="st">&quot;Individual Contributor&quot;</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;Manager&quot;</span>))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>See <a href="https://www.scribbr.com/statistics/statistical-tests/"
+class="uri">https://www.scribbr.com/statistics/statistical-tests/</a>.</p>
+<p>Correlation is a way to test if two variables have any kind of
+relationship, whereas p-value tells us if the result of an experiment is
+statistically significant.</p>
+</div>
+<div id="correlations" class="section level2">
+<h2>Correlations</h2>
+<p>Correlation tests are used in statistics to measure how strong a
+relationship is between two variables, without hypothesising any causal
+effect between the variables. There are several types of correlation
+coefficients (e.g. Pearson’s <em>r</em>, Kendall’s <em>tau</em>,
+Spearman’s <em>rho</em>), but the most commonly used is the Pearson’s
+correlation coefficient.</p>
+<p>Correlation tests are a form of <strong>non-parametric test</strong>,
+which don’t make as many assumptions about the data and are useful when
+one or more of the common statistical assumptions are violated. However,
+the inferences they make aren’t as strong as with parametric tests.</p>
+<p>The statistical significance of a correlation can be evaluated with
+the t-statistic. This can be yielded with <code>cor.test()</code> in
+R:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>()</span></code></pre></div>
+<p>This output provides the correlation coefficient, the t-statistic,
+df, p-value, and the 95% confidence interval for the correlation
+coefficient. The two variables you supply to the function should both be
+continuous (most likely type <code>numeric</code>, <code>integer</code>,
+or <code>double</code> in R).</p>
+<p>Note that the t statistic for the correlation depends on the
+magnitude of the correlation coefficient (r) and the <strong>sample
+size</strong>. With a large sample, even weak correlations can become
+statistically significant.</p>
+<div id="relationship-with-simple-linear-regression"
+class="section level3">
+<h3>Relationship with simple linear regression</h3>
+<p>One might also be led to believe that the correlation coefficient is
+similar to the slope of a simple linear regression. For one, the test
+for correlation will more or less lead to a similar conclusion as the
+test for slope. The sign of the slope (+/-ve) will be the same for
+correlation, and both values should indicate the direction of the
+relationship.</p>
+<p>However, those two statistics are different: the correlation
+coefficient only tells you how closely your data fit on a line, so two
+datasets with the same correlation coefficient can have very different
+slopes. In other words, the value of the correlation indicates the
+<em>strength</em> of the linear relationship. The value of the slope
+does not. Moreover, the slope interpretation tells you the change in the
+response for a one-unit increase in the predictor. Correlation does not
+have this kind of interpretation.</p>
+</div>
+<div id="pitfalls" class="section level3">
+<h3>Pitfalls?</h3>
+<p>Outliers and non-linear relationships.</p>
+<p>A simple way to evaluate whether a relationship is reasonably linear
+is to examine a scatter plot.</p>
+<p>P-value evaluates how well your data rejects the <strong>null
+hypothesis</strong>, which states that there is no relationship between
+two compared groups.</p>
+<p>p-value is the probability of obtaining results as extreme or more
+extreme, given the null hypothesis is true.</p>
+</div>
+</div>
+<div id="effect-size" class="section level2">
+<h2>Effect size</h2>
+</div>
+<div id="statistical-power" class="section level2">
+<h2>Statistical power</h2>
+<p><strong>Statistical power</strong> is the probability of identifying
+an interaction effect on a dependent variable with the specified sample
+characteristics. The most common use of power calculations is to
+estimate how big a sample you will need.</p>
+</div>
+<div id="sample-variance" class="section level2">
+<h2>Sample variance</h2>
+<p>Examining in-sample variation and between-sample variation are both
+helpful when comparing means across two populations.</p>
+<p>The f-statistic is in fact calculated by the between-group variance
+divided by the within-group variance.</p>
+<p>This is where <strong>ANOVA</strong> (Analysis of Variance) comes
+into play here, where ANOVA is a statistical test used to analyze the
+difference between the means of more than two groups. The simple version
+is the one-way ANOVA, but you would also have come across two-way ANOVA
+which is used to estimate how the mean of a quantitative variable
+changes according to the levels of two categorical variables
+(e.g. rain/no-rain and weekend/weekday to predict ice cream sales).</p>
+<p>There are three assumptions in ANOVA: - The responses for each factor
+level have a normal population distribution. - These distributions have
+the same variance. - The data are independent.</p>
+<p>The p-value is found using the f-statistic and the
+f-distribution.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li><a
+href="https://sphweb.bumc.bu.edu/otlt/MPH-Modules/PH717-QuantCore/PH717-Module9-Correlation-Regression/index.html">Correlation
+and Regression</a></li>
+<li><a
+href="https://online.stat.psu.edu/stat500/lesson/9/9.4/9.4.2">PennState
+STAT500</a></li>
+<li><a
+href="https://www.scribbr.com/statistics/statistical-tests/">Guide on
+when to use which statistical tests and when</a></li>
+</ul>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>See <a
+href="https://learn.microsoft.com/en-us/viva/insights/use/metric-definitions"
+class="uri">https://learn.microsoft.com/en-us/viva/insights/use/metric-definitions</a>
+for definitions.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+</section>

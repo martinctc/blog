@@ -1,0 +1,273 @@
+I"A<p><img src="https://github.com/martinctc/blog/raw/master/images/vibing-cat-r.gif" alt="" /></p>
+
+<h2 id="what-this-post-is-about">What this post is about</h2>
+
+<p>This post shares top ten tips on how to make your R package even more awesome than it already is. As an R developer, you’ve already put a lot of work into creating and testing your package - so why waste this opportunity to really showcase your work and make it go even further? The tips mentioned in this post can be divided into three main categories:</p>
+
+<ol>
+  <li>
+    <p><strong>Communicating your package</strong>: so others can access your package and try it more easily</p>
+  </li>
+  <li>
+    <p><strong>Wrestling time back from developer chores</strong>: so you can spend more time on the important things</p>
+  </li>
+  <li>
+    <p><strong>DevOps best practices</strong>: so other fellow R users will feel more confident about using your package, and make it easier for other developers to collaborate or contribute.</p>
+  </li>
+</ol>
+
+<p>This post assumes that you’ve already written an R package, and therefore won’t focus on the coding component of R package development.</p>
+
+<hr />
+
+<h2 id="background">Background</h2>
+
+<p>Before we begin, shameless plug alert: I’ve written a few tiny R packages. Here are a few of them:</p>
+
+<ul>
+  <li>
+    <p><a href="https://martinctc.github.io/rwa/"><strong>rwa</strong></a>: you can run Relative Weights Analysis (a.k.a. Key Drivers Analysis) to measure variable importance. This is available on CRAN.</p>
+  </li>
+  <li>
+    <p><a href="https://hong-kong-districts-info.github.io/hkdatasets/"><strong>hkdatasets</strong></a>: contains datasets that relate to Hong Kong, and is used for our own projects at <a href="https://hong-kong-districts-info.github.io">Hong Kong Districts Info</a>. This is also available on CRAN.</p>
+  </li>
+  <li>
+    <p><a href="https://martinctc.github.io/parallaxr"><strong>parallaxr</strong></a>: allows you to generate pretty parallax scroll documents with R and Markdown.</p>
+  </li>
+  <li>
+    <p><a href="https://martinctc.github.io/surveytoolbox"><strong>surveytoolbox</strong></a>: this package contains all the ‘convenience’ functions back in the days when I was analysing mostly survey data.</p>
+  </li>
+  <li>
+    <p><a href="https://hong-kong-districts-info.github.io/hkdistrictballs/"><strong>hkdistrictballs</strong></a>: created for fun, that allows you to generate “country ball” graphics but for the 18 districts of Hong Kong. Makes use of the <strong>magick</strong> package.</p>
+  </li>
+</ul>
+
+<p>Admittedly, I did not write all these R packages for entirely altruistic reasons. Writing an R package is an exercise that is valuable in itself, as it allows you to put all your most commonly used custom functions into a neat, self-contained package which you can just load at the start of your analysis sessions, instead of copying and pasting snippets of code from GitHub Gists or randomly placed R scripts.</p>
+
+<p>I used to keep a GitHub Gist which contained 1000+ lines of my most used functions, but trust me, you won’t want to do that. Not only does such a maniacal workflow make the likelihood of your future self being able to reproduce your work <em>completely</em> dependent on your organisational or documentation skills, it also represents a potential loss to your colleagues or the R community, as all the work that you have put into writing your custom functions will help nobody else but yourself, as nobody else can access or understand your functions.</p>
+
+<p>However, one big reason why I write all these R packages is because I enjoy the <strong>creative</strong> process. I believe a significant, but sometimes neglected, part of writing R packages is communicating to your package users on <strong>why</strong> they should use your package, and <strong>how</strong> they can use them. Easy to follow examples, reproducible vignettes, documentation that isn’t 100% technical-lingo - all these things help with making an R package easier to use, yet are unrelated with the quality or the implementation of the R code itself. A lot of this is about communication, which is mostly what this post is about (for the code quality aspect, I would recommend resources like <a href="https://adv-r.hadley.nz/">Advanced R</a> or <a href="https://r-pkgs.org/">R Packages</a> instead).</p>
+
+<p>So here are my top ten recommendations on how to make your R package even more awesome than it currently is. Let’s go!</p>
+
+<h2 id="1-create-a-package-website-with-pkgdown">1. Create a package website with <strong>pkgdown</strong></h2>
+
+<p>Whilst this tip is quite well-known, it’s place in the top ten is unquestionable. The <strong>pkgdown</strong> package makes it incredibly easy to create a package website straight from the files that ‘naturally’ exist in your package, such as <code class="language-plaintext highlighter-rouge">README.md</code>  and <code class="language-plaintext highlighter-rouge">DESCRIPTION</code>. This package website will document all the functions in your package, running even all your examples in R scripts (under <code class="language-plaintext highlighter-rouge">@examples</code>), and make it incredibly easy for your users to navigate your package and try out its functionalities.</p>
+
+<p>The alternative is to make your users go through the official PDF R package manual - which although is easy enough to generate with <code class="language-plaintext highlighter-rouge">devtools::build_manual()</code> - is not the easiest to navigate, does not natively support plot examples, and definitely more likely to put off new R users from using your package.</p>
+
+<p>For an example of the website in action, here is <a href="https://microsoft.github.io/wpa">an R package that I’ve recently written for work</a>, which leverages <strong>pkgdown</strong> to showcase <a href="https://microsoft.github.io/wpa/reference/">the large number of functions in the package</a>, and to include an <a href="https://microsoft.github.io/wpa/analyst_guide.html">“Analyst Guide”</a> to make it easier to explore the package’s features.</p>
+
+<p>The set-up I would recommend is to set up a GitHub Actions that generates the pkgdown website to a separate <code class="language-plaintext highlighter-rouge">gh-pages</code> branch every time you push a commit to the <code class="language-plaintext highlighter-rouge">main</code> or <code class="language-plaintext highlighter-rouge">master</code> branch on GitHub, and set your GitHub Pages to point to <code class="language-plaintext highlighter-rouge">gh-pages</code> for hosting.</p>
+
+<p>What this effectively means is that you will a package website that practically “maintains itself”, as the website will update itself as you update your package (like <code class="language-plaintext highlighter-rouge">DESCRIPTION</code> or the function documentation) and push the changes onto GitHub. What’s more, this set up is free as it’s hosted on GitHub!</p>
+
+<p>To set all this up, you just need to run:</p>
+
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">usethis</span><span class="o">::</span><span class="n">use_github_actions</span><span class="p">(</span><span class="s2">"pkgdown"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This line of code will configure a GitHub Actions workflow to build and deploy your pkgdown site whenever you push changes to GitHub. This should be created and saved at <code class="language-plaintext highlighter-rouge">.github/workflows/pkgdown.yaml</code>. The only manual step you’ll need to do is to go to <strong>Settings</strong> in your GitHub repo, go to <strong>Options</strong>, and scroll down until you see <strong>GitHub Pages</strong>. For <strong>Source</strong>, the page site should be set to being built from the root folder of the <code class="language-plaintext highlighter-rouge">gh-pages</code>.</p>
+
+<p><img src="https://raw.githubusercontent.com/martinctc/blog/master/images/gh-pages.png" alt="" /></p>
+
+<p>Once this is set-up and saved, it should just take a few minutes and you should be able to see your website at <code class="language-plaintext highlighter-rouge">https://&lt;YOUR-GITHUB-USERNAME&gt;.github.io/&lt;YOUR-PACKAGE-NAME&gt;</code>. You can also of course use a custom domain if you wish.</p>
+
+<p>If you’d like to customise your website, you may add a <code class="language-plaintext highlighter-rouge">_pkgdown.yml</code> file which you can specify things like what to show your navigation bar, Google Analytics tracking code, site theme, social network icons, etc. There are plenty of package sites that are set up this way, so if you’re looking for inspiration you can just take a peek at the <code class="language-plaintext highlighter-rouge">_pkgdown.yml</code> file for any pkgdown sites that use this set-up (you can start with the actual <a href="https://github.com/r-lib/usethis/blob/master/_pkgdown.yml"><strong>pkgdown</strong> pkgdown site</a>). The five R packages mentioned at the beginning of this post also uses this set-up.</p>
+
+<h2 id="2-automated-r-cmd-checks-with-github-actions">2. Automated R CMD checks with GitHub Actions</h2>
+
+<p>Chances are, if you’ve already written a package, you’ll at least have run a <code class="language-plaintext highlighter-rouge">R CMD check</code>, or ran  <code class="language-plaintext highlighter-rouge">devtools::check()</code> to test for errors in your R package.<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> The <code class="language-plaintext highlighter-rouge">R CMD check</code> automatically checks your code for common problems, e.g.:</p>
+
+<ul>
+  <li>whether the package can be successfully installed on different operating systems</li>
+  <li>whether there are syntax errors in the script</li>
+  <li>whether there are undocumented arguments in your functions, etc.</li>
+</ul>
+
+<p>Now, you can either run this manually on your local machine, OR, you can configure GitHub Actions to run this check automatically whenever push a commit or merge a change to your main/master branch. The bonus with the latter, of course, is that you get a nice fancy badge that you can place in your README.md, like this:</p>
+
+<p><img src="https://github.com/martinctc/blog/raw/master/images/r-cmd-check-passing.svg" alt="" /></p>
+
+<p>The only thing you have to make sure is that your package passes these checks before you add the badge for the first time, otherwise you’ll get an alarming <strong>failing</strong> badge on your repo!</p>
+
+<p>The easiest way to add GitHub Actions, again, is to use the <strong>usethis</strong> package:</p>
+
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">usethis</span><span class="o">::</span><span class="n">use_github_actions</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p>Similar to tip #1, this adds a yaml file under <code class="language-plaintext highlighter-rouge">.github/workflows</code> called <code class="language-plaintext highlighter-rouge">R-CMD-check.yaml</code>.  To add a badge, you can then run:</p>
+
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">usethis</span><span class="o">::</span><span class="n">use_github_actions_badge</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p>You can check the <a href="https://usethis.r-lib.org/reference/github_actions.html"><strong>usethis</strong> documentation</a> on the specific details of this function.</p>
+
+<p>Adding automated checks embodies the principles of  <strong>CI/CD</strong> (continuous integration, continuous delivery) coding practice, which prefers regular and frequent code check-ins to version control repositories. Automated checks is a form of <strong>continuous testing</strong>, which is a condition for CI/CD. As an outcome, the argument goes that this leads to better collaboration due to greater transparency, and higher software quality due to continuous testing. Errors can be identified sooner, plus a ‘passing’ badge helps assure potential users of your package that you have done your homework to make sure that your package is passing all the basic checks.</p>
+
+<h2 id="3-codefactor">3. CodeFactor</h2>
+
+<p>Speaking of badges, here’s another that you can add to your GitHub!</p>
+
+<p><img src="https://github.com/martinctc/blog/raw/master/images/codefactor-a-plus.svg" alt="" /></p>
+
+<p><a href="https://www.codefactor.io/">CodeFactor</a> performs an automated review of your R code for code quality, and returns a grade (just like in school!). As you’ll see, it’s possible to get an A+, but you can also get a few of the following grades:</p>
+
+<p><img src="https://www.codefactor.io/Content/badges/B.svg" alt="" /><br />
+<img src="https://www.codefactor.io/Content/badges/C.svg" alt="" /><br />
+<img src="https://www.codefactor.io/Content/badges/F.svg" alt="" /></p>
+
+<p>Instead of checking whether your functions fail or whether your package can be successfully installed, CodeFactor checks for things like:</p>
+
+<ul>
+  <li>Whether you use <code class="language-plaintext highlighter-rouge">library()</code> <em>within</em> a function - which is not recommended</li>
+  <li>Whether you have arguments which have been defined but never used in function</li>
+  <li>Whether you adopt sub-ideal practices like <code class="language-plaintext highlighter-rouge">1:100</code> (instead of <code class="language-plaintext highlighter-rouge">seq_along()</code>) or <code class="language-plaintext highlighter-rouge">sapply()</code>  (due to return type uncertainty. )</li>
+  <li>Using <code class="language-plaintext highlighter-rouge">options()</code> directly inside a function instead of <code class="language-plaintext highlighter-rouge">withr::with_options()</code></li>
+</ul>
+
+<p>This is a great way to review your code automatically, instead of badgering a friend who happens to be an experienced R developer to review your package for you.</p>
+
+<p><img src="https://github.com/martinctc/blog/raw/master/images/badger.gif" alt="" /></p>
+
+<p>And speaking of badgers, I highly recommend checking out the <a href="https://github.com/GuangchuangYu/badger"><strong>badger</strong> package</a>, which allows you to generate badges in your README. There are so many other badges that you can add to your package README (e.g. code coverage, number of downloads), but I won’t detail them here as this would turn into a post about badges.</p>
+
+<h2 id="4-use-conventional-commits">4. Use conventional commits</h2>
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="en" dir="ltr">Write every commit message as if it&#39;s part of a PR to your future employer.<br />- Confucius</p>&mdash; 🐢 Florian (@fistful_of_bass) <a href="https://twitter.com/fistful_of_bass/status/1338645998634033152?ref_src=twsrc%5Etfw">December 15, 2020</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>There are many reasons for making sure your commit messages are sensible rather than unhelpful and silly (e.g. “update repo lol”), including the one cited above. Here, the recommendation is to actually take this further and use <strong>conventional commits</strong>. What this refers to is the adherence to a set of conventions when writing commit messages by expressing <em>intent</em>. Each commit message would be prefixed with, for instance, <code class="language-plaintext highlighter-rouge">fix:</code> or <code class="language-plaintext highlighter-rouge">feat:</code> to indicate whether it is a bug fix or a feature change. Some examples are:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">feat: add new barplot function</code> - a new feature introduced</li>
+  <li><code class="language-plaintext highlighter-rouge">fix: syntax error</code> - a bug fix</li>
+  <li><code class="language-plaintext highlighter-rouge">format: ggplot theme changes</code> - a change to <em>formatting</em> that doesn’t affect code logic</li>
+  <li><code class="language-plaintext highlighter-rouge">perf: remove nested loop</code> - a change to <em>performance</em> by removing nested loops</li>
+  <li><code class="language-plaintext highlighter-rouge">docs: add examples</code> - a change to the documentation only</li>
+</ul>
+
+<p>You can find out more about conventional commits <a href="https://www.conventionalcommits.org/en/v1.0.0/">here</a>. I highly recommend at least reading through the FAQ section, which answers some common questions which pop up when you are coming across conventional commits for the first time.</p>
+
+<p>The benefit of using conventional commits is that it increases the transparency of the entire project, and makes it more welcoming and inclusive for collaborators. I’m also sure it will impress potential future employers, with its incredible neatness! It will also make things much easier when you are writing up pull request summaries and any package change logs.</p>
+
+<p>To make this even more inclusive for other collaborators, you can add a Git Style Guide to the Wiki page of your GitHub repository, like <a href="https://github.com/Hong-Kong-Districts-Info/dashboard-hkdistrictcouncillors/wiki/Style-Guide:-Git">this</a>. Kudos to Avision Ho for sharing this idea and concept with me in the first place.</p>
+
+<h2 id="5-package-start-up-message">5. Package start-up message</h2>
+
+<p>This is probably the most controversial tip in this post, i.e. adding a start-up message to your package. This is a short snippet of message that you can write to your package users which will come up whenever they run <code class="language-plaintext highlighter-rouge">library(YOURPACKAGE)</code>.</p>
+
+<p>Why might you do this? Personally, I think it is a nice way to put certain details such as where to find out more resources about the package, or report bugs. Some developers also use this space to include a few lines to advertise some of their other work. In <strong>tidyquant</strong>, you get a subtle start-up message when you load the package:</p>
+
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">==</span><span class="w"> </span><span class="n">Need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">Learn</span><span class="w"> </span><span class="n">tidyquant</span><span class="o">?</span><span class="w"> </span><span class="o">=====================================================</span><span class="w">
+</span><span class="n">Business</span><span class="w"> </span><span class="n">Science</span><span class="w"> </span><span class="n">offers</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="m">1</span><span class="o">-</span><span class="n">hour</span><span class="w"> </span><span class="n">course</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Learning</span><span class="w"> </span><span class="n">Lab</span><span class="w"> </span><span class="c1">#9: Performance Analysis &amp; Portfolio Optimization with tidyquant!</span><span class="w">
+</span><span class="o">&lt;/&gt;</span><span class="w"> </span><span class="n">Learn</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">at</span><span class="o">:</span><span class="w"> </span><span class="n">https</span><span class="o">://</span><span class="n">university.business</span><span class="o">-</span><span class="n">science.io</span><span class="o">/</span><span class="n">p</span><span class="o">/</span><span class="n">learning</span><span class="o">-</span><span class="n">labs</span><span class="o">-</span><span class="n">pro</span><span class="w"> </span><span class="o">&lt;/&gt;</span><span class="w">
+</span></code></pre></div></div>
+<p>How do you add a start-up message? This can be done adding a function <code class="language-plaintext highlighter-rouge">.onAttach()</code> to one of your R scripts in the package. Here’s <a href="https://github.com/microsoft/wpa/blob/main/R/init.R">one I’ve created earlier</a> for the <strong>wpa</strong> package:</p>
+
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">.onAttach</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">libname</span><span class="p">,</span><span class="w"> </span><span class="n">pkgname</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">message</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"\n Thank you for using the {wpa} R package!"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"\n \n Our analysts have taken every care to ensure that this package runs smoothly and bug-free."</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"\n However, if you do happen to encounter any, please email mac@microsoft.com to report any issues."</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"\n \n Happy coding!"</span><span class="p">)</span><span class="w">
+  </span><span class="n">packageStartupMessage</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>The reason why this is controversial is because some argue that package start-up messages clutter up the console and interfere with reproducibility. <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup> However, there is also another line of argument that defends the right of open-source developers to place adverts in the packages that they’ve worked so hard on (see <a href="https://twitter.com/_ColinFay/status/1305423796380336128?s=20">this Twitter thread</a>). Of course, you might just want to add a welcome message rather than an advert to your package, but I’ll leave this to the reader to decide.</p>
+
+<h2 id="6-add-a-gif-in-your-readme">6. Add a GIF in your README</h2>
+
+<p>GIFs are awesome, even in the context of R package READMEs. I’ve recently experimented with screen-recording an example of my package in action, converting the video into a GIF, and adding it to the README - receiving mostly positive feedback. See the below example from the <a href="https://martinctc.github.io/parallaxr/">parallaxr</a> package:</p>
+
+<p><img src="https://raw.githubusercontent.com/martinctc/parallaxr/main/.dev/parallaxr.gif" alt="" /></p>
+
+<p>If your package allows you to generate visual outputs like plots or HTML widgets, this is a great way to let potential users see what they can achieve without leaving it only to their imagination (<em>“what happens when I run <code class="language-plaintext highlighter-rouge">foo_bar()</code>?”</em>).</p>
+
+<h2 id="7-add-a-contributor-guide-and-pr-templates">7. Add a Contributor Guide and PR templates</h2>
+
+<p>This tip is actually what GitHub recommends under its settings in  <strong>Insights &gt; Community</strong>. And there are good reasons for doing so. The recommendation is that you should add a contributor guideline (<code class="language-plaintext highlighter-rouge">CONTRIBUTING.md</code>) and pull request template to your repository so that it makes it easier for others to collaborate on your package.</p>
+
+<p>I would highly recommend doing anything that would make it easier for others to contribute, as I think it’s fair to say that the number of contributions (in the form of submitted issues, forks, and pull requests) is a mark of an R package’s success (you can measure using GitHub Stars too if you want, I guess).</p>
+
+<p><a href="https://docs.github.com/en/free-pro-team@latest/github/building-a-strong-community/setting-guidelines-for-repository-contributors">GitHub</a> has a comprehensive guide on how to add a Contributor Guide, and it’s really up to you to decide on how you would like others to contribute changes to your package. Still not sure what to put on your <code class="language-plaintext highlighter-rouge">CONTRIBUTING.md</code>? The best places to look are the big, popular R package GitHub repositories, and look at what they put in theirs (probably one of the most important takeaways of this post).</p>
+
+<p>To add a pull request template, you’ll need to add a file named <code class="language-plaintext highlighter-rouge">pull_request_template.md</code> in the <code class="language-plaintext highlighter-rouge">.github</code> subfolder of your package. Certain things you may consider adding to your pull request template are:</p>
+
+<ul>
+  <li>Summary of changes from the branch</li>
+  <li>Checks to perform when reviewing the pull request</li>
+  <li>What issues are linked to this pull request</li>
+</ul>
+
+<p>You can use <a href="https://github.com/Hong-Kong-Districts-Info/hkdatasets/blob/master/.github/pull_request_template.md">this version originally put together by Avision Ho</a> as a starting point for authoring your own templates.</p>
+
+<h2 id="8-add-a-hex-sticker">8. Add a hex sticker</h2>
+
+<p>There’s no way an R package is complete without a hex sticker. It’s tradition, it’s cool, although arguably not <em>essential</em> - but why not? It’s very easy to add one, and it makes people want to  download your package first even when they haven’t quite figured out the use case for your code yet.</p>
+
+<p><img src="https://github.com/martinctc/blog/raw/master/images/bilbo-why-not.jpg" alt="" /></p>
+
+<p>What’s more, you can create an R package hex sticker with <strong>an R package</strong>! If you’ve not heard of it yet, you should give GuangchuangYu’s <a href="https://github.com/GuangchuangYu/hexSticker">hexSticker</a> a go.</p>
+
+<p>Alternatively, if you’re some what visual artist yourself, you can also choose to create one on your own with Inkscape, which is an open-source vector graphic editing software. Choose an existing hex sticker as a template, and edit the underlying SVG.</p>
+
+<p>I would recommend editing with SVG because it preserves resolution, which <em>may</em> come into handy one day if your R package makes it big and people want to print it on merch. Dreaming on…</p>
+
+<h2 id="9-create-a-package-cheatsheet">9. Create a package cheatsheet</h2>
+
+<p>Although I’m not aware if there are any R packages out there (tell me if you do) that can generate a package cheatsheet for you, it’s one of the things that are totally worth doing even <em>manually</em>.</p>
+
+<p><img src="https://github.com/martinctc/blog/raw/master/images/ggplot-cheat-sheet.png" alt="" /></p>
+
+<p>A cheatsheet helps users view at a glance all the functions that are available in your package, and categorised in a meaningful way as you yourself (the developer) would have done it. The <a href="https://rstudio.com/resources/cheatsheets/">RStudio cheatsheet collection</a> provides plenty of examples that you can reference, as well as a <a href="https://rstudio.com/resources/cheatsheets/how-to-contribute-a-cheatsheet/">template</a> for which you can create your own cheatsheet using either Keynote or PowerPoint. Here’s <a href="https://github.com/microsoft/wpa/blob/main/man/figures/wpa%20cheatsheet.pdf">one</a> I made earlier.</p>
+
+<h2 id="10-submit-to-cran">10. Submit to CRAN</h2>
+
+<p>Okay, this is kind of a no-brainer, and everyone <em>ideally</em> would want to have their package to be submitted to CRAN. It really is something you should try to do, even if it is a bit of work getting all the bits right, as it gives your package a mark of approval and boosted popularity.</p>
+
+<p>Having automated R CMD checks will help you get there slightly faster and easier, and to be honest I did not find the process as difficult as I previously imagined. All the CRAN reviewers (who are volunteers, by the way!) have all been very helpful and explicit in their feedback on what needs to be changed in order to re-submit a package. Having said that, it’s courtesy to make sure you test and review your package thoroughly before submitting your packages to CRAN so you don’t waste time for both the CRAN team and yourself! Submitting to CRAN is a substantial topic in itself, so I’m going to  just put down some links.</p>
+
+<p>Karl Broman has a pretty informative primer on <a href="https://kbroman.org/pkg_primer/pages/cran.html">how to get your R package on CRAN</a>.</p>
+
+<ul>
+  <li><a href="https://cran.r-project.org/web/packages/submission_checklist.html">Checklist for CRAN submissions</a></li>
+  <li><a href="https://cran.r-project.org/web/packages/policies.html">CRAN Repository Policy</a></li>
+</ul>
+
+<h2 id="bonus-tip">Bonus tip…</h2>
+
+<p>Since the last tip was probably slightly less informative, I’ve decided to throw in a bonus tip, which is a list of channels in which you should try to promote your R package:</p>
+
+<ul>
+  <li>
+    <p>Write a blog about your package, and <a href="https://www.r-bloggers.com/add-your-blog/">submit to R-bloggers</a>. There is a huge readership / following with R-bloggers, and this is a great way of getting the R community aware of your package.</p>
+  </li>
+  <li>
+    <p>Submit your package to <a href="https://rweekly.org/submit">RWeekly</a>, either as a blog or as a simple package release message. You can submit to RWeekly by creating a pull request to merge to its <code class="language-plaintext highlighter-rouge">DRAFT.md</code>, or use one of the other submission methods listed on the website.</p>
+  </li>
+  <li>
+    <p>Post your package release message on Twitter with the #rstats hashtag. This makes it much more likely for the package to be picked up by the R community. Note that the convention is to use #Rstats rather than #R as a hashtag - see <a href="https://www.t4rstats.com/hashtags-what-are-they-good-for.html">https://www.t4rstats.com/hashtags-what-are-they-good-for.html</a>.</p>
+  </li>
+</ul>
+
+<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">I declare <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> the official R statistical prog lang hashtag, pass it on to friends, family and Stata users</p>&mdash; Drew Conway (@drewconway) <a href="https://twitter.com/drewconway/status/1448027809?ref_src=twsrc%5Etfw">April 3, 2009</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<ul>
+  <li>If you use Reddit, consider posting in the <a href="https://www.reddit.com/r/rstats/">Rstats</a> subreddit.</li>
+</ul>
+
+<p>Finally, it’s worth emphasising that the best way to learn how to improve your package is to look at how others do it. In the process of writing this post. I’ve learnt something myself when looking at the <a href="https://github.com/strengejacke/sjmisc">sjmisc</a> package GitHub repository, i.e. a way to make it easy for others to cite your R package, with:</p>
+
+<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">citation</span><span class="p">(</span><span class="s1">'data.table'</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p>I’m sure there are plenty of other great tips out there that I’ve not included, but again I hope this post was useful enough. If you enjoyed this post, please comment in the original blog link. Take care and stay safe, and happy coding!</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>See https://r-pkgs.org/r-cmd-check.html for a detailed explanation of the <code class="language-plaintext highlighter-rouge">R CMD check</code>. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>See https://win-vector.com/2019/08/30/it-is-time-for-cran-to-ban-package-ads/. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+:ET

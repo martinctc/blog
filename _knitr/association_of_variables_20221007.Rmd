@@ -1,5 +1,5 @@
 ---
-title: "Effect Size and Power"
+title: "Common Statistical Tests in R"
 author: "Martin Chan"
 date: "October 7, 2022"
 output:                    # DO NOT CHANGE
@@ -15,7 +15,7 @@ library(tidyverse)
 
 # Introduction
 
-This post will focus on statistical tests in R that you can perform to understand and validate the relationship between two variables. 
+This post will focus on common statistical tests in R that you can perform to understand and validate the relationship between two variables. 
 
 Very statistics 101, you may be thinking. So why? This post is edited from my own notes from learning statistics and R. The primary goal of the post is to be practical enough for myself to refer to from time to time, as I do for all my other tutorials/posts in this blog. The secondary goal is that hopefully, as a side effect, that this post will benefit others who are learning statistics and R too. 
 
@@ -41,9 +41,13 @@ In our dataset, we have two metrics of interest:
 
 [^1]: See <https://learn.microsoft.com/en-us/viva/insights/use/metric-definitions> for definitions.
 
-The hypothesis here is that multitasking hours is correlated with hours that employees spend working beyond their normal working hours. What can we do to understand the relationship between the two? 
+Imagine then we have two questions to address: 
 
-Here is a non-exhaustive list ot methods that you will likely have come across:
+1. We suspect that multitasking hours is correlated with after-hours working, as the former could be a symptom of excessive workload or sub-optimal time management which can explain after-hours working. What can we do to understand the relationship between the two? 
+
+1. Do managers multi-task more than individual contributors (IC)? 
+
+To answer these questions, there are a couple of common methods at our disposal. Here is a (non-exhaustive) list:
   - Comparison tests
   - Correlation tests
   - Regression tests
@@ -51,7 +55,66 @@ Here is a non-exhaustive list ot methods that you will likely have come across:
   - Statistical power
   - Sample variability
 
+It is worth noting that the first question postulates a relation between two **continuous** variables (multitasking hours, afterhours collaboration), whereas the second question a relation between a **categorical** variable (manager/IC) and a **continuous** variable (multitasking hours). The types of the variables in question help determine which tests are appropriate. 
+
+
 ## Comparison tests
+
+Two of the most common comparison tests would be the **t-test** and Analysis of Variance (ANOVA). 
+
+A t-test can be paired or unpaired, where the former is used for comparing the means of two groups in the same population, and the latter for independent samples from two populations or groups. An unpaired (two-sample) t-test is therefore appropriate for the scenario in question two, as managers and ICs are two different populations. 
+
+Since we are interested in the difference between managers and ICs, we will first need to create a factor variable from the data that has only two levels. In the below code, we create a new data frame called `pq_data_grouped` containing a new variable called `ManagerIndicator`. This new variable reclassifies any value that equals either "Manager" or "Manager+" to "Manager", and has only two levels: "Individual Contributor" and "Manager":
+
+```R
+pq_data_grouped <-
+  pq_data %>%
+  mutate(
+    ManagerIndicator =
+      ifelse(
+        test = SupervisorIndicator %in% c("Manager", "Manager+"),
+        yes = "Manager",
+        no = SupervisorIndicator
+      ) %>%
+      factor(levels =
+               c("Individual Contributor",
+                 "Manager"))
+  )
+```
+Recall also that our dataset `pq_data` is also a cross-sectional time-series dataset, which means that for every individual identified by `PersonId`, there will be multiple rows corresponding to different dates. To simplify the dataset so that we are looking at person averages, we can group the dataset by `PersonId` and calculate the mean of `Multitasking_hours`. After this manipulation, `Multitasking_hours` would represent the mean multitasking hours _per person_, as opposed to _per person per week_. Let us do this by extending the pipe:
+
+```R
+pq_data_grouped <-
+  pq_data %>%
+  mutate(
+    ManagerIndicator =
+      ifelse(
+        test = SupervisorIndicator %in% c("Manager", "Manager+"),
+        yes = "Manager",
+        no = SupervisorIndicator
+      ) %>%
+      factor(levels =
+               c("Individual Contributor",
+                 "Manager"))
+  ) %>%
+  group_by(PersonId, ManagerIndicator) %>%
+  summarise(Multitasking_hours = mean(Multitasking_hours), .groups = "drop")
+  
+glimpse(pq_data_grouped)
+```
+
+
+
+Once the data is prepared, the t-test can be run with the base `t.test()` function: 
+```r
+t.test(
+  Multitasking_hours ~ ManagerIndicator,
+  data = pq_data_2,
+  paired = FALSE
+)
+```
+
+
 
 See <https://www.scribbr.com/statistics/statistical-tests/>.
 
