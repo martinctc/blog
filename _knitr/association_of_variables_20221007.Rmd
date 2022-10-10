@@ -163,7 +163,7 @@ qqnorm(mth_man, pch = 1, frame = FALSE)
 qqline(mth_man, col = "steelblue", lwd = 2)
 ```
 
-This makes the unpaired t-test less appropriate or conclusive, and we can consider other alternatives, such as the non-parametric two-samples Wilcoxon Rank test. 
+This makes the unpaired t-test less appropriate or conclusive, and we can consider other alternatives, such as the non-parametric two-samples Wilcoxon Rank-Sum test. 
 
 ### Testing for variance homogeneity
 
@@ -178,6 +178,24 @@ var.test(
 ```
 
 Note that the code above follows a similar format as `t.test()`. Since the p-value is less than 0.05, we can reject the null hypothesis that variances between the manager and IC dataset are equal. 
+
+## Non-parametric tests
+
+The Wilcoxon Rank-Sum test (aka Mann Whitney U Test) provides an alternative to the unpaired two-sample t-test - for example, as we just saw, in the above where we cannot safely conclude the data to be satisfying the normality condition. The difference between the Wilcoxon Rank-Sum test and the unpaired t-test is that the former tests whether two populations have the same shape, whereas the latter parametric test compares means between two independent groups.
+
+```{r message=FALSE, warning=FALSE}
+wilcox.test(
+  Multitasking_hours ~ ManagerIndicator,
+  data = pq_data_grouped,
+  paired = FALSE
+)
+```
+
+The p-value of the test is less than the significance level alpha = 0.05, which allows us to conclude that Manager's median multitasking hours is significantly different from the IC's. 
+
+Note that the Wilcoxon Rank-Sum test is distinct from the similarly named Wilcoxon Signed-Rank test, which is the equivalent alternative for the paired t-test. To perform the Wilcoxon Signed-Rank test instead, you can simply specify the argument to be `paired = TRUE`. Similar to the decision of whether to use the paired or the unpaired t-test, you should ensure that the one-sample condition applies if you use the Wilcoxon Signed-Rank test.
+
+## ANOVA - comparing across multiple groups
 
 ## Correlations
 
