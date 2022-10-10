@@ -25,15 +25,16 @@ To illustrate the R code, I will also be using a sample dataset `pq_data` from t
 
 The package **vivainsights** is available on CRAN, so you can install this with `install.packages("vivainsights")`.
 
-You can load the dataset in R with the following code: 
-```r
+You can load the dataset in R by calling `pq_data` after loading the **vivainsights** package. Here is a preview of the first ten columns of the dataset using `dplyr::glimpse()`:
+```{r message=FALSE, warning=FALSE}
 library(vivainsights)
-pq_data
+
+glimpse(pq_data[, 1:10])
 ```
 
-# Assocation between two variables
+# Understanding the relation between two variables
 
-One of the most basic tasks in statistics and data science is to understand the relationship between two variables. Sometimes the motivation is understand whether the relationship is causal, but this is not always the case (for instance, one may simply wish to test for multicollinearity when selecting predictors for a model).
+One of the most basic tasks in statistics and data science is to understand the relation between two variables. Sometimes the motivation is understand whether the relationship is causal, but this is not always the case (for instance, one may simply wish to test for multicollinearity when selecting predictors for a model).
 
 In our dataset, we have two metrics of interest:
   -  `Multitasking_hours` measures the total number of hours the person spent sending emails or instant messages during a meeting or a Teams call.
@@ -48,6 +49,7 @@ Imagine then we have two questions to address:
 1. Do managers multi-task more than individual contributors (IC)? 
 
 To answer these questions, there are a couple of common methods at our disposal. Here is a (non-exhaustive) list:
+
   - Comparison tests
   - Correlation tests
   - Regression tests
@@ -55,8 +57,7 @@ To answer these questions, there are a couple of common methods at our disposal.
   - Statistical power
   - Sample variability
 
-It is worth noting that the first question postulates a relation between two **continuous** variables (multitasking hours, afterhours collaboration), whereas the second question a relation between a **categorical** variable (manager/IC) and a **continuous** variable (multitasking hours). The types of the variables in question help determine which tests are appropriate. 
-
+It is worth noting that the first question postulates a relation between two **continuous** variables (multitasking hours, afterhours collaboration), whereas the second question a relation between a **categorical** variable (manager/IC) and a **continuous** variable (multitasking hours). The types of the variables in question help determine which tests are appropriate.
 
 ## Comparison tests
 
@@ -66,7 +67,8 @@ A t-test can be paired or unpaired, where the former is used for comparing the m
 
 Since we are interested in the difference between managers and ICs, we will first need to create a factor variable from the data that has only two levels. In the below code, we create a new data frame called `pq_data_grouped` containing a new variable called `ManagerIndicator`. This new variable reclassifies any value that equals either "Manager" or "Manager+" to "Manager", and has only two levels: "Individual Contributor" and "Manager":
 
-```R
+
+```{r message=FALSE, warning=FALSE}
 pq_data_grouped <-
   pq_data %>%
   mutate(
@@ -81,9 +83,11 @@ pq_data_grouped <-
                  "Manager"))
   )
 ```
-Recall also that our dataset `pq_data` is also a cross-sectional time-series dataset, which means that for every individual identified by `PersonId`, there will be multiple rows corresponding to different dates. To simplify the dataset so that we are looking at person averages, we can group the dataset by `PersonId` and calculate the mean of `Multitasking_hours`. After this manipulation, `Multitasking_hours` would represent the mean multitasking hours _per person_, as opposed to _per person per week_. Let us do this by extending the pipe:
 
-```R
+Recall also that our dataset `pq_data` is a cross-sectional time-series dataset, which means that for every individual identified by `PersonId`, there will be multiple rows corresponding to different dates. To simplify the dataset so that we are looking at person averages, we can group the dataset by `PersonId` and calculate the mean of `Multitasking_hours`. After this manipulation, `Multitasking_hours` would represent the mean multitasking hours _per person_, as opposed to _per person per week_. Let us do this by extending the pipe:
+
+
+```{r message=FALSE, warning=FALSE}
 pq_data_grouped <-
   pq_data %>%
   mutate(
@@ -103,29 +107,85 @@ pq_data_grouped <-
 glimpse(pq_data_grouped)
 ```
 
-
-
 Once the data is prepared, the t-test can be run with the base `t.test()` function: 
-```r
+
+```{r message=FALSE, warning=FALSE}
 t.test(
   Multitasking_hours ~ ManagerIndicator,
-  data = pq_data_2,
+  data = pq_data_grouped,
   paired = FALSE
 )
 ```
 
+From the above, 
 
+- `t` represents the t-statistic.
+- `df` represents the degree of freedom. 
+- `p-value` is the p-value. The value here shows to be significant, as it is smaller than 0.05. 
+- the test allows us to reject the null hypothesis that the means of multitasking hours between managers and ICs are the same. 
+
+Note that the t-test used here is the Welch's t-test, which is an adaptation of the Student's t-test in that compares the variance of the two groups, i.e. handling heteroscedasticity.
 
 See <https://www.scribbr.com/statistics/statistical-tests/>.
 
+### Testing for normality
 
-Correlation is a way to test if two variables have any kind of relationship, whereas p-value tells us if the result of an experiment is statistically significant. 
+But hang on! One of the assumptions behind the t-test is that the data is normally distributed. To test this, we can use the **Shapiro-Wilk test of normality**, with the function `shapiro.test()`:
+
+```{r message=FALSE, warning=FALSE}
+pq_data_grouped %>%
+  group_by(ManagerIndicator) %>%
+  summarise(
+    p = shapiro.test(Multitasking_hours)$p.value,
+    statistic = shapiro.test(Multitasking_hours)$statistic
+  )
+```
+
+As both p-values show up as less than 0.05, the test implies that we should reject the null hypothesis that the data are normally distributed. To confirm, you can also perform a visual check for normality using a histogram or a Q-Q plot. 
+
+```{r message=FALSE, warning=FALSE}
+# Multitasking hours - IC
+mth_ic <-
+  pq_data_grouped %>%
+  filter(ManagerIndicator == "Individual Contributor") %>%
+  pull(Multitasking_hours) 
+
+qqnorm(mth_ic, pch = 1, frame = FALSE)
+qqline(mth_ic, col = "steelblue", lwd = 2)
+
+# Multitasking hours - Manager
+mth_man <-
+  pq_data_grouped %>%
+  filter(ManagerIndicator == "Manager") %>%
+  pull(Multitasking_hours) 
+
+qqnorm(mth_man, pch = 1, frame = FALSE)
+qqline(mth_man, col = "steelblue", lwd = 2)
+```
+
+This makes the unpaired t-test less appropriate or conclusive, and we can consider other alternatives, such as the non-parametric two-samples Wilcoxon Rank test. 
+
+### Testing for variance homogeneity
+
+As mentioned above, the difference between the classic Student's t-test and the Welch's t-test is that the former assumes equality between the two variances. Although using the Welch's t-test means that this is not something we have to worry about, here is an example on how to test for variance homogeneity with `var.test()` for comprehensiveness: 
+
+```{r message=FALSE, warning=FALSE}
+# F test to compare two variances
+var.test(
+  Multitasking_hours ~ ManagerIndicator,
+  data = pq_data_grouped
+  )
+```
+
+Note that the code above follows a similar format as `t.test()`. Since the p-value is less than 0.05, we can reject the null hypothesis that variances between the manager and IC dataset are equal. 
 
 ## Correlations
 
 Correlation tests are used in statistics to measure how strong a relationship is between two variables, without hypothesising any causal effect between the variables. There are several types of correlation coefficients (e.g. Pearson's _r_, Kendall's _tau_, Spearman's _rho_), but the most commonly used is the Pearson's correlation coefficient.
 
 Correlation tests are a form of **non-parametric test**, which don't make as many assumptions about the data and are useful when one or more of the common statistical assumptions are violated. However, the inferences they make aren't as strong as with parametric tests.
+
+Correlation is a way to test if two variables have any kind of relationship, whereas p-value tells us if the result of an experiment is statistically significant. 
 
 
 The statistical significance of a correlation can be evaluated with the t-statistic. This can be yielded with `cor.test()` in R:
@@ -183,3 +243,4 @@ The p-value is found using the f-statistic and the f-distribution.
 - [Correlation and Regression](https://sphweb.bumc.bu.edu/otlt/MPH-Modules/PH717-QuantCore/PH717-Module9-Correlation-Regression/index.html)
 - [PennState STAT500](https://online.stat.psu.edu/stat500/lesson/9/9.4/9.4.2)
 - [Guide on when to use which statistical tests and when](https://www.scribbr.com/statistics/statistical-tests/)
+- [Unpaired t-tests in R](http://www.sthda.com/english/wiki/unpaired-two-samples-t-test-in-r/)

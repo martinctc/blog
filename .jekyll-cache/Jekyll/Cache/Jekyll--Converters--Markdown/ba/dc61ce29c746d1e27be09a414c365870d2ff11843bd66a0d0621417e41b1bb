@@ -1,0 +1,410 @@
+I"�{<script src="http://localhost:4000/blog/knitr_files/association_of_variables_20221007_files/header-attrs-2.16/header-attrs.js"></script>
+
+<section class="main-content">
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This post will focus on common statistical tests in R that you can
+perform to understand and validate the relationship between two
+variables.</p>
+<p>Very statistics 101, you may be thinking. So why? This post is edited
+from my own notes from learning statistics and R. The primary goal of
+the post is to be practical enough for myself to refer to from time to
+time, as I do for all my other tutorials/posts in this blog. The
+secondary goal is that hopefully, as a side effect, that this post will
+benefit others who are learning statistics and R too.</p>
+<p>To illustrate the R code, I will also be using a sample dataset
+<code>pq_data</code> from the package <a href="https://microsoft.github.io/vivainsights/"><strong>vivainsights</strong></a>,
+which is a cross-sectional time-series dataset measuring the
+collaboration behaviour of simulated employees in an organization. Each
+row represents an employee on a certain week, with columns measuring
+behaviours such as total weekly time spent in email, meetings, chats,
+and so on.</p>
+</div>
+<div id="loading-the-dataset" class="section level1">
+<h1>Loading the dataset</h1>
+<p>The package <strong>vivainsights</strong> is available on CRAN, so
+you can install this with
+<code>install.packages("vivainsights")</code>.</p>
+<p>You can load the dataset in R by calling <code>pq_data</code> after
+loading the <strong>vivainsights</strong> package. Here is a preview of
+the dataset using <code>dplyr::glimpse()</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vivainsights)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(pq_data)</span></code></pre></div>
+<pre><code>## Rows: 5,593
+## Columns: 154
+## $ PersonId                                                 &lt;chr&gt; &quot;2b625906-1f3~
+## $ MetricDate                                               &lt;date&gt; 2021-12-26, ~
+## $ After_hours_call_hours                                   &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ After_hours_chat_hours                                   &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ After_hours_collaboration_hours                          &lt;dbl&gt; 7.6624994, 2.~
+## $ After_hours_email_hours                                  &lt;dbl&gt; 0.2600000, 0.~
+## $ After_hours_meeting_hours                                &lt;dbl&gt; 7.50, 2.00, 0~
+## $ After_hours_scheduled_call_hours                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ After_hours_unscheduled_call_hours                       &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Call_hours                                               &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Calls                                                    &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chat_hours                                               &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent                                               &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Collaboration_hours                                      &lt;dbl&gt; 8.292500, 12.~
+## $ Email_hours                                              &lt;dbl&gt; 0.4629166, 0.~
+## $ Emails_sent                                              &lt;dbl&gt; 15, 38, 15, 3~
+## $ Meeting_and_call_hours                                   &lt;dbl&gt; 8.00, 12.25, ~
+## $ Meeting_hours                                            &lt;dbl&gt; 8.00, 12.25, ~
+## $ Meetings                                                 &lt;dbl&gt; 9.799999, 13.~
+## $ Multitasking_hours                                       &lt;dbl&gt; 0.1704167, 0.~
+## $ Scheduled_call_hours                                     &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Unscheduled_call_hours                                   &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Urgent_email_hours                                       &lt;dbl&gt; 0.00000000, 0~
+## $ Urgent_meeting_hours                                     &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Collaboration_hours_on_Friday                            &lt;dbl&gt; 0.34750000, 0~
+## $ Collaboration_hours_on_Monday                            &lt;dbl&gt; 0.2825000, 1.~
+## $ Collaboration_hours_on_Saturday                          &lt;dbl&gt; 0.56500006, 0~
+## $ Collaboration_hours_on_Sunday                            &lt;dbl&gt; 0.00000000, 0~
+## $ Collaboration_hours_on_Thursday                          &lt;dbl&gt; 4.065000, 3.0~
+## $ Collaboration_hours_on_Tuesday                           &lt;dbl&gt; 1.000000, 1.2~
+## $ Collaboration_hours_on_Wednesday                         &lt;dbl&gt; 2.0325000, 5.~
+## $ Meeting_hours_on_Friday                                  &lt;dbl&gt; 0.25, 0.75, 0~
+## $ Meeting_hours_on_Monday                                  &lt;dbl&gt; 0.25, 1.50, 3~
+## $ Meeting_hours_on_Saturday                                &lt;dbl&gt; 0.5, 0.0, 0.0~
+## $ Meeting_hours_on_Sunday                                  &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Meeting_hours_on_Thursday                                &lt;dbl&gt; 4.00, 3.00, 1~
+## $ Meeting_hours_on_Tuesday                                 &lt;dbl&gt; 1.00, 1.25, 0~
+## $ Meeting_hours_on_Wednesday                               &lt;dbl&gt; 2.00, 5.75, 0~
+## $ Unscheduled_weekend_calls                                &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Weekend_chats_sent                                       &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Weekend_emails_sent                                      &lt;dbl&gt; 2, 6, 0, 11, ~
+## $ Weekend_meetings                                         &lt;dbl&gt; 1.000000, 0.0~
+## $ Chats_sent_00_01                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_01_02                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_02_03                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_03_04                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_04_05                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_05_06                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_06_07                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_07_08                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_08_09                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_09_10                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_10_11                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_11_12                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_12_13                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_13_14                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_14_15                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_15_16                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_16_17                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_17_18                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_18_19                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_19_20                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_20_21                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_21_22                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_22_23                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Chats_sent_23_24                                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Emails_sent_00_01                                        &lt;dbl&gt; 1, 0, 0, 0, 0~
+## $ Emails_sent_01_02                                        &lt;dbl&gt; 1, 0, 0, 0, 0~
+## $ Emails_sent_02_03                                        &lt;dbl&gt; 2, 0, 0, 0, 0~
+## $ Emails_sent_03_04                                        &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Emails_sent_04_05                                        &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Emails_sent_05_06                                        &lt;dbl&gt; 0, 1, 0, 0, 0~
+## $ Emails_sent_06_07                                        &lt;dbl&gt; 0, 12, 1, 1, ~
+## $ Emails_sent_07_08                                        &lt;dbl&gt; 0, 2, 2, 0, 5~
+## $ Emails_sent_08_09                                        &lt;dbl&gt; 0, 3, 1, 1, 5~
+## $ Emails_sent_09_10                                        &lt;dbl&gt; 0, 0, 2, 3, 7~
+## $ Emails_sent_10_11                                        &lt;dbl&gt; 0, 1, 1, 6, 7~
+## $ Emails_sent_11_12                                        &lt;dbl&gt; 0, 1, 3, 2, 2~
+## $ Emails_sent_12_13                                        &lt;dbl&gt; 0, 3, 1, 6, 6~
+## $ Emails_sent_13_14                                        &lt;dbl&gt; 1, 5, 0, 1, 4~
+## $ Emails_sent_14_15                                        &lt;dbl&gt; 1, 4, 1, 2, 2~
+## $ Emails_sent_15_16                                        &lt;dbl&gt; 5, 2, 1, 3, 4~
+## $ Emails_sent_16_17                                        &lt;dbl&gt; 1, 0, 0, 8, 1~
+## $ Emails_sent_17_18                                        &lt;dbl&gt; 0, 4, 2, 2, 5~
+## $ Emails_sent_18_19                                        &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Emails_sent_19_20                                        &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Emails_sent_20_21                                        &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Emails_sent_21_22                                        &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Emails_sent_22_23                                        &lt;dbl&gt; 3, 0, 0, 0, 0~
+## $ Emails_sent_23_24                                        &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Meetings_00_01                                           &lt;dbl&gt; 1.2000000, 0.~
+## $ Meetings_01_02                                           &lt;dbl&gt; 0.0, 0.0, 0.0~
+## $ Internal_meeting_hours_with_3_to_8_attendees             &lt;dbl&gt; 1.00, 3.75, 0~
+## $ Internal_meeting_hours_without_manager_1_1               &lt;dbl&gt; 0.00, 2.50, 0~
+## $ Small_group_chats_sent__excluding_manager                &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Small_group_emails_sent__excluding_manager               &lt;dbl&gt; 7, 31, 7, 11,~
+## $ Small_group_meeting__call__and_chat_hours                &lt;dbl&gt; 1.25, 6.50, 0~
+## $ Collaboration_hours_with_direct_reports                  &lt;dbl&gt; 0.00000000, 2~
+## $ Manager_coaching_hours_1_1                               &lt;dbl&gt; 0.00, 2.50, 0~
+## $ Meeting_and_call_hours_with_manager                      &lt;dbl&gt; 6.50, 5.25, 4~
+## $ Meeting_and_call_hours_with_manager_1_1                  &lt;dbl&gt; 0.25, 0.25, 0~
+## $ Meeting_and_call_hours_with_skip_level                   &lt;dbl&gt; 6.50, 5.00, 4~
+## $ Meeting_hours_with_manager                               &lt;dbl&gt; 6.50, 5.25, 4~
+## $ Meeting_hours_with_manager_1_1                           &lt;dbl&gt; 0.25, 0.25, 0~
+## $ Meeting_hours_with_skip_level                            &lt;dbl&gt; 6.50, 5.00, 4~
+## $ Meetings_with_manager                                    &lt;dbl&gt; 4.800000, 3.0~
+## $ Meetings_with_manager_1_1                                &lt;dbl&gt; 1, 1, 1, 0, 4~
+## $ Meetings_with_skip_level                                 &lt;dbl&gt; 5.800000, 2.0~
+## $ Small_group_chats_sent__including_manager                &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Small_group_emails_sent__including_manager               &lt;dbl&gt; 8, 3, 7, 12, ~
+## $ Unscheduled_call_hours_with_manager                      &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Unscheduled_call_hours_with_manager_1_1                  &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Unscheduled_call_hours_with_skip_level                   &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Internal_network_size                                    &lt;dbl&gt; 20, 26, 20, 3~
+## $ Conflicting_meeting_hours                                &lt;dbl&gt; 0.50, 0.50, 1~
+## $ Large_and_long_meeting_hours                             &lt;dbl&gt; 4.50, 5.00, 4~
+## $ Large_and_long_recurring_meeting_hours                   &lt;dbl&gt; 2.50, 2.50, 0~
+## $ Large_and_short_meeting_hours                            &lt;dbl&gt; 2.00, 0.25, 1~
+## $ Large_and_short_recurring_meeting_hours                  &lt;dbl&gt; 1.50, 0.25, 0~
+## $ Meeting_hours_ended_on_time                              &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Meeting_hours_joined_on_time                             &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Meeting_hours_not_ended_on_time                          &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Meeting_hours_not_joined_on_time                         &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Meeting_hours_with_12_to_24_hours_of_advanced_notice     &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Meeting_hours_with_24_or_more_hours_of_advanced_notice   &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Meeting_hours_with_six_or_fewer_hours_of_advanced_notice &lt;dbl&gt; 8.00, 12.25, ~
+## $ Meeting_hours_with_six_to_12_hours_of_advanced_notice    &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Recurring_meeting_hours                                  &lt;dbl&gt; 4.75, 6.25, 1~
+## $ Small_and_long_meeting_hours                             &lt;dbl&gt; 0.00, 2.00, 0~
+## $ Small_and_long_recurring_meeting_hours                   &lt;dbl&gt; 0.00, 2.00, 0~
+## $ Small_and_short_meeting_hours                            &lt;dbl&gt; 1.50, 5.00, 0~
+## $ Small_and_short_recurring_meeting_hours                  &lt;dbl&gt; 0.75, 1.50, 0~
+## $ Available_to_focus_hours                                 &lt;dbl&gt; 39.50, 32.25,~
+## $ Interrupted_hours                                        &lt;dbl&gt; 0.8773055, 2.~
+## $ Uninterrupted_hours                                      &lt;dbl&gt; 38.622692, 29~
+## $ External_chat_hours                                      &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ External_collaboration_hours                             &lt;dbl&gt; 2.2500000, 3.~
+## $ External_email_hours                                     &lt;dbl&gt; 0.00000000, 0~
+## $ External_meeting_hours                                   &lt;dbl&gt; 2.25, 3.00, 0~
+## $ External_unscheduled_call_hours                          &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Working_hours_call_hours                                 &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Working_hours_chat_hours                                 &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Working_hours_collaboration_hours                        &lt;dbl&gt; 0.6300001, 10~
+## $ Working_hours_email_hours                                &lt;dbl&gt; 0.2029167, 0.~
+## $ Working_hours_meeting_hours                              &lt;dbl&gt; 0.50, 10.25, ~
+## $ Working_hours_scheduled_call_hours                       &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ Working_hours_unscheduled_call_hours                     &lt;dbl&gt; 0, 0, 0, 0, 0~
+## $ LevelDesignation                                         &lt;chr&gt; &quot;Junior IC&quot;, ~
+## $ Layer                                                    &lt;dbl&gt; 3, 3, 3, 3, 2~
+## $ SupervisorIndicator                                      &lt;chr&gt; &quot;Individual C~
+## $ Organization                                             &lt;chr&gt; &quot;Product&quot;, &quot;S~
+## $ FunctionType                                             &lt;chr&gt; &quot;G_and_A&quot;, &quot;G~
+## $ WeekendDays                                              &lt;chr&gt; &quot;[SUNDAY, SAT~
+## $ IsActive                                                 &lt;lgl&gt; TRUE, TRUE, T~</code></pre>
+</div>
+<div id="assocation-between-two-variables" class="section level1">
+<h1>Assocation between two variables</h1>
+<p>One of the most basic tasks in statistics and data science is to
+understand the relationship between two variables. Sometimes the
+motivation is understand whether the relationship is causal, but this is
+not always the case (for instance, one may simply wish to test for
+multicollinearity when selecting predictors for a model).</p>
+<p>In our dataset, we have two metrics of interest: -
+<code>Multitasking_hours</code> measures the total number of hours the
+person spent sending emails or instant messages during a meeting or a
+Teams call. - <code>After_hours_collaboration_hours</code> measures the
+number of hours a person has spent in collaboration (meetings, emails,
+IMs, and calls) outside of working hours.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>Imagine then we have two questions to address:</p>
+<ol style="list-style-type: decimal">
+<li><p>We suspect that multitasking hours is correlated with after-hours
+working, as the former could be a symptom of excessive workload or
+sub-optimal time management which can explain after-hours working. What
+can we do to understand the relationship between the two?</p></li>
+<li><p>Do managers multi-task more than individual contributors
+(IC)?</p></li>
+</ol>
+<p>To answer these questions, there are a couple of common methods at
+our disposal. Here is a (non-exhaustive) list: - Comparison tests -
+Correlation tests - Regression tests - Effect Size - Statistical power -
+Sample variability</p>
+<p>It is worth noting that the first question postulates a relation
+between two <strong>continuous</strong> variables (multitasking hours,
+afterhours collaboration), whereas the second question a relation
+between a <strong>categorical</strong> variable (manager/IC) and a
+<strong>continuous</strong> variable (multitasking hours). The types of
+the variables in question help determine which tests are
+appropriate.</p>
+<div id="comparison-tests" class="section level2">
+<h2>Comparison tests</h2>
+<p>Two of the most common comparison tests would be the
+<strong>t-test</strong> and Analysis of Variance (ANOVA).</p>
+<p>A t-test can be paired or unpaired, where the former is used for
+comparing the means of two groups in the same population, and the latter
+for independent samples from two populations or groups. An unpaired
+(two-sample) t-test is therefore appropriate for the scenario in
+question two, as managers and ICs are two different populations.</p>
+<p>Since we are interested in the difference between managers and ICs,
+we will first need to create a factor variable from the data that has
+only two levels. In the below code, we create a new data frame called
+<code>pq_data_grouped</code> containing a new variable called
+<code>ManagerIndicator</code>. This new variable reclassifies any value
+that equals either “Manager” or “Manager+” to “Manager”, and has only
+two levels: “Individual Contributor” and “Manager”:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pq_data_grouped <span class="ot">&lt;-</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  pq_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ManagerIndicator =</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">test =</span> SupervisorIndicator <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Manager&quot;</span>, <span class="st">&quot;Manager+&quot;</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">yes =</span> <span class="st">&quot;Manager&quot;</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">no =</span> SupervisorIndicator</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">factor</span>(<span class="at">levels =</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>               <span class="fu">c</span>(<span class="st">&quot;Individual Contributor&quot;</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;Manager&quot;</span>))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Recall also that our dataset <code>pq_data</code> is a
+cross-sectional time-series dataset, which means that for every
+individual identified by <code>PersonId</code>, there will be multiple
+rows corresponding to different dates. To simplify the dataset so that
+we are looking at person averages, we can group the dataset by
+<code>PersonId</code> and calculate the mean of
+<code>Multitasking_hours</code>. After this manipulation,
+<code>Multitasking_hours</code> would represent the mean multitasking
+hours <em>per person</em>, as opposed to <em>per person per week</em>.
+Let us do this by extending the pipe:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pq_data_grouped <span class="ot">&lt;-</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  pq_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ManagerIndicator =</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">test =</span> SupervisorIndicator <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Manager&quot;</span>, <span class="st">&quot;Manager+&quot;</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">yes =</span> <span class="st">&quot;Manager&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">no =</span> SupervisorIndicator</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">factor</span>(<span class="at">levels =</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>               <span class="fu">c</span>(<span class="st">&quot;Individual Contributor&quot;</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;Manager&quot;</span>))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(PersonId, ManagerIndicator) <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Multitasking_hours =</span> <span class="fu">mean</span>(Multitasking_hours), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(pq_data_grouped)</span></code></pre></div>
+<pre><code>## Rows: 200
+## Columns: 3
+## $ PersonId           &lt;chr&gt; &quot;0049ef24-ec83-356d-89f7-46b67364e677&quot;, &quot;00f6d464-b~
+## $ ManagerIndicator   &lt;fct&gt; Individual Contributor, Individual Contributor, Man~
+## $ Multitasking_hours &lt;dbl&gt; 0.3812649, 0.2813373, 0.5980080, 0.2918829, 0.42288~</code></pre>
+<p>Once the data is prepared, the t-test can be run with the base
+<code>t.test()</code> function:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  Multitasking_hours <span class="sc">~</span> ManagerIndicator,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> pq_data_grouped,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">paired =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Multitasking_hours by ManagerIndicator
+## t = -8.7131, df = 38.289, p-value = 1.272e-10
+## alternative hypothesis: true difference in means between group Individual Contributor and group Manager is not equal to 0
+## 95 percent confidence interval:
+##  -1.1713873 -0.7297812
+## sample estimates:
+## mean in group Individual Contributor                mean in group Manager 
+##                            0.3657257                            1.3163099</code></pre>
+<p>See <a href="https://www.scribbr.com/statistics/statistical-tests/" class="uri">https://www.scribbr.com/statistics/statistical-tests/</a>.</p>
+<p>Correlation is a way to test if two variables have any kind of
+relationship, whereas p-value tells us if the result of an experiment is
+statistically significant.</p>
+</div>
+<div id="correlations" class="section level2">
+<h2>Correlations</h2>
+<p>Correlation tests are used in statistics to measure how strong a
+relationship is between two variables, without hypothesising any causal
+effect between the variables. There are several types of correlation
+coefficients (e.g. Pearson’s <em>r</em>, Kendall’s <em>tau</em>,
+Spearman’s <em>rho</em>), but the most commonly used is the Pearson’s
+correlation coefficient.</p>
+<p>Correlation tests are a form of <strong>non-parametric test</strong>,
+which don’t make as many assumptions about the data and are useful when
+one or more of the common statistical assumptions are violated. However,
+the inferences they make aren’t as strong as with parametric tests.</p>
+<p>The statistical significance of a correlation can be evaluated with
+the t-statistic. This can be yielded with <code>cor.test()</code> in
+R:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>()</span></code></pre></div>
+<p>This output provides the correlation coefficient, the t-statistic,
+df, p-value, and the 95% confidence interval for the correlation
+coefficient. The two variables you supply to the function should both be
+continuous (most likely type <code>numeric</code>, <code>integer</code>,
+or <code>double</code> in R).</p>
+<p>Note that the t statistic for the correlation depends on the
+magnitude of the correlation coefficient (r) and the <strong>sample
+size</strong>. With a large sample, even weak correlations can become
+statistically significant.</p>
+<div id="relationship-with-simple-linear-regression" class="section level3">
+<h3>Relationship with simple linear regression</h3>
+<p>One might also be led to believe that the correlation coefficient is
+similar to the slope of a simple linear regression. For one, the test
+for correlation will more or less lead to a similar conclusion as the
+test for slope. The sign of the slope (+/-ve) will be the same for
+correlation, and both values should indicate the direction of the
+relationship.</p>
+<p>However, those two statistics are different: the correlation
+coefficient only tells you how closely your data fit on a line, so two
+datasets with the same correlation coefficient can have very different
+slopes. In other words, the value of the correlation indicates the
+<em>strength</em> of the linear relationship. The value of the slope
+does not. Moreover, the slope interpretation tells you the change in the
+response for a one-unit increase in the predictor. Correlation does not
+have this kind of interpretation.</p>
+</div>
+<div id="pitfalls" class="section level3">
+<h3>Pitfalls?</h3>
+<p>Outliers and non-linear relationships.</p>
+<p>A simple way to evaluate whether a relationship is reasonably linear
+is to examine a scatter plot.</p>
+<p>P-value evaluates how well your data rejects the <strong>null
+hypothesis</strong>, which states that there is no relationship between
+two compared groups.</p>
+<p>p-value is the probability of obtaining results as extreme or more
+extreme, given the null hypothesis is true.</p>
+</div>
+</div>
+<div id="effect-size" class="section level2">
+<h2>Effect size</h2>
+</div>
+<div id="statistical-power" class="section level2">
+<h2>Statistical power</h2>
+<p><strong>Statistical power</strong> is the probability of identifying
+an interaction effect on a dependent variable with the specified sample
+characteristics. The most common use of power calculations is to
+estimate how big a sample you will need.</p>
+</div>
+<div id="sample-variance" class="section level2">
+<h2>Sample variance</h2>
+<p>Examining in-sample variation and between-sample variation are both
+helpful when comparing means across two populations.</p>
+<p>The f-statistic is in fact calculated by the between-group variance
+divided by the within-group variance.</p>
+<p>This is where <strong>ANOVA</strong> (Analysis of Variance) comes
+into play here, where ANOVA is a statistical test used to analyze the
+difference between the means of more than two groups. The simple version
+is the one-way ANOVA, but you would also have come across two-way ANOVA
+which is used to estimate how the mean of a quantitative variable
+changes according to the levels of two categorical variables
+(e.g. rain/no-rain and weekend/weekday to predict ice cream sales).</p>
+<p>There are three assumptions in ANOVA: - The responses for each factor
+level have a normal population distribution. - These distributions have
+the same variance. - The data are independent.</p>
+<p>The p-value is found using the f-statistic and the
+f-distribution.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li><a href="https://sphweb.bumc.bu.edu/otlt/MPH-Modules/PH717-QuantCore/PH717-Module9-Correlation-Regression/index.html">Correlation
+and Regression</a></li>
+<li><a href="https://online.stat.psu.edu/stat500/lesson/9/9.4/9.4.2">PennState
+STAT500</a></li>
+<li><a href="https://www.scribbr.com/statistics/statistical-tests/">Guide on
+when to use which statistical tests and when</a></li>
+</ul>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>See <a href="https://learn.microsoft.com/en-us/viva/insights/use/metric-definitions" class="uri">https://learn.microsoft.com/en-us/viva/insights/use/metric-definitions</a>
+for definitions.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+</section>
+:ET
