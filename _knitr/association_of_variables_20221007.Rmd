@@ -255,22 +255,90 @@ Based on the Kruskal-Wallis test, we reject the null hypothesis and we conclude 
 
 ## ANOVA - comparing across multiple groups
 
-Analysis of Variance (ANOVA) generalises the t-test beyond 2 groups, so it is used to compare 3 or more groups.
+What if we want to run the t-test across multiple (more than two) groups?
 
-There are several versions of ANOVA. The simple version is the one-way ANOVA, but there is also two-way ANOVA which is used to estimate how the mean of a quantitative variable changes according to the levels of two categorical variables (e.g. rain/no-rain and weekend/weekday to predict ice cream sales). For this example, we will focus on one-way ANOVA. 
+Analysis of Variance (ANOVA) is an alternative method that generalises the t-test beyond two groups, so it is used to compare three or more groups.
+
+There are several versions of ANOVA. The simple version is the _one-way ANOVA_, but there is also _two-way ANOVA_ which is used to estimate how the mean of a quantitative variable changes according to the levels of two categorical variables (e.g. rain/no-rain and weekend/weekday to predict ice cream sales). In this example we will focus on one-way ANOVA. 
 
 There are three assumptions in ANOVA:
+  - The data are independent.
   - The responses for each factor level have a normal population distribution.
   - These distributions have the same variance.
-  - The data are independent.
 
-These assumptions are similar to the ones required for the t-test, and you can run the same tests for variance and normality prior to ANOVA. 
+These assumptions are the same as those required for the classic t-test above, and you can run the same tests for variance and normality prior to ANOVA. 
 
-ANOVA compares the ratio of the between-group variance and the within-group variance, and then compares this with a threshold from the Fisher distribution (typically based on a significance level).
+ANOVA calculates the ratio of the between-group variance and the within-group variance, and then compares this with a threshold from the Fisher distribution (typically based on a significance level).
+
+```{r message=FALSE, warning=FALSE}
+res_aov <-
+  aov(
+    Multitasking_hours ~ ManagerIndicator,
+    data = pq_data_grouped_2
+  )
+
+summary(res_aov)
+```
+Given that the p-value is smaller than 0.05, we reject the null hypothesis, so we reject the hypothesis that all means are equal. Therefore, we can conclude that the at least one value in `LevelDesignation` is different in terms of their weekly hours spent multitasking.
+
+[Antoine Soetewey's blog](https://statsandr.com/blog/anova-in-r/) recommends the use of the **report** package, which can help you make sense of the results more easily:
+
+```{r message=FALSE, warning=FALSE}
+library(report)
+
+report(res_aov)
+```
+
+The same drawback that applies to the Kruskall-Wallis test also applies to ANOVA, in that doesn't actually tell you which exact group is different from which; it only tells you whether any group differs significantly from the group mean. 
+
+A pairwise t-test is likely required to provide more information, and it is recommended that you review the [p-value adjustment methods](https://rdrr.io/r/stats/p.adjust.html): 
+
+```{r message=FALSE, warning=FALSE}
+pairwise.t.test(
+  x = pq_data_grouped_2$Multitasking_hours,
+  g = pq_data_grouped_2$ManagerIndicator,
+  paired = FALSE,
+  p.adjust.method = "bonferroni"
+)
+```
 
 
+## Should I use a t-test or ANOVA for comparing exactly two groups?
 
-The p-value is found using the f-statistic and the f-distribution.  
+So far, the following tests we performed have yielded similar results:
+
+For comparing Senior ICs and Managers:
+- unpaired two-sample t-test (assumes normality)
+- Wilcoxon Rank-Sum test (non-parametric)
+
+For comparing across other values in `LevelDesignation`:
+- Kruskal-Wallis test (non-parametric)
+- ANOVA (assumes normality)
+
+One common question is - given that normality is observed in each group, what difference does it make whether I use the t-test or ANOVA if I am comparing exactly two groups? 
+
+The textbook advice is that whenever one is comparing exactly two groups one should use the t-test, and ANOVA whenever there are more than two groups being compared. It is in fact not _wrong_ per say to use ANOVA for comparing two groups, as it will be equivalent to a classic (Student's) t-test with equal variances.[^2] A reason why one may prefer the Welch's t-test over ANOVA is that the Welch's t-test takes into account heteroscedasticity, whereas ANOVA (as well as Kruskall-Wallis) would become unstable and produce Type I errors, such as: 
+
+- conservative estimates for large sample sizes
+- inflated estimates for small sample size[^3]
+
+[^2]: See [this discussion](https://stats.stackexchange.com/questions/236877/is-it-wrong-to-use-anova-instead-of-a-t-test-for-comparing-two-means) and [this](https://stats.stackexchange.com/questions/409503/anova-vs-t-test-for-two-groups).
+
+[^3]: https://www.statisticshowto.com/welchs-anova/
+
+
+## ANOVA, t-tests, and linear regression
+
+The common assumptions shared may have gave it away, but the t-test, ANOVA, and linear regression are actually related, in that one is a special case of another. 
+
+- The t-test with two groups assumes that each group is normally distributed with the same variance.
+- The t-test is the same as a regression with a dummy variable, which allows the mean of each group to differ but not the variance. 
+- The `aov()` function in R is a wrapper around the linear regression function `lm()`.
+
+
+The t-test is a special case of ANOVA. ANOVA is a special case of regression. All of these procedures are subsumed under the General Linear Model and share the same assumptions.
+
+
 
 ## Correlations
 
@@ -332,3 +400,4 @@ This is where **ANOVA** (Analysis of Variance) comes into play here, where ANOVA
 - [Unpaired t-tests in R](http://www.sthda.com/english/wiki/unpaired-two-samples-t-test-in-r/)
 - [ANOVA in R](https://statsandr.com/blog/anova-in-r/)
 - [Kruskall-Wallis Test in R](https://statsandr.com/blog/kruskal-wallis-test-nonparametric-version-anova/)
+- https://stats.stackexchange.com/questions/1637/if-the-t-test-and-the-anova-for-two-groups-are-equivalent-why-arent-their-assu
