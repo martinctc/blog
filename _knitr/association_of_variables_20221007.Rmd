@@ -21,16 +21,21 @@ Very statistics 101, you may be thinking. So why? This post is edited from my ow
 
 To illustrate the R code, I will also be using a sample dataset `pq_data` from the package [**vivainsights**](https://microsoft.github.io/vivainsights/), which is a cross-sectional time-series dataset measuring the collaboration behaviour of simulated employees in an organization. Each row represents an employee on a certain week, with columns measuring behaviours such as total weekly time spent in email, meetings, chats, and so on. 
 
+A note about the structure of this post: in the real world, one should always as best practice visually check the data distribution and run tests for assumptions like normality and homoscedasticity prior to performing any tests. This best practice isn't really observed in this post for the sake of covering the widest range of scenarios. Hence, please be forgiving when you see that the narrative runs 'head first' into a test without examining the data - and avoid this in real life!
+
 # Loading the dataset
 
 The package **vivainsights** is available on CRAN, so you can install this with `install.packages("vivainsights")`.
 
 You can load the dataset in R by calling `pq_data` after loading the **vivainsights** package. Here is a preview of the first ten columns of the dataset using `dplyr::glimpse()`:
+
 ```{r message=FALSE, warning=FALSE}
 library(vivainsights)
 
 glimpse(pq_data[, 1:10])
 ```
+
+This tutorial also uses functions from **tidyverse**, so ensure that you run `library(tidyverse)` to reproduce the example outputs. 
 
 # Understanding the relation between two variables
 
@@ -46,7 +51,7 @@ Imagine then we have two questions to address:
 
 1. We suspect that multitasking hours is correlated with after-hours working, as the former could be a symptom of excessive workload or sub-optimal time management which can explain after-hours working. What can we do to understand the relationship between the two? 
 
-1. Do managers multi-task more than individual contributors (IC)? 
+1. Do _managers_ multi-task more than _senior individual contributors (IC)_? 
 
 To answer these questions, there are a couple of common methods at our disposal. Here is a (non-exhaustive) list:
 
@@ -57,30 +62,30 @@ To answer these questions, there are a couple of common methods at our disposal.
   - Statistical power
   - Sample variability
 
-It is worth noting that the first question postulates a relation between two **continuous** variables (multitasking hours, afterhours collaboration), whereas the second question a relation between a **categorical** variable (manager/IC) and a **continuous** variable (multitasking hours). The types of the variables in question help determine which tests are appropriate.
+It is worth noting that the first question postulates a relation between two **continuous** variables (multitasking hours, afterhours collaboration), whereas the second question a relation between a **categorical** variable (manager/ senior IC) and a **continuous** variable (multitasking hours). The types of the variables in question help determine which tests are appropriate.
+
+The categorical variable that provides us information on whether an employee is a manager or a senior IC in `pq_data` is stored in `LevelDesignation`. We can use `vivainsights::hrvar_count()` to explore this variable: 
+
+```{r message=FALSE, warning=FALSE}
+hrvar_count(pq_data, hrvar = "LevelDesignation")
+```
 
 ## Comparison tests
 
-Two of the most common comparison tests would be the **t-test** and Analysis of Variance (ANOVA). 
+Two of the most common comparison tests would be the **t-test** and **Analysis of Variance (ANOVA)**. 
 
 A t-test can be paired or unpaired, where the former is used for comparing the means of two groups in the same population, and the latter for independent samples from two populations or groups. An unpaired (two-sample) t-test is therefore appropriate for the scenario in question two, as managers and ICs are two different populations. 
 
-Since we are interested in the difference between managers and ICs, we will first need to create a factor variable from the data that has only two levels. In the below code, we create a new data frame called `pq_data_grouped` containing a new variable called `ManagerIndicator`. This new variable reclassifies any value that equals either "Manager" or "Manager+" to "Manager", and has only two levels: "Individual Contributor" and "Manager":
-
+Since we are interested in the difference between managers and senior ICs, we will first need to create a factor variable from the data that has only two levels. In the below code, we will first filter out any values of `LevelDesignation` that are not `"Manager"` and `"Senior IC"`, and create a new factor column as `ManagerIndicator`:
 
 ```{r message=FALSE, warning=FALSE}
 pq_data_grouped <-
   pq_data %>%
+  filter(LevelDesignation %in% c("Manager", "Senior IC")) %>%
   mutate(
     ManagerIndicator =
-      ifelse(
-        test = SupervisorIndicator %in% c("Manager", "Manager+"),
-        yes = "Manager",
-        no = SupervisorIndicator
-      ) %>%
-      factor(levels =
-               c("Individual Contributor",
-                 "Manager"))
+      factor(LevelDesignation,
+      levels = c("Manager", "Senior IC"))
   )
 ```
 
@@ -90,16 +95,11 @@ Recall also that our dataset `pq_data` is a cross-sectional time-series dataset,
 ```{r message=FALSE, warning=FALSE}
 pq_data_grouped <-
   pq_data %>%
+  filter(LevelDesignation %in% c("Manager", "Senior IC")) %>%
   mutate(
     ManagerIndicator =
-      ifelse(
-        test = SupervisorIndicator %in% c("Manager", "Manager+"),
-        yes = "Manager",
-        no = SupervisorIndicator
-      ) %>%
-      factor(levels =
-               c("Individual Contributor",
-                 "Manager"))
+      factor(LevelDesignation,
+      levels = c("Manager", "Senior IC"))
   ) %>%
   group_by(PersonId, ManagerIndicator) %>%
   summarise(Multitasking_hours = mean(Multitasking_hours), .groups = "drop")
@@ -107,7 +107,7 @@ pq_data_grouped <-
 glimpse(pq_data_grouped)
 ```
 
-Once the data is prepared, the t-test can be run with the base `t.test()` function: 
+Now our data is in the right format. Let us assume that the data satisfies all the assumptions of the t-test, and see what happens when we run it with the base `t.test()` function:
 
 ```{r message=FALSE, warning=FALSE}
 t.test(
@@ -117,20 +117,26 @@ t.test(
 )
 ```
 
-From the above, 
+In the function, the predictor and outcome variables are supplied using a tilde (`~`) format common in R, and we have specified `paired = FALSE` to use an unpaired t-test. As for the output, 
 
 - `t` represents the t-statistic.
 - `df` represents the degree of freedom. 
-- `p-value` is the p-value. The value here shows to be significant, as it is smaller than 0.05. 
-- the test allows us to reject the null hypothesis that the means of multitasking hours between managers and ICs are the same. 
+- `p-value` is - well - the p-value. The value here shows to be significant, as it is smaller than the significance level at 0.05. 
+- the test allows us to reject the null hypothesis that the means of multitasking hours between managers and ICs are the same.
 
-Note that the t-test used here is the Welch's t-test, which is an adaptation of the Student's t-test in that compares the variance of the two groups, i.e. handling heteroscedasticity.
-
-See <https://www.scribbr.com/statistics/statistical-tests/>.
+Note that the t-test used here is the **Welch's t-test**, which is an adaptation of the classic **Student's t-test** in that it compares the variance of the two groups, i.e. handling heteroscedasticity.
 
 ### Testing for normality
 
-But hang on! One of the assumptions behind the t-test is that the data is normally distributed. To test this, we can use the **Shapiro-Wilk test of normality**, with the function `shapiro.test()`:
+But hang on! 
+
+There are several assumptions behind the unpaired classic t-test, notably: 
+
+1. independence (sample is independent)
+1. normality (data is normally distributed)
+1. homoscedasticity (data across samples have equal variance)
+
+We can at least be sure of (1), as we know that senior ICs and Managers are separate populations. However, (2) and (3) are assumptions that we have to validate specifically. To test whether our data is normally distributed, we can use the **Shapiro-Wilk test of normality**, with the function `shapiro.test()`:
 
 ```{r message=FALSE, warning=FALSE}
 pq_data_grouped %>%
@@ -141,13 +147,13 @@ pq_data_grouped %>%
   )
 ```
 
-As both p-values show up as less than 0.05, the test implies that we should reject the null hypothesis that the data are normally distributed. To confirm, you can also perform a visual check for normality using a histogram or a Q-Q plot. 
+As both p-values show up as less than 0.05, the test implies that we should reject the null hypothesis that the data are normally distributed (i.e. not normally distributed). To confirm, you can also perform a visual check for normality using a histogram or a Q-Q plot. 
 
 ```{r message=FALSE, warning=FALSE}
 # Multitasking hours - IC
 mth_ic <-
   pq_data_grouped %>%
-  filter(ManagerIndicator == "Individual Contributor") %>%
+  filter(ManagerIndicator == "Senior IC") %>%
   pull(Multitasking_hours) 
 
 qqnorm(mth_ic, pch = 1, frame = FALSE)
@@ -163,11 +169,13 @@ qqnorm(mth_man, pch = 1, frame = FALSE)
 qqline(mth_man, col = "steelblue", lwd = 2)
 ```
 
-This makes the unpaired t-test less appropriate or conclusive, and we can consider other alternatives, such as the non-parametric two-samples Wilcoxon Rank-Sum test. 
+As our data isn't as normal as we would wish it to be - this makes the unpaired t-test less appropriate or conclusive, and we can consider other alternatives such as the **non-parametric two-samples Wilcoxon Rank-Sum test**. This is covered further down below. 
 
-### Testing for variance homogeneity
+### Testing for equality of variance (homoscedasticity)
 
-As mentioned above, the difference between the classic Student's t-test and the Welch's t-test is that the former assumes equality between the two variances. Although using the Welch's t-test means that this is not something we have to worry about, here is an example on how to test for variance homogeneity with `var.test()` for comprehensiveness: 
+Asides from normality, another assumption of the t-test that we didn't properly test for prior to running `t.test()` is to check for equality of variance across the two groups (homoscedasticity). Thankfully, this was not something we had to worry about as we used the Welch's t-test; recall that the classic Student's t-test assumes equality between the two variances, but the Welch's t-test takes the difference into account. 
+
+Regardless, here is an example on how you can test for homoscedasticity in R, using `var.test()`: 
 
 ```{r message=FALSE, warning=FALSE}
 # F test to compare two variances
@@ -177,11 +185,29 @@ var.test(
   )
 ```
 
-Note that the code above follows a similar format as `t.test()`. Since the p-value is less than 0.05, we can reject the null hypothesis that variances between the manager and IC dataset are equal. 
+The arguments above are provided in a similar format to `t.test()`. It also appears that homoscedasticity does not hold: since the p-value is less than 0.05, we should reject the null hypothesis that variances between the manager and IC dataset are equal. 
+
+Homoscedasticity can also be examined visually, via a boxplot or a dotplot (using `graphics::dotchart()` - suitable for small datasets). The code to do so would be as follows. For this example, visual examination is a bit more challenging as the senior IC and Manager groups have starkly different levels of multi-tasking hours. 
+
+```{r message=FALSE, warning=FALSE}
+dotchart(
+  x = pq_data_grouped$Multitasking_hours,
+  groups = pq_data_grouped$ManagerIndicator
+)
+
+boxplot(
+  Multitasking_hours ~ ManagerIndicator,
+  data = pq_data_grouped
+)
+```
 
 ## Non-parametric tests
 
-The Wilcoxon Rank-Sum test (aka Mann Whitney U Test) provides an alternative to the unpaired two-sample t-test - for example, as we just saw, in the above where we cannot safely conclude the data to be satisfying the normality condition. The difference between the Wilcoxon Rank-Sum test and the unpaired t-test is that the former tests whether two populations have the same shape, whereas the latter parametric test compares means between two independent groups.
+Previously, we could not safely rely on the unpaired two-sample t-test because the data does not satisfy the normality condition. As an alternative, we can use the **Wilcoxon Rank-Sum test** (aka Mann Whitney U Test). The difference between the Wilcoxon Rank-Sum test and the unpaired t-test is that the former tests whether two populations have the same shape via comparing medians, whereas the latter parametric test compares means between two independent groups. 
+
+The Wilcoxon test is described as a **non-parametric test**, which in statistics typically means that there is no specification on a distribution, or the parameters of a distribution; in this case, the test does not assume a normal distribution. 
+
+This is run using `wilcox.test()`
 
 ```{r message=FALSE, warning=FALSE}
 wilcox.test(
@@ -191,11 +217,60 @@ wilcox.test(
 )
 ```
 
-The p-value of the test is less than the significance level alpha = 0.05, which allows us to conclude that Manager's median multitasking hours is significantly different from the IC's. 
+The p-value of the test is less than the significance level (alpha = 0.05), which allows us to conclude that Manager's median multitasking hours is significantly different from the IC's. 
 
-Note that the Wilcoxon Rank-Sum test is distinct from the similarly named Wilcoxon Signed-Rank test, which is the equivalent alternative for the paired t-test. To perform the Wilcoxon Signed-Rank test instead, you can simply specify the argument to be `paired = TRUE`. Similar to the decision of whether to use the paired or the unpaired t-test, you should ensure that the one-sample condition applies if you use the Wilcoxon Signed-Rank test.
+Note that the Wilcoxon Rank-Sum test is different from the similarly named Wilcoxon Signed-Rank test, which is the equivalent alternative for the _paired_ t-test. To perform the Wilcoxon Signed-Rank test instead, you can simply specify the argument to be `paired = TRUE`. Similar to the decision of whether to use the paired or the unpaired t-test, you should ensure that the one-sample condition applies if you use the Wilcoxon Signed-Rank test.
+
+So far, we have only been looking at tests which compare exactly two populations. If we are looking for a test that works with comparisons across three or more populations, we can consider the **Kruskal-Wallis test**. 
+
+Let us create a new data frame that is grouped at the `PersonId` level, but filtering out fewer values in `LevelDesignation`: 
+
+```{r message=FALSE, warning=FALSE}
+pq_data_grouped_2 <-
+  pq_data %>%
+  filter(LevelDesignation %in% c(
+    "Support",
+    "Senior IC",
+    "Junior IC",
+    "Manager",
+    "Director"
+  )) %>%
+  mutate(ManagerIndicator = factor(LevelDesignation)) %>%
+  group_by(PersonId, ManagerIndicator) %>%
+  summarise(Multitasking_hours = mean(Multitasking_hours), .groups = "drop")
+  
+glimpse(pq_data_grouped_2)
+```
+We can then run the Kruskal-Wallis test:
+
+```{r message=FALSE, warning=FALSE}
+kruskal.test(
+  Multitasking_hours ~ ManagerIndicator,
+  data = pq_data_grouped_2
+)
+```
+
+Based on the Kruskal-Wallis test, we reject the null hypothesis and we conclude that at least one value in `LevelDesignation` is different in terms of their weekly hours spent multitasking. The most obvious downside to this method is that it does not tell us which groups are different from which, so this may need to be followed up with multiple pairwise-comparison tests.
+
 
 ## ANOVA - comparing across multiple groups
+
+Analysis of Variance (ANOVA) generalises the t-test beyond 2 groups, so it is used to compare 3 or more groups.
+
+There are several versions of ANOVA. The simple version is the one-way ANOVA, but there is also two-way ANOVA which is used to estimate how the mean of a quantitative variable changes according to the levels of two categorical variables (e.g. rain/no-rain and weekend/weekday to predict ice cream sales). For this example, we will focus on one-way ANOVA. 
+
+There are three assumptions in ANOVA:
+  - The responses for each factor level have a normal population distribution.
+  - These distributions have the same variance.
+  - The data are independent.
+
+These assumptions are similar to the ones required for the t-test, and you can run the same tests for variance and normality prior to ANOVA. 
+
+ANOVA compares the ratio of the between-group variance and the within-group variance, and then compares this with a threshold from the Fisher distribution (typically based on a significance level).
+
+
+
+The p-value is found using the f-statistic and the f-distribution.  
 
 ## Correlations
 
@@ -247,14 +322,7 @@ Examining in-sample variation and between-sample variation are both helpful when
 
 The f-statistic is in fact calculated by the between-group variance divided by the within-group variance. 
 
-This is where **ANOVA** (Analysis of Variance) comes into play here, where ANOVA is a statistical test used to analyze the difference between the means of more than two groups. The simple version is the one-way ANOVA, but you would also have come across two-way ANOVA which is used to estimate how the mean of a quantitative variable changes according to the levels of two categorical variables (e.g. rain/no-rain and weekend/weekday to predict ice cream sales).
-
-There are three assumptions in ANOVA:
-  - The responses for each factor level have a normal population distribution.
-  - These distributions have the same variance.
-  - The data are independent.
-
-The p-value is found using the f-statistic and the f-distribution.   
+This is where **ANOVA** (Analysis of Variance) comes into play here, where ANOVA is a statistical test used to analyze the difference between the means of more than two groups.  
 
 ## References
 
@@ -262,3 +330,5 @@ The p-value is found using the f-statistic and the f-distribution.
 - [PennState STAT500](https://online.stat.psu.edu/stat500/lesson/9/9.4/9.4.2)
 - [Guide on when to use which statistical tests and when](https://www.scribbr.com/statistics/statistical-tests/)
 - [Unpaired t-tests in R](http://www.sthda.com/english/wiki/unpaired-two-samples-t-test-in-r/)
+- [ANOVA in R](https://statsandr.com/blog/anova-in-r/)
+- [Kruskall-Wallis Test in R](https://statsandr.com/blog/kruskal-wallis-test-nonparametric-version-anova/)
