@@ -279,6 +279,20 @@ res_aov <-
 
 summary(res_aov)
 ```
+
+- `Df`: degrees of freedom for...
+  - the outcome variable, i.e. the number of levels in the variable minus 1
+  - the residuals, i.e. the total number of observations minus one and minus the number of levels in the outcome variables
+  
+- `Sum Sq`: sum of squares, i.e. the total variation between the group means and the overall mean
+
+- `Mean Sq`: mean of the sum of squares, calculated by dividing the sum of squares by the degrees of freedom for each parameter
+
+- `F value`: test statistic from the F test. This is the mean square of each independent variable divided by the mean square of the residuals. The larger the F value, the more likely it is that the variation caused by the outcome variable is real and not due to chance.
+
+- `Pr(>F)`: p-value of the F-statistic. This shows how likely it is that the F-value calculated from the test would have occurred if the null hypothesis of no difference among group means were true.
+
+
 Given that the p-value is smaller than 0.05, we reject the null hypothesis, so we reject the hypothesis that all means are equal. Therefore, we can conclude that the at least one value in `LevelDesignation` is different in terms of their weekly hours spent multitasking.
 
 [Antoine Soetewey's blog](https://statsandr.com/blog/anova-in-r/) recommends the use of the **report** package, which can help you make sense of the results more easily:
@@ -330,6 +344,12 @@ The textbook advice is that whenever one is comparing exactly two groups one sho
 ## ANOVA, t-tests, and linear regression
 
 The common assumptions shared may have gave it away, but the t-test, ANOVA, and linear regression are actually related, in that one is a special case of another. 
+
+The t-test is considered as a special case of ANOVA, since the classic Student's t-test is the same as ANOVA in comparing two groups when variances are equal. When the t-test statistic is squared, you get the corresponding F in the ANOVA.
+
+An ANOVA model is the same as a reression with a dummy variable. In fact, the `aov()` function in R is a wrapper around the linear regression function `lm()`.
+
+
 
 - The t-test with two groups assumes that each group is normally distributed with the same variance.
 - The t-test is the same as a regression with a dummy variable, which allows the mean of each group to differ but not the variance. 
