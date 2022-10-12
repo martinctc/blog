@@ -1,5 +1,5 @@
 ---
-title: "Common Statistical Tests in R"
+title: "Common Statistical Tests in R - Part I"
 author: "Martin Chan"
 date: "October 7, 2022"
 output:                    # DO NOT CHANGE
@@ -10,18 +10,22 @@ output:                    # DO NOT CHANGE
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(tidyverse)
-# prettyjekyll::FormatPost("_knitr/association_of_variables_20221007.Rmd")
+# prettyjekyll::FormatPost("_knitr/common-statistical-tests_20221007.Rmd")
 ```
 
 # Introduction
 
 This post will focus on common statistical tests in R that you can perform to understand and validate the relationship between two variables. 
 
-Very statistics 101, you may be thinking. So why? This post is edited from my own notes from learning statistics and R. The primary goal of the post is to be practical enough for myself to refer to from time to time, as I do for all my other tutorials/posts in this blog. The secondary goal is that hopefully, as a side effect, that this post will benefit others who are learning statistics and R too. 
+There must be tons of similar tutorials around, you may be thinking. So why? This post is edited from my own notes from learning statistics and R. The primary goal of the post is to be practical enough for myself to refer to from time to time, as I do for all my other tutorials/posts in this blog. This means that the code examples should be easily generalisable and mostly consistent with my usual coding approach. The secondary goal is that hopefully, as a side effect, that this post will benefit others who are learning statistics and R too. 
 
-To illustrate the R code, I will also be using a sample dataset `pq_data` from the package [**vivainsights**](https://microsoft.github.io/vivainsights/), which is a cross-sectional time-series dataset measuring the collaboration behaviour of simulated employees in an organization. Each row represents an employee on a certain week, with columns measuring behaviours such as total weekly time spent in email, meetings, chats, and so on. 
+![image from Giphy](https://raw.githubusercontent.com/martinctc/blog/master/images/breaking-bad-heisenberg.gif)
 
-A note about the structure of this post: in the real world, one should always as best practice visually check the data distribution and run tests for assumptions like normality and homoscedasticity prior to performing any tests. This best practice isn't really observed in this post for the sake of covering the widest range of scenarios. Hence, please be forgiving when you see that the narrative runs 'head first' into a test without examining the data - and avoid this in real life!
+
+
+To illustrate the R code, I will be using a sample dataset `pq_data` from the package [**vivainsights**](https://microsoft.github.io/vivainsights/), which is a cross-sectional time-series dataset measuring the collaboration behaviour of simulated employees in an organization. Each row represents an employee on a certain week, with columns measuring behaviours such as total weekly time spent in email, meetings, chats, and so on. 
+
+A note about the structure of this post: in the real world, one should always as a best practice visually check the data distribution and run tests for assumptions like normality and homoscedasticity prior to performing any tests. This best practice isn't really observed in this post for the sake of covering the widest range of scenarios. Hence, please be forgiving when you see that the narrative runs 'head first' into a test without examining the data - and avoid this in real life!
 
 # Loading the dataset
 
