@@ -1,7 +1,7 @@
 ---
 title: "Common Statistical Tests in R - Part I"
 author: "Martin Chan"
-date: "October 7, 2022"
+date: "October 13, 2022"
 output:                    # DO NOT CHANGE
   prettydoc::html_pretty:  # DO NOT CHANGE
     theme: cayman          # DO NOT CHANGE
@@ -15,15 +15,17 @@ library(tidyverse)
 
 # Introduction
 
-This post will focus on common statistical tests in R that you can perform to understand and validate the relationship between two variables. 
+This post will focus on common statistical tests in R to understand and validate the relationship between two variables. 
 
-There must be tons of similar tutorials around, you may be thinking. So why? The primary goal of the post is to be practical enough for myself to refer to from time to time, as I do for all my other tutorials/posts in this blog. This post is edited from my own notes from learning statistics and R, and I have applied the learnings to a data example/scenario that I am familiar with. This means that the examples should be easily generalisable and mostly consistent with my usual coding approach (mostly 'tidy' and using pipes). The secondary goal is that hopefully, as a side effect, that this post will benefit others who are learning statistics and R too. 
+There must be tons of similar tutorials around, you may be thinking. So why? 
+
+The primary (and selfish) goal of the post is to create a guide that is practical enough for myself to refer to from time to time. This post is edited from my own notes from learning statistics and R, and have been applied to a data example/scenario that I am familiar with. This means that the examples should be easily generalisable and mostly consistent with my usual coding approach (mostly 'tidy' and using pipes). Along the way, this will hopefully benefit others who are learning statistics and R too. 
 
 ![image from Giphy](https://raw.githubusercontent.com/martinctc/blog/master/images/breaking-bad-heisenberg.gif)
 
 To illustrate the R code, I will be using a sample dataset `pq_data` from the package [**vivainsights**](https://microsoft.github.io/vivainsights/), which is a cross-sectional time-series dataset measuring the collaboration behaviour of simulated employees in an organization. Each row represents an employee on a certain week, with columns measuring behaviours such as total weekly time spent in email, meetings, chats, and so on. The **vivainsights** package itself provides visualisation and analysis functions tailored for these datasets which are available from [Microsoft Viva Insights](https://www.microsoft.com/en-us/microsoft-viva/insights/). 
 
-A note about the structure of this post: in the real world, one should always as a best practice visually check the data distribution and run tests for assumptions like normality and homoscedasticity prior to performing any tests. For the sake of narrative and covering all the scenarios, this best practice isn't really observed in this post. Hence, please be forgiving as you see us run 'head first' into a test without examining the data - and avoid this in real life!
+A note about the structure of this post: in the real world, one should as a best practice visually check the data distribution and run tests for assumptions like normality prior to performing any tests. For the sake of narrative and covering all the scenarios, this practice isn't really observed in this post. Hence, please be forgiving as you see us run 'head first' into a test without examining the data - and avoid this in real life!
 
 # Set-up: packages and data
 
@@ -39,11 +41,11 @@ glimpse(pq_data[, 1:10])
 
 This tutorial also uses functions from **tidyverse**, so ensure that you run `library(tidyverse)` to reproduce the example outputs. 
 
-# Solving the problem
+# Framing the problem
 
 One of the most fundamental tasks in statistics and data science is to understand the relation between two variables. Sometimes the motivation is understand whether the relationship is causal, i.e. whether one causes another. This is not always the case, as for instance, one may simply wish to test for **multicollinearity** when selecting predictors for a model.[^0]
 
-[^0]: a scenario when your predictor variables are correlated, which could lead to a poor inference. 
+[^0]: a scenario in modelling where your predictor variables are correlated, which could lead to a poor inference. 
 
 Our dataset `pq_data` represents the simulated collaboration data of a company, and each row represents an employee's week. There are two metrics of interest:
 
@@ -56,9 +58,9 @@ Imagine then we have two questions to address:
 
 1. Do _managers_ multi-task more than _senior individual contributors (IC)_? 
 
-1. The HR leadership suspects that meeting multitasking behaviour could be causing after-hours working, as the former represents wasted time and productivity during meetings. What can we do to understand the relationship between the two? 
+1. The HR leadership suspects that meeting multitasking behaviour could be correlated with after-hours working, as the former represents wasted time and productivity during meetings. What can we do to understand the relationship between the two? 
 
-In this post, I will focus primarily on **comparison tests** and their non-parametric equivalents in R. In subsequent posts I would also like to cover other relevant tools/concepts such as correlation tests, regression tests, effect size, and statistical power.
+In this post, we will tackle the first question, and focus primarily on **comparison tests** and their non-parametric equivalents in R. In subsequent posts I would also like to cover other relevant tools/concepts such as correlation tests, regression tests, effect size, and statistical power.
 
 It is worth noting that the first question postulates a relation between a **categorical** variable (manager/ senior IC) and a **continuous** variable (multitasking hours), whereas the second question a relation between two **continuous** variables (multitasking hours, afterhours collaboration). The types of the variables in question help determine which tests are appropriate.
 
@@ -181,7 +183,7 @@ In other words, the sample sizes may have well played a role in the significant 
 
 ## 1.2 Testing for equality of variance (homoscedasticity)
 
-Asides from normality, another assumption of the t-test that we hadn't properly test for prior to running `t.test()` is to check for equality of variance across the two groups (homoscedasticity). Thankfully, this was not something we had to worry about as we used the Welch's t-test; recall that the classic Student's t-test assumes equality between the two variances, but the Welch's t-test already takes the difference in variance into account. 
+Asides from normality, another assumption of the t-test that we hadn't properly test for prior to running `t.test()` is to check for equality of variance across the two groups (homoscedasticity). Thankfully, this was not something we had to worry about as we used the Welch's t-test. Recall that the classic Student's t-test assumes equality between the two variances, but the Welch's t-test already takes the difference in variance into account. 
 
 If required, however, here is an example on how you can test for homoscedasticity in R, using `var.test()`: 
 
@@ -193,7 +195,7 @@ var.test(
   )
 ```
 
-The `var.test()` function ran above is an F-test (i.e. uses the F-distribution), which is used to compare whether the variances of two samples are the same. Under the null hypothesis of the tests, there should be homoscedasticity and as the f-statistic is a ratio of variances, the f-statistic would tend towards 1. The arguments are provided in a similar format to `t.test()`. 
+The `var.test()` function ran above is an F-test (i.e. uses the F-distribution) used to compare whether the variances of two samples are the same. Under the null hypothesis of the tests, there should be homoscedasticity and as the f-statistic is a ratio of variances, the f-statistic would tend towards 1. The arguments are provided in a similar format to `t.test()`. 
 
 It appears that homoscedasticity does not hold: since the p-value is less than 0.05, we should reject the null hypothesis that variances between the manager and IC dataset are equal. The Student's t-test would not have been appropriate here, and we were correct to have used the Welch's t-test.
 
@@ -215,7 +217,7 @@ boxplot(
 
 ## 2.1 Wilcoxon Rank-Sum Test
 
-Previously, we could not safely rely on the unpaired two-sample t-test because the data does not satisfy the normality condition. As an alternative, we can use the **Wilcoxon Rank-Sum test** (aka Mann Whitney U Test). The Wilcoxon test is described as a **non-parametric test**, which in statistics typically means that there is no specification on a distribution, or the parameters of a distribution. In this case, the Wilcoxon test does not assume a normal distribution. 
+Previously, we could not safely rely on the unpaired two-sample t-test because we are not fully confident that the data satisfies the normality condition. As an alternative, we can use the **Wilcoxon Rank-Sum test** (aka Mann Whitney U Test). The Wilcoxon test is described as a **non-parametric test**, which in statistics typically means that there is no specification on a distribution, or the parameters of a distribution. In this case, the Wilcoxon test does not assume a normal distribution. 
 
 Another difference between the Wilcoxon Rank-Sum test and the unpaired t-test is that the former tests whether two populations have the same shape via comparing medians, whereas the latter parametric test compares means between two independent groups. 
 
@@ -229,7 +231,7 @@ wilcox.test(
 )
 ```
 
-The p-value of the test is less than the significance level (alpha = 0.05), which allows us to conclude that Manager's median multitasking hours is significantly different from the IC's. 
+The p-value of the test is less than the significance level (alpha = 0.05), which allows us to conclude that Managers' median multitasking hours is significantly different from the ICs'. 
 
 Note that the Wilcoxon Rank-Sum test is different from the similarly named Wilcoxon Signed-Rank test, which is the equivalent alternative for the _paired_ t-test. To perform the Wilcoxon Signed-Rank test instead, you can simply specify the argument to be `paired = TRUE`. Similar to the decision of whether to use the paired or the unpaired t-test, you should ensure that the one-sample condition applies if you use the Wilcoxon Signed-Rank test.
 
@@ -265,7 +267,7 @@ kruskal.test(
 )
 ```
 
-Based on the Kruskal-Wallis test, we reject the null hypothesis and we conclude that at least one value in `LevelDesignation` is different in terms of their weekly hours spent multitasking. The most obvious downside to this method is that it does not tell us which groups are different from which, so this may need to be followed up with multiple pairwise-comparison tests.
+Based on the Kruskal-Wallis test, we reject the null hypothesis and we conclude that at least one value in `LevelDesignation` is different in terms of their weekly hours spent multitasking. The most obvious downside to this method is that it does not tell us which groups are different from which, so this may need to be followed up with multiple pairwise-comparison tests (also known as _post-hoc tests_).
 
 
 # 3. Comparison tests: ANOVA
@@ -276,9 +278,9 @@ What if we want to run the t-test across more than two groups?
 
 **Analysis of Variance (ANOVA)** is an alternative method that generalises the t-test beyond two groups, so it is used to compare three or more groups.
 
-There are several versions of ANOVA. The simple version is the _one-way ANOVA_, but there is also _two-way ANOVA_ which is used to estimate how the mean of a quantitative variable changes according to the levels of two categorical variables (e.g. rain/no-rain and weekend/weekday to predict ice cream sales). In this example we will focus on one-way ANOVA. 
+There are several versions of ANOVA. The simple version is the _one-way ANOVA_, but there is also _two-way ANOVA_ which is used to estimate how the mean of a quantitative variable changes according to the levels of two categorical variables (e.g. rain/no-rain and weekend/weekday with respect to ice cream sales). In this example we will focus on one-way ANOVA. 
 
-There are three assumptions in ANOVA (this may look familiar):
+There are three assumptions in ANOVA, and this may look familiar:
 
   - The data are independent.
   - The responses for each factor level have a normal population distribution.
@@ -286,7 +288,7 @@ There are three assumptions in ANOVA (this may look familiar):
 
 These assumptions are the same as those required for the classic t-test above, and it is recommended that you check for variance and normality prior to ANOVA. 
 
-ANOVA calculates the ratio of the between-group variance and the within-group variance (quantified using sum of squares), and then compares this with a threshold from the Fisher distribution (typically based on a significance level). The key function is `aov()`:
+ANOVA calculates the ratio of the **between-group variance** and the **within-group variance** (quantified using sum of squares), and then compares this with a threshold from the Fisher distribution (typically based on a significance level). The key function is `aov()`:
 
 ```{r message=FALSE, warning=FALSE}
 res_aov <-
@@ -314,7 +316,7 @@ The interpretation is as follows:[^2]
 
 - `Pr(>F)`: p-value of the F-statistic. This shows how likely it is that the F-value calculated from the test would have occurred if the null hypothesis of no difference among group means were true.
 
-Given that the p-value is smaller than 0.05, we reject the null hypothesis, so we reject the hypothesis that all means are equal. Therefore, we can conclude that the at least one value in `LevelDesignation` is different in terms of their weekly hours spent multitasking.
+Given that the p-value is smaller than 0.05, we reject the null hypothesis, so we reject the hypothesis that all means are equal. Therefore, we can conclude that at least one value in `LevelDesignation` is different in terms of their weekly hours spent multitasking.
 
 [Antoine Soetewey's blog](https://statsandr.com/blog/anova-in-r/) recommends the use of the **report** package, which can help you make sense of the results more easily:
 
@@ -328,7 +330,7 @@ The same drawback that applies to the Kruskall-Wallis test also applies to ANOVA
 
 ## 3.2 Next steps after ANOVA
 
-A pairwise t-test is likely required to provide more information, and it is recommended that you review the [p-value adjustment methods](https://rdrr.io/r/stats/p.adjust.html) when doing so.[^2.1] Type I errors are more likely when running t-tests pairwise across many variables, and therefore correction is necessary. Here is an example of how you might run a pairwise t-test: 
+A _pairwise_ t-test (note: _pairwise_, not _paired_!) is likely required to provide more information, and it is recommended that you review the [p-value adjustment methods](https://rdrr.io/r/stats/p.adjust.html) when doing so.[^2.1] Type I errors are more likely when running t-tests pairwise across many variables, and therefore correction is necessary. Here is an example of how you might run a pairwise t-test: 
 
 ```{r message=FALSE, warning=FALSE}
 pairwise.t.test(
@@ -356,19 +358,19 @@ pairwise.wilcox.test(
 
 So far, the following tests we performed have yielded similar results:
 
-1. For comparing Senior ICs and Managers:
+1. _For comparing Senior ICs and Managers:_
     - unpaired two-sample t-test (assumes normality)
     - Wilcoxon Rank-Sum test (non-parametric)
 
-2. For comparing across more than two values in `LevelDesignation`:
+2. _For comparing across more than two values:_
     - ANOVA (assumes normality)
     - Kruskal-Wallis test (non-parametric)
   
-3. For following up on (2) with pairwise comparisons:
+3. _For following up on (2) with pairwise comparisons:_
     - pairwise t-test with correction (assumes normality)
     - pairwise Wilcoxon test (non-parametric)
     
-To the first business question, we can conclude with some confidence that Senior ICs have lower multitasking hours than Managers. Although the data for the two groups are not normal or equal in variance, the mitigating solutions we used have also found the differences to be significant. Moreover, it appears that significant differences also exist across other levels when we reviewed the post-hoc tests.      
+To the first business question, we can conclude that Senior ICs have significantly lower multitasking hours than Managers. Although the data for the two groups are not normal or equal in variance, the mitigating solutions we used have also found the differences to be significant. Moreover, it appears that significant differences also exist across other levels when we reviewed the post-hoc tests.      
     
 
 ## 4.1 Should I use a t-test or ANOVA for comparing exactly two groups?
@@ -386,7 +388,11 @@ When ANOVA is used to compare two groups, the results will be equivalent to a cl
 
 [^3]: https://www.statisticshowto.com/welchs-anova/
 
-The recurring theme here is to check for heteroscedasticity and normality prior to test selection.
+To further complicate matters, there is also a method called Welch's ANOVA which is like classic ANOVA but handles unequal variances better. This can be done in R using `oneway.test()`, but there is some debate around best practice that is beyond the scope of this post. [^3.1] It would be prudent to run the Welch versions of the tests whenever we suspect the data to be heteroscedastic.
+
+[^3.1]: See <https://statisticsbyjim.com/anova/welchs-anova-compared-to-classic-one-way-anova/>; <https://blog.minitab.com/en/adventures-in-statistics-2/did-welchs-anova-make-fishers-classic-one-way-anova-obsolete>; <http://ritsokiguess.site/docs/2017/05/19/welch-analysis-of-variance/>. See also Liu, H. (2015). Comparing Welch ANOVA, a Kruskal-Wallis test, and traditional ANOVA in case of heterogeneity of variance. Virginia Commonwealth University.
+
+The recurring themes here are: (1) to check for heteroscedasticity and normality, and (2) to run multiple tests to acquire a more comprehensive view. 
 
 ## 4.2 t-tests, ANOVA, and linear regression - are they completely different?
 
@@ -396,13 +402,13 @@ The t-test is considered a special case of ANOVA, since the classic Student's t-
 
 [^4]: It is worth a quick footnote on the differences between the t-statistic and the f-statistic. The f-statistic is an output that is found in both the F-tests for variance (see `var.test()`) and ANOVA (see `aov()`). The f-statistic is a ratio of two variances, and variance is squared standard deviation. Note that the f-tests for variance and ANOVA are not the same, as the former compares variances of two populations whereas the latter compares within- and between-group variances, even though both tests use the f-distribution. When there are only two groups for the one-way ANOVA F-test, the f-statistic is equal to the square of the Student's t-statistic.
 
-On the other hand, an ANOVA model is the same as a reression with a dummy variable. In fact, the `aov()` function in R is a wrapper around the linear regression function `lm()`. Steve Midway's [_Analysis in R_](https://bookdown.org/steve_midway/DAR/understanding-anova-in-r.html) has a chapter which compares the outputs when running ANOVA using `lm()` versus `aov()`. 
+On the other hand, an ANOVA model is the same as a regression with a dummy variable. In fact, the `aov()` function in R is a wrapper around the linear regression function `lm()`. Steve Midway's [_Analysis in R_](https://bookdown.org/steve_midway/DAR/understanding-anova-in-r.html) has a chapter which compares the outputs when running ANOVA using `lm()` versus `aov()`. 
 
 All of these procedures are subsumed under the General Linear Model and share the same assumptions.
 
 # End Notes
 
-Hope you have found this post useful! Due to the vastness of the subject, it will not be possible to detail every consideration as this will soon evolve into some form of textbook. However, this should hopefully make flow charts like the below easier to follow: 
+This has been a very long post - hope you have found this useful! Due to the vastness of the subject, it will not be possible to detail every consideration and method. However, this should hopefully make flow charts like the below easier to follow: 
 
 ![Flowchart for inferential statistics from Grosofsky (2009)](https://raw.githubusercontent.com/martinctc/blog/master/images/statistical-tests-decision-tree-grosofsky.png)
 
