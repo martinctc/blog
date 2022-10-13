@@ -1,0 +1,58 @@
+---
+title: "Common Statistical Tests in R - Part II"
+author: "Martin Chan"
+date: "October 7, 2022"
+output:                    # DO NOT CHANGE
+  prettydoc::html_pretty:  # DO NOT CHANGE
+    theme: cayman          # DO NOT CHANGE
+    highlight: github      # DO NOT CHANGE
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tidyverse)
+# prettyjekyll::FormatPost("_knitr/common-statistical-tests_20221007.Rmd")
+```
+
+## Correlations
+
+Correlation tests are used in statistics to measure how strong a relationship is between two variables, without hypothesising any causal effect between the variables. There are several types of correlation coefficients (e.g. Pearson's _r_, Kendall's _tau_, Spearman's _rho_), but the most commonly used is the Pearson's correlation coefficient.
+
+Correlation tests are a form of **non-parametric test**, which don't make as many assumptions about the data and are useful when one or more of the common statistical assumptions are violated. However, the inferences they make aren't as strong as with parametric tests.
+
+Correlation is a way to test if two variables have any kind of relationship, whereas p-value tells us if the result of an experiment is statistically significant. 
+
+
+The statistical significance of a correlation can be evaluated with the t-statistic. This can be yielded with `cor.test()` in R:
+
+```r
+cor.test()
+```
+
+This output provides the correlation coefficient, the t-statistic, df, p-value, and the 95% confidence interval for the correlation coefficient. The two variables you supply to the function should both be continuous (most likely type `numeric`, `integer`, or `double` in R). 
+
+Note that the t statistic for the correlation depends on the magnitude of the correlation coefficient (r) and the **sample size**. With a large sample, even weak correlations can become statistically significant.
+
+### Relationship with simple linear regression
+
+One might also be led to believe that the correlation coefficient is similar to the slope of a simple linear regression. For one, the test for correlation will more or less lead to a similar conclusion as the test for slope. The sign of the slope (+/-ve) will be the same for correlation, and both values should indicate the direction of the relationship. 
+
+However, those two statistics are different: the correlation coefficient only tells you how closely your data fit on a line, so two datasets with the same correlation coefficient can have very different slopes. In other words, the value of the correlation indicates the _strength_ of the linear relationship. The value of the slope does not. Moreover, the slope interpretation tells you the change in the response for a one-unit increase in the predictor. Correlation does not have this kind of interpretation.
+
+
+### Pitfalls? 
+
+Outliers and non-linear relationships. 
+
+A simple way to evaluate whether a relationship is reasonably linear is to examine a scatter plot.
+
+P-value evaluates how well your data rejects the **null hypothesis**, which states that there is no relationship between two compared groups.
+
+p-value is the probability of obtaining results as extreme or more extreme, given the null hypothesis is true.
+
+## Effect size
+
+
+
+## Statistical power
+
+**Statistical power** is the probability of identifying an interaction effect on a dependent variable with the specified sample characteristics. The most common use of power calculations is to estimate how big a sample you will need.
