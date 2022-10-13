@@ -17,8 +17,7 @@ library(tidyverse)
 
 This post will focus on common statistical tests in R that you can perform to understand and validate the relationship between two variables. 
 
-There must be tons of similar tutorials around, you may be thinking. So why? This post is edited from my own notes from learning statistics and R. The primary goal of the post is to be practical enough for myself to refer to from time to time, as I do for all my other tutorials/posts in this blog. This means that the code examples should be easily generalisable and mostly consistent with my usual coding approach. The secondary goal is that hopefully, as a side effect, that this post will benefit others who are learning statistics and R too. 
-
+There must be tons of similar tutorials around, you may be thinking. So why? The primary goal of the post is to be practical enough for myself to refer to from time to time, as I do for all my other tutorials/posts in this blog. This post is edited from my own notes from learning statistics and R, and I have applied the learnings to a data example/scenario that I am familiar with. This means that the examples should be easily generalisable and mostly consistent with my usual coding approach (mostly 'tidy' and using pipes). The secondary goal is that hopefully, as a side effect, that this post will benefit others who are learning statistics and R too. 
 
 ![image from Giphy](https://raw.githubusercontent.com/martinctc/blog/master/images/breaking-bad-heisenberg.gif)
 
@@ -59,14 +58,7 @@ Imagine then we have two questions to address:
 
 1. The HR leadership suspects that meeting multitasking behaviour could be causing after-hours working, as the former represents wasted time and productivity during meetings. What can we do to understand the relationship between the two? 
 
-To answer these questions, there are a couple of common methods at our disposal. Here is a (non-exhaustive) list:
-
-  - Comparison tests
-  - Correlation tests
-  - Regression tests
-  - Effect Size
-  - Statistical power
-  - Sample variability
+In this post, I will focus primarily on **comparison tests** and their non-parametric equivalents in R. In subsequent posts I would also like to cover other relevant tools/concepts such as correlation tests, regression tests, effect size, and statistical power.
 
 It is worth noting that the first question postulates a relation between a **categorical** variable (manager/ senior IC) and a **continuous** variable (multitasking hours), whereas the second question a relation between two **continuous** variables (multitasking hours, afterhours collaboration). The types of the variables in question help determine which tests are appropriate.
 
@@ -332,7 +324,7 @@ library(report)
 report(res_aov)
 ```
 
-The same drawback that applies to the Kruskall-Wallis test also applies to ANOVA, in that doesn't actually tell you which exact group is different from which; it only tells you whether any group differs significantly from the group mean. 
+The same drawback that applies to the Kruskall-Wallis test also applies to ANOVA, in that doesn't actually tell you which exact group is different from which; it only tells you whether any group differs significantly from the group mean. This ANOVA test is hence sometimes also referred to as an 'omnibus' test. 
 
 ## 3.2 Next steps after ANOVA
 
@@ -371,11 +363,13 @@ So far, the following tests we performed have yielded similar results:
 2. For comparing across more than two values in `LevelDesignation`:
     - ANOVA (assumes normality)
     - Kruskal-Wallis test (non-parametric)
-
   
 3. For following up on (2) with pairwise comparisons:
     - pairwise t-test with correction (assumes normality)
     - pairwise Wilcoxon test (non-parametric)
+    
+To the first business question, we can conclude with some confidence that Senior ICs have lower multitasking hours than Managers. Although the data for the two groups are not normal or equal in variance, the mitigating solutions we used have also found the differences to be significant. Moreover, it appears that significant differences also exist across other levels when we reviewed the post-hoc tests.      
+    
 
 ## 4.1 Should I use a t-test or ANOVA for comparing exactly two groups?
 
@@ -406,15 +400,22 @@ On the other hand, an ANOVA model is the same as a reression with a dummy variab
 
 All of these procedures are subsumed under the General Linear Model and share the same assumptions.
 
+# End Notes
 
+Hope you have found this post useful! Due to the vastness of the subject, it will not be possible to detail every consideration as this will soon evolve into some form of textbook. However, this should hopefully make flow charts like the below easier to follow: 
 
-## References
+![Flowchart for inferential statistics from Grosofsky (2009)](https://raw.githubusercontent.com/martinctc/blog/master/images/statistical-tests-decision-tree-grosofsky.png)
 
-- [Correlation and Regression](https://sphweb.bumc.bu.edu/otlt/MPH-Modules/PH717-QuantCore/PH717-Module9-Correlation-Regression/index.html)
+Please comment in the Disqus box down below if you have any feedback or suggestions. Do also check out the References list below for further reading; as I wrote this I have attempted to link to the brilliant resources referenced as diligently as possible.
+
+# References
+
 - [PennState STAT500](https://online.stat.psu.edu/stat500/lesson/9/9.4/9.4.2)
 - [Guide on when to use which statistical tests and when](https://www.scribbr.com/statistics/statistical-tests/)
 - [Unpaired t-tests in R](http://www.sthda.com/english/wiki/unpaired-two-samples-t-test-in-r/)
 - [ANOVA in R](https://statsandr.com/blog/anova-in-r/)
 - [Kruskall-Wallis Test in R](https://statsandr.com/blog/kruskal-wallis-test-nonparametric-version-anova/)
-- https://stats.stackexchange.com/questions/1637/if-the-t-test-and-the-anova-for-two-groups-are-equivalent-why-arent-their-assu
-- https://bookdown.org/steve_midway/DAR/understanding-anova-in-r.html
+- [t-test versus ANOVA for two groups](https://stats.stackexchange.com/questions/1637/if-the-t-test-and-the-anova-for-two-groups-are-equivalent-why-arent-their-assu)
+- [Understanding ANOVA in R](https://bookdown.org/steve_midway/DAR/understanding-anova-in-r.html)
+- [Why you should use non-parametric tests](https://medium.com/git-connected/when-and-why-you-should-use-non-parametric-tests-5ed486a84826)
+- [Correlation and Regression](https://sphweb.bumc.bu.edu/otlt/MPH-Modules/PH717-QuantCore/PH717-Module9-Correlation-Regression/index.html)
