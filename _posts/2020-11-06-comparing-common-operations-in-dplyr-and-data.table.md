@@ -4,7 +4,7 @@ title: "Comparing Common Operations in dplyr and data.table"
 author: "Martin Chan"
 date: "November 6, 2020"
 layout: post
-tags: tidyverse rdatatable vignettes
+tags: tidyverse rdatatable vignettes r
 image: https://raw.githubusercontent.com/martinctc/blog/master/images/manipulate.gif
 ---
 

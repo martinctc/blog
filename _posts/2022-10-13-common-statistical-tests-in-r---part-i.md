@@ -4,7 +4,7 @@ title: "Common Statistical Tests in R - Part I"
 author: "Martin Chan"
 date: "October 13, 2022"
 layout: post
-tags: statistics vignettes
+tags: statistics vignettes r
 image: https://raw.githubusercontent.com/martinctc/blog/master/images/breaking-bad-heisenberg.gif
 ---
 

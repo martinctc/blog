@@ -4,7 +4,7 @@ title: "Vignette: Simulating a minimal SPSS dataset from R"
 author: "Martin Chan"
 date: "April 30, 2020"
 layout: post
-tags: surveys vignettes tidyverse
+tags: surveys vignettes tidyverse r
 image: https://raw.githubusercontent.com/martinctc/blog/master/images/surveysays.gif
 ---
 

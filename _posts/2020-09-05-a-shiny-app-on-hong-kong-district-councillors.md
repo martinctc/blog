@@ -4,7 +4,7 @@ title: "A Shiny app on Hong Kong District Councillors"
 author: "Martin Chan"
 date: "September 5, 2020"
 layout: post
-tags: shiny open-source
+tags: shiny open-source r
 image: https://github.com/Hong-Kong-Districts-Info/hong-kong-districts-info.github.io/raw/master/images/DCAppDemo3.gif
 ---
 

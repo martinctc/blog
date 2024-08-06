@@ -4,7 +4,7 @@ title: "Top 10 tips to make your R package even more awesome"
 author: "Martin Chan"
 date: "December 22, 2020"
 layout: post
-tags: open-source
+tags: open-source r
 image: https://github.com/martinctc/blog/raw/master/images/vibing-cat-r.gif
 ---
 

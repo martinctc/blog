@@ -4,7 +4,7 @@ title: "Vignette: Generate your own ggplot theme gallery"
 author: "Martin Chan"
 date: "May 8, 2020"
 layout: post
-tags: vignettes tidyverse
+tags: vignettes tidyverse r
 image: https://media.giphy.com/media/dmypi9dyBfmOQ/giphy.gif
 ---
 
