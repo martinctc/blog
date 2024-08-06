@@ -35,3 +35,9 @@ Requirements and features of FormatPost
     - makes some changes in figures' and images' paths to be recognized in the site. 
     
 You can keep the default path to figures rendered by knitr. Caching is now supported starting with version 0.2.3. You should directly use the R Markdown template from this package.
+
+## Repo structure
+
+* `_posts` contains the final markdown files that are used for creating the blog. These are initially rendered by prettyjekyll, but may be edited manually to address issues with the original rendering.
+* `_knitr` contains the initial RMarkdown files used for drafting the blog posts, and for generating the required markdown files. 
+* Other files in the repo are either layout files for the blog, or static resources (such as images) used in the blog posts.
