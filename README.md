@@ -41,3 +41,8 @@ You can keep the default path to figures rendered by knitr. Caching is now suppo
 * `_posts` contains the final markdown files that are used for creating the blog. These are initially rendered by prettyjekyll, but may be edited manually to address issues with the original rendering.
 * `_knitr` contains the initial RMarkdown files used for drafting the blog posts, and for generating the required markdown files. 
 * Other files in the repo are either layout files for the blog, or static resources (such as images) used in the blog posts.
+
+## Tags
+
+* To add a tag to a post, update the markdown files in `_posts` directly. 
+* To add a _new_ tag category, be sure to add a new markdown file under `blog/tag/`, following the layout and naming convention of the other files to match the tag name. This will make sure that a tagpage will be generated for the new tag category.
