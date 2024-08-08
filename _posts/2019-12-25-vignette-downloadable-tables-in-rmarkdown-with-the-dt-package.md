@@ -4,7 +4,7 @@ title: "Vignette: Downloadable tables in RMarkdown with the DT package"
 author: "Martin Chan"
 date: "December 25, 2019"
 layout: post
-tags: vignettes rmarkdown excel
+tags: vignettes rmarkdown excel r
 image: https://raw.githubusercontent.com/martinctc/blog/master/images/dashboard-excel-flexdashboard-meme.jpg
 ---
 

@@ -4,7 +4,7 @@ title: "Data cleaning with Kamehamehas in R"
 author: "Martin Chan"
 date: "April 11, 2020"
 layout: post
-tags: learning-r vignettes tidyverse
+tags: learning-r vignettes tidyverse r
 image: https://raw.githubusercontent.com/martinctc/blog/master/images/kamehameha.gif
 ---
 

@@ -4,7 +4,7 @@ title: "First World Problems: Very long RMarkdown documents"
 author: "Martin Chan"
 date: "September 8, 2019"
 layout: post
-tags: vignettes rmarkdown
+tags: vignettes rmarkdown r
 image: https://martinctc.github.io/blog/images/fwp-rmarkdown.png
 ---
 

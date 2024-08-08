@@ -4,7 +4,7 @@ title: "RStudio Projects and Working Directories: A Beginner's Guide"
 author: "Martin Chan"
 date: "January 23, 2020"
 layout: post
-tags: learning-r vignettes
+tags: learning-r vignettes r
 image: https://raw.githubusercontent.com/martinctc/blog/master/images/RPROJECT_2000dpi.png
 ---
 

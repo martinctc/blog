@@ -4,7 +4,7 @@ title: "A Short Essay on Duplicated R Artefacts"
 author: "Martin Chan"
 date: "July 6, 2019"
 layout: post
-tags: open-source
+tags: open-source r
 image: http://martinctc.github.io/blog/images/fog-3622519_1920.jpg
 ---
 

@@ -4,7 +4,7 @@ title: "Using data.table with magrittr pipes: best of both worlds"
 author: "Martin Chan"
 date: "April 21, 2019"
 layout: post
-tags: rdatatable tidyverse
+tags: rdatatable tidyverse r
 image: http://martinctc.github.io/blog/images/r-datatable.png
 ---
 

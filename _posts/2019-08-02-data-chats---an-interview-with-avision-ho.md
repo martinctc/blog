@@ -4,7 +4,7 @@ title: "Data Chats: An Interview with Avision Ho"
 author: "Martin Chan"
 date: "August 2, 2019"
 layout: post
-tags: interviews tidyverse
+tags: interviews tidyverse r
 image: https://martinctc.github.io/blog/images/avision-profile.jpeg
 ---
 

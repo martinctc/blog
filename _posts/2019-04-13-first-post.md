@@ -4,7 +4,7 @@ title: "First Post"
 author: "Martin Chan"
 date: "April 13, 2019"
 layout: post
-tags: learning-r
+tags: learning-r r
 image: http://martinctc.github.io/blog/images/brace-yourselves.png
 ---
 

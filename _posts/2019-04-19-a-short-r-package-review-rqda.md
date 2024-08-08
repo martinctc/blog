@@ -4,7 +4,7 @@ title: "A Short R Package Review: RQDA"
 author: "Martin Chan"
 date: "April 19, 2019"
 layout: post
-tags: package-reviews
+tags: package-reviews r
 image: http://martinctc.github.io/blog/images/one-does-not-simply-pick-a-favourite-r-package.jpg
 ---
 
