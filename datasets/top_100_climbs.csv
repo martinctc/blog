@@ -1,0 +1,101 @@
+﻿climb_id,climb,height_gain_m,average_gradient,length_km,max_gradient,url
+1,Cheddar Gorge,150,0.05,3.5,0.16,https://cyclinguphill.com/cheddar-gorge/
+2,Weston Hill,165,0.09,1.8,0.18,https://cyclinguphill.com/100-climbs/weston-hill-bath/
+3,Crowcombe Combe,188,0.15,1.2,0.25,https://cyclinguphill.com/100-climbs/crowcombe-combe/
+4,Porlock,372,0.12,4.9,0.25,https://cyclinguphill.com/porlock-hill-climb/
+5,Dunkery Beacon,326,0.1,3.2,0.17,https://cyclinguphill.com/100-climbs/dunkery-beacon/
+6,Exmoor Forest,406,0.04,11,0.12,https://cyclinguphill.com/100-climbs/exmoor-forest-climb/
+7,Challacombe,166,0.11,1.5,0.25,https://cyclinguphill.com/100-climbs/challacombe/
+8,Dartmeet,125,0.11,1.1,0.18,https://cyclinguphill.com/100-climbs/dartmeet-climb/
+9,Haytor Vale,335,0.06,5.4,0.12,https://cyclinguphill.com/100-climbs/haytor-vale/
+10,Widecombe,163,0.12,1.4,0.16,https://cyclinguphill.com/100-climbs/widecombe-hill/
+11,Rundelstone,346,0.04,9,0.15,https://cyclinguphill.com/100-climbs/rundelstone-climb/
+12,Salcombe Hill,159,0.13,1.2,0.2,https://cyclinguphill.com/100-climbs/salcombe-hill/
+13,Dovers Hill,145,0.1,1.7,0.14,https://cyclinguphill.com/100-climbs/dovers-hill/
+14,Box Hill,130,0.05,2.5,0.06,https://cyclinguphill.com/box-hill/
+15,York’s Hill,92,0.14,0.6,0.2,https://cyclinguphill.com/yorks-hill/
+16,White Lane,79,0.13,0.7,0.22,https://cyclinguphill.com/white-lane-bec-cc-hill-climb/
+17,Leith Hill,145,0.07,2.1,0.16,https://cyclinguphill.com/leith-hill-climb/
+18,White Downs,112,0.06,1.9,0.2,https://cyclinguphill.com/100-climbs/whitedowns/
+19,The Wall,125,0.09,1.4,0.17,https://cyclinguphill.com/100-climbs/the-wall
+20,Toys Hill,170,0.06,2.7,0.18,https://cyclinguphill.com/100-climbs/toys-hill/
+21,Steyning Bostal,123,0.08,1.6,0.17,https://cyclinguphill.com/100-climbs/steyning-bostal/
+22,Ditchling Beacon,142,0.1,1.4,0.17,https://cyclinguphill.com/100-climbs/ditchling-beacon/
+23,Whiteleaf,127,0.09,1.4,0.16,https://cyclinguphill.com/100-climbs/whiteleaf-hill/
+24,Streatley Hill,120,0.11,1,0.18,https://cyclinguphill.com/100-climbs/streatley-hill/
+25,Combe Gibbet,83,0.1,0.8,0.18,https://cyclinguphill.com/combe-gibbet/
+26,Mott Street,78,0.05,1.4,0.12,https://cyclinguphill.com/100-climbs/mott-street/
+27,Swains Lane,71,0.08,0.9,0.2,https://cyclinguphill.com/swains-lane/
+28,Michaelgate,31,0.12,0.3,0.17,https://cyclinguphill.com/100-climbs/michaelgate/
+29,Terrace Hill,76,0.08,0.9,0.15,https://cyclinguphill.com/100-climbs/terrace-hill/
+30,Monsal Head,57,0.12,0.5,0.17,https://cyclinguphill.com/100-climbs/monsal-head/
+31,Bank Road,115,0.1,1.1,0.2,https://cyclinguphill.com/100-climbs/bank-road/
+32,Riber,162,0.09,1.8,0.25,https://cyclinguphill.com/100-climbs/riber-hill/
+33,Winnats Pass,198,0.12,1.7,0.2,https://cyclinguphill.com/winnats-pass/
+34,Rowsley Bar,140,0.13,1.1,0.25,https://cyclinguphill.com/rowsley-bar/
+35,Curbar Edge,175,0.1,1.8,0.16,https://cyclinguphill.com/100-climbs/curbar-edge/
+36,Mow Cop,170,0.11,1.5,0.25,https://cyclinguphill.com/mow-cop-the-killer-mile/
+37,Peaslows,172,0.11,1.6,0.12,https://cyclinguphill.com/100-climbs/peaslows/
+38,Jiggers Bank,125,0.05,2.6,0.1,https://cyclinguphill.com/100-climbs/jiggers-bank/
+39,The Burway,290,0.1,3,0.2,https://cyclinguphill.com/100-climbs/burway/
+40,Shibden Wall,133,0.15,0.9,0.25,https://cyclinguphill.com/100-climbs/shibden-wall/
+41,Pea Royd Lane,145,0.12,1.1,0.2,https://cyclinguphill.com/pea-royd-lane/
+42,Jackson Bridge,161,0.1,1.5,0.2,https://cyclinguphill.com/jackson-bridge-granville-sydney-memorial-hill-climb/
+43,Holme Moss,204,0.09,2.2,0.12,https://cyclinguphill.com/holme-moss/
+44,Halifax Lane,185,0.11,1.6,0.2,https://cyclinguphill.com/100-climbs/halifax-lane-luddenden-bank/
+45,Park Rash,238,0.1,2.1,0.25,https://cyclinguphill.com/100-climbs/park-rash/
+46,Oxnop Scar,243,0.06,3.8,0.25,https://cyclinguphill.com/oxnop-scar/
+47,Malham Cove,199,0.06,3.4,0.2,https://cyclinguphill.com/100-climbs/malham-cove/
+48,Langcliffe Scar,170,0.1,2.3,0.2,https://cyclinguphill.com/100-climbs/langcliffe-scar/
+49,Buttertubs,223,0.09,3.6,0.25,https://cyclinguphill.com/buttertubs-pass-near-hawes/
+50,Fleet Moss,323,0.06,5.3,0.2,https://cyclinguphill.com/fleet-moss/
+51,Tan Hill,206,0.02,9.9,0.12,https://cyclinguphill.com/100-climbs/tan-hill/
+52,Greenhow Hill,282,0.1,4,0.18,https://cyclinguphill.com/greenhow-hill/
+53,Norwood Edge,169,0.11,1.9,0.18,https://cyclinguphill.com/norwood-edge/
+54,Boltby Bank,162,0.13,1.3,0.2,https://cyclinguphill.com/100-climbs/boltby-bank/
+55,Rosedale Chimney,179,0.14,1.4,0.33,https://cyclinguphill.com/100-climbs/rosedale-chimney/
+56,White Horse Bank,175,0.1,1.6,0.25,https://cyclinguphill.com/100-climbs/white-horse-bank/
+57,The Stang,241,0.07,3.8,0.17,https://cyclinguphill.com/2013-national-hill-climb-championships-the-stang/
+58,Carlton Bank,202,0.1,2,0.3,https://cyclinguphill.com/carlton-bank/
+59,Crawleyside,274,0.04,6.2,0.2,https://cyclinguphill.com/100-climbs/crawleyside/
+60,Peth Bank,141,0.08,1.8,0.2,https://cyclinguphill.com/100-climbs/perth-bank/
+61,Winter’s Gibbet,153,0.04,3.7,0.1,https://cyclinguphill.com/100-climbs/winters-gibbet/
+62,Chapel Fell,323,0.08,4.1,0.16,https://cyclinguphill.com/100-climbs/chapel-fell/
+"63,",Mennock Pass,318,0.03,9.9,0.1,https://cyclinguphill.com/100-climbs/mennock-pass/
+64,Cairn O’ Mount,313,0.1,3.3,0.14,https://cyclinguphill.com/100-climbs/cairn-o-mount/
+65,The Cairnwell,323,0.04,8.5,0.12,https://cyclinguphill.com/100-climbs/the-cairnwell/
+66,The Lecht,245,0.08,3,0.2,https://cyclinguphill.com/100-climbs/the-lecht/
+67,Cairn Gorm,300,0.05,5.4,0.1,https://cyclinguphill.com/100-climbs/cairn-gorm/
+68,Rest + be Thankful,253,0.06,4.4,0.16,https://cyclinguphill.com/100-climbs/rest-and-be-thankful/
+69,Bealach-Na-Ba,623,0.07,8.9,0.2,https://cyclinguphill.com/100-climbs/bealach-na-ba/
+70,Cat and Fiddle,381,0.03,11.2,0.05,https://cyclinguphill.com/100-climbs/cat-fiddle/
+71,Swiss Hill,69,0.13,0.5,0.17,https://cyclinguphill.com/100-climbs/swiss-hill/
+72,The Rake,101,0.12,0.95,0.23,https://cyclinguphill.com/rake-hill-climb/
+73,Garsdale Head,222,0.06,3.6,0.2,https://cyclinguphill.com/100-climbs/garsdale-head/
+74,Nick O’ Pendle,145,0.11,1.3,0.14,https://cyclinguphill.com/nick-o-pendle/
+75,Trough of Bowland,144,0.06,2.2,0.16,https://cyclinguphill.com/100-climbs/trough-bowland/
+76,Jubilee Tower,230,0.06,4.1,0.16,https://cyclinguphill.com/100-climbs/jubilee-tower/
+77,Hartside Fell,396,0.05,7.6,0.07,https://cyclinguphill.com/hartside-fell/
+78,Lamps Moss,302,0.08,4,0.17,https://cyclinguphill.com/100-climbs/lamps-moss/
+79,Cross of Greet,182,0.06,2.9,0.13,https://cyclinguphill.com/100-climbs/cross-of-greet/
+80,Honister Pass,239,0.07,3.7,0.25,https://cyclinguphill.com/honister-pass/
+81,Newlands House,205,0.11,1.9,0.25,https://cyclinguphill.com/100-climbs/newlands-house-pass/
+82,Whinlatter Pass,231,0.07,3.3,0.15,https://cyclinguphill.com/100-climbs/whinlatter-pass/
+83,Kirkstone Pass,292,0.06,5.3,0.16,https://cyclinguphill.com/kirkstone-pass/
+84,Hardknott Pass,298,0.13,2.2,0.33,https://cyclinguphill.com/hardknott-pass/
+85,Wrynose Pass,278,0.11,2.5,0.25,https://cyclinguphill.com/wrynose-pass/
+86,The Shelf,262,0.05,5.1,0.12,https://cyclinguphill.com/100-climbs/the-shelf/
+87,Moel Arthur,220,0.1,2.2,0.2,https://cyclinguphill.com/100-climbs/moel-arthur/
+88,Penbarras,258,0.11,2.3,0.25,https://cyclinguphill.com/100-climbs/penbarras/
+89,The Road to Hell,353,0.03,11,0.2,https://cyclinguphill.com/100-climbs/the-road-to-hell/
+90,Horseshoe Pass,317,0.07,6.1,0.2,https://cyclinguphill.com/horseshoe-pass/
+91,Bwlch Y Groes,385,0.11,3.5,0.25,https://cyclinguphill.com/100-climbs/bwlch-y-groes-hellfire-pass/
+92,Ffordd Penllech,61,0.2,0.3,0.4,https://cyclinguphill.com/100-climbs/ffordd-penllech/
+93,Devil’s Staircase,151,0.12,1.3,0.25,https://cyclinguphill.com/100-climbs/devils-staircase/
+94,Llangynidr Mt,397,0.07,5.6,0.14,https://cyclinguphill.com/100-climbs/llangynidr-mountain/
+95,Black Mountain,378,0.05,7.1,0.08,https://cyclinguphill.com/100-climbs/black-mountain/
+96,Bryn Du,270,0.05,5.5,0.22,https://cyclinguphill.com/100-climbs/bryn-du/
+97,The Tumble,399,0.08,5.1,0.16,https://cyclinguphill.com/tumble/
+98,Rhigos,268,0.04,6.2,0.07,https://cyclinguphill.com/100-climbs/rhigos-climb/
+99,The Bwlch,340,0.06,5.8,0.22,https://cyclinguphill.com/100-climbs/the-bwlch/
+100,Constitution Hill,59,0.2,0.3,0.22,https://cyclinguphill.com/100-climbs/constitution-hill-swansea/
