@@ -1,0 +1,294 @@
+---
+title: "Summarising Top 100 UK Climbs: Running Local Language Models with LM Studio and R"
+author: "Martin Chan"
+date: "November 20, 2024"
+output:                    
+  prettydoc::html_pretty:  
+    theme: cayman          
+    highlight: github      
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(prettyjekyll)
+# prettyjekyll::FormatPost("_knitr/Local_Language_Models_with_LM_Studio_and_R.Rmd")
+```
+
+## 1. Introduction
+
+Since my last entry on this blog, the landscape of data science has been massively disrupted by the advent of large language models (LLM). Areas in data science such as text mining and natural language processing have been revolutionised by the capabilities of these models. Remember the days of manually tagging and reading through text data? Well, they're long gone, and I can only say that [not all blog posts age equally well](https://martinctc.github.io/blog/a-short-r-package-review-rqda/) (Note: RQDA was one of my favourite R packages for analysing qualitative data; not only is it now redundant, it is also no longer available on CRAN). I am also not sure that there is much value anymore in [using n-gram / word frequency as well as word clouds to surface key themes from a large corpus of text data](https://martinctc.github.io/blog/Copy-and-paste_wordclouds_in_R/), when you can simply use a LLM these days to generate summaries and insights. 
+
+To get with the times (!), I have decided to explore the capabilities of [LM Studio](https://lmstudio.ai/), a platform that allows you to run language models _locally_. The benefit of running a language model locally is that you can interact with it directly from your R environment, without the need to rely on cloud-based services. There is no need to pay for API calls - as long as you can afford the electricity bill to run your computer, you can generate as much text as you want! 
+
+In this blog post, I will guide you through the process of setting up LM Studio, integrating it with R, and applying it to a dataset on [UK's top 100 cycling climbs](https://cyclinguphill.com/100-climbs/) (my latest pastime). We will create a custom function to interact with the language model, generate prompts for the model, and visualize the results. Let's get started!
+
+## 2. Setting Up LM Studio
+
+### 2.1. Install LM Studio and download models
+
+Before we begin, ensure you have the following installed: 
+
+* R
+* LM Studio, which can be downloaded from the [LM Studio website](https://lmstudio.com/download)
+
+After you have downloaded and installed LM Studio, open the application. Go to the **Discover** tab (sidebar), where you can browse and search for models. In this example, we will be using the [Phi-3-mini-4k-instruct](https://huggingface.co/microsoft/Phi-3-mini-4k-instruct) model, but you can of course experiment with any other model that you prefer - as long as you've got the hardware to run it! 
+
+Now, select the model from the top bar to load it: 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
+knitr::include_graphics("../images/lm-studio/load-model.PNG")
+```
+
+To check that everything is working fine, go to the **Chat** tab on the sidebar and start a new chat to interact with the Phi-3 model directly. You've now got your language model up and running!
+
+### 2.2. Required R Packages
+
+To effectively work with LM Studio, we will need several R packages: 
+
+* **tidyverse** - for data manipulation
+* **httr** - for API interaction
+* **jsonlite** - for JSON parsing
+
+You can install/update them all with one line of code: 
+```r
+# Install necessary packages
+install.packages(c("tidyverse", "httr", "jsonlite"))
+```
+
+Let us set up the R script by loading the packages and the data we will be working with: 
+```{r load-packages-and-data, echo=TRUE, message=FALSE, warning=FALSE}
+# Load the packages
+library(tidyverse)
+library(httr)
+library(jsonlite)
+
+top_100_climbs_df <- read_csv("https://raw.githubusercontent.com/martinctc/blog/refs/heads/master/datasets/top_100_climbs.csv")
+```
+
+The `top_100_climbs_df` dataset contains information on the top 100 cycling climbs in the UK, which I've pulled from the [Cycling Uphill website](https://cyclinguphill.com/100-climbs/), originally put together by [Simon Warren](https://www.100climbs.co.uk/contact-me). These are 100 rows, and the following columns in the dataset: 
+
+* `climb_id`: row unique identifier for the climb
+* `climb`: name of the climb
+* `height_gain_m`: height gain in meters
+* `average_gradient`: average gradient of the climb
+* `length_km`: total length of the climb in kilometers
+* `max_gradient`: maximum gradient of the climb
+* `url`: URL to the climb's page on Cycling Uphill
+
+Here is what the dataset looks like when we run `dplyr::glimpse()`:
+```{r}
+glimpse(top_100_climbs_df)
+```
+
+Our goal here is to use this dataset to generate text descriptions for each of the climbs using the language model. Since this is for text generation, we will do a bit of cleaning up of the dataset, converting gradient values to percentages:
+```{r}
+top_100_climbs_df_clean <- top_100_climbs_df %>%
+  mutate(
+    average_gradient = scales::percent(average_gradient),
+    max_gradient = scales::percent(max_gradient)
+    )
+```
+
+### 2.3. Setting up the Local Endpoint
+
+Once you have got your model in LM Studio up and running, you can set up a local endpoint to interact with it directly from your R environment.
+
+To do this, go to the **Developer** tab on the sidebar, and click 'Start Server (Ctrl + R)'. 
+
+Setting up a local endpoint allows you to interact with the language model directly from your R environment. If you leave your default settings unchanged, your endpoints should be as follows: 
+
+* GET  http://localhost:1234/v1/models
+* POST http://localhost:1234/v1/chat/completions
+* POST http://localhost:1234/v1/completions
+* POST http://localhost:1234/v1/embeddings
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width='80%'}
+knitr::include_graphics("../images/lm-studio/start-server.PNG")
+```
+
+In this article, we will be using the chat completions endpoint for summarising / generating text. 
+
+## 3. Writing a Custom Function to Connect to the Local Endpoint
+
+The next step here is to write a custom function that will allow us to send our prompt to the local endpoint and retrieve the response from the language model. Since we have 100 climbs to describe, writing a custom function allows us to scale the logic for interacting with the model, which save us time and reduces the risk of errors. We can also reuse this function as a template for other future projects.
+
+Below is a code snippet for creating a custom function to communicate with your local LM endpoint:
+
+```{r}
+# Define a function to connect to the local endpoint
+send_prompt <- function(system_prompt, user_prompt, endpoint = "http://localhost:1234/v1/chat/completions") {
+
+  # Define the data payload for the local server
+  data_payload <- list(
+    messages = list(
+      list(role = "system", content = system_prompt),
+      list(role = "user", content = user_prompt)
+    ),
+    temperature = 0.7,
+    max_tokens = 500,
+    top_p = 0.9,
+    frequency_penalty = 0.0,
+    presence_penalty = 0.0
+  )
+
+  # Convert the data to JSON
+  json_body <- toJSON(data_payload, auto_unbox = TRUE)
+  
+  # Define the URL of the local server
+  response <- POST(
+    endpoint, 
+    add_headers(
+      "Content-Type" = "application/json"),
+    body = json_body,
+    encode = "json")
+
+  if (response$status_code == 200) {
+    # Parse response and return the content in JSON format
+    response_content <- content(response, as = "parsed", type = "application/json")
+    response_text <- response_content$choices[[1]]$message$content
+    response_text
+
+  } else {
+    stop("Error: Unable to connect to the language model")
+  }
+}
+```
+There are a couple of things to note in this function: 
+
+1. The `send_prompt` function takes in three arguments: `system_prompt`, `user_prompt`, and `endpoint`. 
+  * We distinguish between the system and user prompts here, which is typically not necessary for a simple chat completion. However, it is useful for more complex interactions where you want to guide the model with specific prompts. The system prompt is typically used for providing overall guidance, context, tone, and boundaries for the behaviour of the AI, while the user prompt is the actual input that you want the AI to respond to.
+  * The `endpoint` is the URL of the local server that we are connecting to. Note that we have used the chat completions endpoint here.
+
+2. The `data_payload` is a list that contains the messages (prompts) and the parameters that you can adjust to control the output of the language model. These parameters can vary depending on the model you are using - I typically search for the "API documentation" or the "API reference" for the model as a guide. Here are the [parameters we are using in this example](https://deepinfra.com/microsoft/Phi-3-medium-4k-instruct/api):
+  * `messages` is a list of messages that the language model will use to generate the text. In this case, we have a system message and a user message.
+  * `temperature` controls the randomness of the output. A higher temperature will result in more random output.
+  * `max_tokens` is the maximum number of tokens that the language model will generate.
+  * `top_p` is the nucleus sampling parameter, and an alternative to sampling with temperature. It controls the probability mass that the model considers when generating the next token.
+  * `frequency_penalty` and `presence_penalty` are used to penalize the model for repeating tokens or generating low-frequency tokens.
+  
+3. The `json_body` is the JSON representation of the `data_payload` list. We need to transform the list into JSON format because this is what is expected by the local server. We do this with `jsonlite::toJSON()`.
+
+4. The `response` object is the result of sending a POST request to the local server. If the status code of the response is 200, then we return the content of the response. If there is an error, we stop the function and print an error message.
+
+Now that we have our function, let us test it out!
+
+### 3.3. Testing the Function
+
+To ensure your function works as expected, run a simple test:
+
+```{r}
+# Test the generate_text function
+test_hill <- top_100_climbs_df_clean %>%
+  slice(1) %>% # Select the first row
+  jsonlite::toJSON()
+
+send_prompt(
+  system_prompt = paste(
+    "You are a sports commentator for the Tour de France.",
+    "Describe the following climb to the audience in less than 200 words, using the data."
+  ),
+  user_prompt = test_hill
+  )
+```
+
+Not too bad, right? 
+
+## 4. Running a prompt template on the Top 100 Climbs dataset 
+
+What we have created in the previous section are effectively a prompt template for the system prompt, and the user prompt is made up of the data we have on the climbs, converted to JSON format. To apply this programmatically to all the 100 climbs, we can make use of the `purrr::pmap()` function in **tidyverse**, which can take a data frame as an input parameter and apply a function to each row of the data frame: 
+```{r}
+# Define system prompt
+sys_prompt <- paste(
+  "I have the following data regarding a top 100 climb for road cycling in the UK.",
+  "Please help me generate a description based on the available columns, ending with a URL for the reader to find more information."
+)
+
+# Generated descriptions for all climbs
+top_100_climbs_with_desc <-
+  top_100_climbs_df_clean %>%
+  pmap(function(climb_id, climb, height_gain_m, average_gradient, length_km, max_gradient, url) {
+    user_prompt <- jsonlite::toJSON(
+      list(
+        climb = climb,
+        height_gain_m = height_gain_m,
+        average_gradient = average_gradient,
+        length_km = length_km,
+        max_gradient = max_gradient,
+        url = url
+        )
+        )
+    
+    # climb description
+    climb_desc <- send_prompt(system_prompt = sys_prompt, user_prompt = user_prompt)
+
+    # Return original data frame with climb description appended as column
+    tibble(
+      climb_id = climb_id,
+      climb = climb,
+      height_gain_m = height_gain_m,
+      average_gradient = average_gradient,
+      length_km = length_km,
+      max_gradient = max_gradient,
+      url = url,
+      description = climb_desc
+    )
+  })
+```
+
+> I have the following data regarding a top 100 climb for road cycling in the UK. 
+> 
+{climb: cheddar gorge; height_gain_m: 150; average_gradient = 0.05; length_km = 3.5 km; max_gradient = .16, url = "https://cyclinguphill.com/cheddar-gorge/"}
+
+You can create a prompt template for generating descriptions of climbing routes. Here’s an example template and some code:
+
+```r
+# Define a prompt template function
+create_prompt <- function(route_name, difficulty, altitude) {
+  paste("Describe the climbing route:", route_name,
+        "which has a difficulty rating of", difficulty,
+        "and reaches an altitude of", altitude, "meters.")
+}
+
+# Example usage
+prompt_example <- create_prompt("El Capitan", "5.12", 2307)
+print(prompt_example)
+```
+
+
+*Example screenshots from LM Studio can be inserted here to illustrate this process.*
+
+## 7. Saving & Visualizing Results in R
+### 7.1. Storing Generated Results Back into the Dataframe
+You can use `{purrr}` for efficient data manipulation, like so:
+
+```r
+library(purrr)
+
+# Save the generated descriptions
+final_data <- cleaned_data %>%
+  mutate(Description = map_chr(.x = create_prompt(RouteName, Difficulty, Altitude), .f = generate_text))
+```
+
+### 7.2. Visualizing Results
+Once you have your descriptions, visualize them using R’s plotting capabilities:
+
+```r
+# Simple visualization of descriptions
+ggplot(final_data, aes(x = RouteName, y = Description)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+## 8. Conclusion
+In this blog, we've explored the process of setting up LM Studio and integrating small language models into your R workflow. We discussed installation, creating custom functions to interact with the model, and ultimately generating text descriptions from a climbing dataset. We encourage you to delve deeper into the world of language models and discover their numerous applications.
+
+## 9. Call to Action
+Now it’s your turn! Try implementing the methods outlined in this blog and share your experiences or questions in the comments section below. Happy coding!
+
+## Additional Components:
+- **Screenshots and Visuals**: Include relevant screenshots from LM Studio at various steps for better clarity.
+- **Code Snippets**: Ensure code snippets are correctly formatted and easily readable throughout the blog.
+- **References and Further Reading**: Here are some useful links for further exploration:
+  - [LM Studio Documentation](https://lmstudio.com/docs)
+  - [Tidyverse Documentation](https://www.tidyverse.org/)
+  - [R for Data Science Book](https://r4ds.had.co.nz/)
+  
