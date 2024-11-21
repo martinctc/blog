@@ -1,8 +1,8 @@
 
 .highlight {
   // background-color: #efefef;
-  background-color: #d4d3d3;
-  padding: 7px 7px 7px 10px;
+  background-color: #727272;
+  padding: 3px 3px 3px 8px;
   border: 0.5px solid #ddd;
   -moz-box-shadow: 3px 3px rgba(0,0,0,0.1);
   -webkit-box-shadow: 3px 3px rgba(0,0,0,0.1);
@@ -14,7 +14,12 @@
 
 code {
   font-family:'Bitstream Vera Sans Mono','Courier', monospace;
-  white-space:pre-wrap
+  white-space:pre-wrap;
+  background-color: #727272; // Light gray background
+  padding: 1px 2px; // Adjust padding to make the background "shorter"
+  border-radius: 3px; // Optional: rounded corners
+  font-size: 80%; // Slightly smaller font size
+  color: #f8f8f8; // Text color
 }
 
 .highlight .c { color: #586E75 } /* Comment */
