@@ -1,7 +1,7 @@
 ---
 title: "Summarising Top 100 UK Climbs: Running Local Language Models with LM Studio and R"
 author: "Martin Chan"
-date: "November 20, 2024"
+date: "November 21, 2024"
 output:                    
   prettydoc::html_pretty:  
     theme: cayman          
@@ -13,17 +13,24 @@ library(prettyjekyll)
 # prettyjekyll::FormatPost("_knitr/Local_Language_Models_with_LM_Studio_and_R.Rmd")
 ```
 
-## 1. Introduction
+## Introduction
 
-Since my last entry on this blog, the landscape of data science has been massively disrupted by the advent of large language models (LLM). Areas in data science such as text mining and natural language processing have been revolutionised by the capabilities of these models. Remember the days of manually tagging and reading through text data? Well, they're long gone, and I can only say that [not all blog posts age equally well](https://martinctc.github.io/blog/a-short-r-package-review-rqda/) (Note: RQDA was one of my favourite R packages for analysing qualitative data; not only is it now redundant, it is also no longer available on CRAN). I am also not sure that there is much value anymore in [using n-gram / word frequency as well as word clouds to surface key themes from a large corpus of text data](https://martinctc.github.io/blog/Copy-and-paste_wordclouds_in_R/), when you can simply use a LLM these days to generate summaries and insights. 
+Since my last entry on this blog, the landscape of data science has been massively disrupted by the advent of large language models (LLM). Areas in data science such as text mining and natural language processing have been revolutionised by the capabilities of these models. 
 
-To get with the times (!), I have decided to explore the capabilities of [LM Studio](https://lmstudio.ai/), a platform that allows you to run language models _locally_. The benefit of running a language model locally is that you can interact with it directly from your R environment, without the need to rely on cloud-based services. There is no need to pay for API calls - as long as you can afford the electricity bill to run your computer, you can generate as much text as you want! 
+Remember the days of manually tagging and reading through text data? Well, they're long gone, and I can only say that [not all blog posts age equally well](https://martinctc.github.io/blog/a-short-r-package-review-rqda/) (RQDA was one of my favourite R packages for analysing qualitative data; not only is it now redundant, it is also no longer available on CRAN). I am also not sure that there is much value anymore in [using n-gram / word frequency as well as word clouds to surface key themes from a large corpus of text data](https://martinctc.github.io/blog/Copy-and-paste_wordclouds_in_R/), when you can simply use a LLM these days to generate summaries and insights. 
+
+To get with the times (!), I have decided to explore the capabilities of [LM Studio](https://lmstudio.ai/), a platform that allows you to run language models _locally_. The benefits of running a language model locally are:
+
+* you can interact with it directly from your R environment, without the need to rely on cloud-based services. 
+* There is no need to pay for API calls - as long as you can afford the electricity bill to run your computer, you can generate as much text as you want! 
 
 In this blog post, I will guide you through the process of setting up LM Studio, integrating it with R, and applying it to a dataset on [UK's top 100 cycling climbs](https://cyclinguphill.com/100-climbs/) (my latest pastime). We will create a custom function to interact with the language model, generate prompts for the model, and visualize the results. Let's get started!
 
-## 2. Setting Up LM Studio
+![image from Giphy](https://raw.githubusercontent.com/martinctc/blog/master/images/lm-studio/pidcock.gif)
 
-### 2.1. Install LM Studio and download models
+## Setting Up LM Studio
+
+### Install LM Studio and download models
 
 Before we begin, ensure you have the following installed: 
 
@@ -40,7 +47,7 @@ knitr::include_graphics("../images/lm-studio/load-model.PNG")
 
 To check that everything is working fine, go to the **Chat** tab on the sidebar and start a new chat to interact with the Phi-3 model directly. You've now got your language model up and running!
 
-### 2.2. Required R Packages
+### Required R Packages
 
 To effectively work with LM Studio, we will need several R packages: 
 
@@ -55,6 +62,7 @@ install.packages(c("tidyverse", "httr", "jsonlite"))
 ```
 
 Let us set up the R script by loading the packages and the data we will be working with: 
+
 ```{r load-packages-and-data, echo=TRUE, message=FALSE, warning=FALSE}
 # Load the packages
 library(tidyverse)
@@ -88,7 +96,7 @@ top_100_climbs_df_clean <- top_100_climbs_df %>%
     )
 ```
 
-### 2.3. Setting up the Local Endpoint
+### Setting up the Local Endpoint
 
 Once you have got your model in LM Studio up and running, you can set up a local endpoint to interact with it directly from your R environment.
 
@@ -107,11 +115,13 @@ knitr::include_graphics("../images/lm-studio/start-server.PNG")
 
 In this article, we will be using the chat completions endpoint for summarising / generating text. 
 
-## 3. Writing a Custom Function to Connect to the Local Endpoint
+## Writing a Custom Function to Connect to the Local Endpoint
 
 The next step here is to write a custom function that will allow us to send our prompt to the local endpoint and retrieve the response from the language model. Since we have 100 climbs to describe, writing a custom function allows us to scale the logic for interacting with the model, which save us time and reduces the risk of errors. We can also reuse this function as a template for other future projects.
 
-Below is a code snippet for creating a custom function to communicate with your local LM endpoint:
+### Creating a custom function
+
+Below is a code snippet for creating a custom function to communicate with your local LM Studio endpoint:
 
 ```{r}
 # Define a function to connect to the local endpoint
@@ -152,9 +162,11 @@ send_prompt <- function(system_prompt, user_prompt, endpoint = "http://localhost
   }
 }
 ```
+
 There are a couple of things to note in this function: 
 
 1. The `send_prompt` function takes in three arguments: `system_prompt`, `user_prompt`, and `endpoint`. 
+
   * We distinguish between the system and user prompts here, which is typically not necessary for a simple chat completion. However, it is useful for more complex interactions where you want to guide the model with specific prompts. The system prompt is typically used for providing overall guidance, context, tone, and boundaries for the behaviour of the AI, while the user prompt is the actual input that you want the AI to respond to.
   * The `endpoint` is the URL of the local server that we are connecting to. Note that we have used the chat completions endpoint here.
 
@@ -171,11 +183,11 @@ There are a couple of things to note in this function:
 
 Now that we have our function, let us test it out!
 
-### 3.3. Testing the Function
+### Testing the Function
 
 To ensure your function works as expected, run a simple test:
 
-```{r}
+```r
 # Test the generate_text function
 test_hill <- top_100_climbs_df_clean %>%
   slice(1) %>% # Select the first row
@@ -189,13 +201,17 @@ send_prompt(
   user_prompt = test_hill
   )
 ```
+```
+## [1] "Ladies and gentlemen, hold on to your helmets as we approach the infamous Cheddar Gorge climb – a true testament of resilience for any cyclist tackling this segment! Standing at an imposing height gain of approximately 150 meters over its lengthy stretch spanning just under four kilometers, it demands every last drop from our riders. The average gradient here is pitched at around a challenging 5%, but beware – the climb isn't forgiving with occasional sections that reach up to an extreme 16%! It’s not for the faint-hearted and certainly no place for those looking for respite along this grueling ascent. The Cheddar Gorge will separate contenders from pretenders, all in one breathtakingly scenic setting – a true masterclass of endurance that is sure to make any Tour de France rider's legs scream!"
+```
 
 Not too bad, right? 
 
-## 4. Running a prompt template on the Top 100 Climbs dataset 
+## Running a prompt template on the Top 100 Climbs dataset 
 
 What we have created in the previous section are effectively a prompt template for the system prompt, and the user prompt is made up of the data we have on the climbs, converted to JSON format. To apply this programmatically to all the 100 climbs, we can make use of the `purrr::pmap()` function in **tidyverse**, which can take a data frame as an input parameter and apply a function to each row of the data frame: 
-```{r}
+
+```r
 # Define system prompt
 sys_prompt <- paste(
   "I have the following data regarding a top 100 climb for road cycling in the UK.",
@@ -205,7 +221,7 @@ sys_prompt <- paste(
 # Generated descriptions for all climbs
 top_100_climbs_with_desc <-
   top_100_climbs_df_clean %>%
-  pmap(function(climb_id, climb, height_gain_m, average_gradient, length_km, max_gradient, url) {
+  pmap_dfr(function(climb_id, climb, height_gain_m, average_gradient, length_km, max_gradient, url) {
     user_prompt <- jsonlite::toJSON(
       list(
         climb = climb,
@@ -234,61 +250,24 @@ top_100_climbs_with_desc <-
   })
 ```
 
-> I have the following data regarding a top 100 climb for road cycling in the UK. 
-> 
-{climb: cheddar gorge; height_gain_m: 150; average_gradient = 0.05; length_km = 3.5 km; max_gradient = .16, url = "https://cyclinguphill.com/cheddar-gorge/"}
+The `top_100_climbs_with_desc` data frame now contains the original data on the top 100 climbs, with an additional column `description` that contains the text generated by the language model. Note that this part might take a little while to run, depending on the specs of your computer and which model you are using.  
 
-You can create a prompt template for generating descriptions of climbing routes. Here’s an example template and some code:
+Here are a few examples of the generated descriptions:
 
-```r
-# Define a prompt template function
-create_prompt <- function(route_name, difficulty, altitude) {
-  paste("Describe the climbing route:", route_name,
-        "which has a difficulty rating of", difficulty,
-        "and reaches an altitude of", altitude, "meters.")
-}
+> Box Hill is a challenging climb in the UK, with an average gradient of approximately 5%, and it stretches over a distance of just under 2 kilometers (130 meters height gain). The maximum gradient encountered on this ascent reaches up to 6%. For more detailed information about Box Hill's topography and statistics for road cyclists, you can visit the Cyclinguphill website: [https://cyclinguphill.com/box-hill/](https://cyclinguphill.com/box-hill/)
 
-# Example usage
-prompt_example <- create_prompt("El Capitan", "5.12", 2307)
-print(prompt_example)
-```
+> Ditchling Beacon stands as a formidable challenge within the UK's top climbs for road cycling, boasting an elevation gain of 142 meters over its length. With an average gradient that steepens at around 10%, cyclists can expect to face some serious resistance on this uphill battle. The total distance covered while tackling the full ascent is approximately 1.4 kilometers, and it's noteworthy for reaching a maximum gradient of up to 17%. For those keenly interested in road cycling climbs or looking to test their mettle against Ditchling Beacon's steep inclines, further details are readily available at [https://cyclinguphill.com/100-climbs/ditchling-beacon/](https://cyclinguphill.com/100-climbs/ditchling-beacon/).
+
+> Swains Lane is a challenging road climb featured on the top 100 list for UK cycling enthusiasts, standing proudly at number one with its distinctive characteristics: it offers an ascent of 71 meters over just under half a kilometer (0.9 km). The average gradient throughout this route maintains a steady and formidable challenge to riders, peaking at approximately eight percent—a testament to the climb's consistent difficulty level. For those seeking even more rigorous testing grounds, Swains Lane features sections where cyclists can face gradients soaring up to an impressive 20%, which not only pushes physical limits but also demands a high degree of technical skill and mental fortitude from the riders tackling this climb.Riders looking for more detailed information about this top-tier British road ascent can visit [https://cyclinguphill.com/swains-lane/](https://cyclinguphill.com/swains-lane/) where they will find comprehensive insights, including historical data on past climbs and comparisons with other challenging routes across the UK cycling landscape.
+
+If you are interested in exploring the entire dataset with the generated column, you can download this [here](https://github.com/martinctc/blog/blob/master/datasets/top_100_climbs_with_descriptions.csv).
 
 
-*Example screenshots from LM Studio can be inserted here to illustrate this process.*
+## Conclusion
 
-## 7. Saving & Visualizing Results in R
-### 7.1. Storing Generated Results Back into the Dataframe
-You can use `{purrr}` for efficient data manipulation, like so:
+In this blog, we've explored the process of setting up LM Studio and integrating local language models into your R workflow. We discussed installation, creating custom functions to interact with the model, setting up prompt templates, and ultimately generating text descriptions from a climbing dataset. 
 
-```r
-library(purrr)
-
-# Save the generated descriptions
-final_data <- cleaned_data %>%
-  mutate(Description = map_chr(.x = create_prompt(RouteName, Difficulty, Altitude), .f = generate_text))
-```
-
-### 7.2. Visualizing Results
-Once you have your descriptions, visualize them using R’s plotting capabilities:
-
-```r
-# Simple visualization of descriptions
-ggplot(final_data, aes(x = RouteName, y = Description)) +
-  geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-```
-
-## 8. Conclusion
-In this blog, we've explored the process of setting up LM Studio and integrating small language models into your R workflow. We discussed installation, creating custom functions to interact with the model, and ultimately generating text descriptions from a climbing dataset. We encourage you to delve deeper into the world of language models and discover their numerous applications.
-
-## 9. Call to Action
 Now it’s your turn! Try implementing the methods outlined in this blog and share your experiences or questions in the comments section below. Happy coding!
 
-## Additional Components:
-- **Screenshots and Visuals**: Include relevant screenshots from LM Studio at various steps for better clarity.
-- **Code Snippets**: Ensure code snippets are correctly formatted and easily readable throughout the blog.
-- **References and Further Reading**: Here are some useful links for further exploration:
-  - [LM Studio Documentation](https://lmstudio.com/docs)
-  - [Tidyverse Documentation](https://www.tidyverse.org/)
-  - [R for Data Science Book](https://r4ds.had.co.nz/)
+
   
