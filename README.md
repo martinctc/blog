@@ -15,6 +15,20 @@ Posts from this blog can be found on:
 - r-bloggers
 - RWeekly.org
 
+## Jekyll and Ruby
+
+To run the site locally, [jekyll](https://jekyllrb.com/docs/) is required, which in turn requires installing [Ruby](https://www.ruby-lang.org/en/downloads/). 
+
+Once **Ruby** and **gem** is installed, you can run this to install jekyll and other bundler gems: 
+```cmd
+gem install jekyll bundler
+gem install jekyll-sitemap 
+gem install jekyll-feed
+```
+
+Once everything is installed, run `jekyll serve` in the blog root directory. The console should show a link like 'http://127.0.0.1:4000/blog' for you to run on your browser. 
+
+
 ## Notes on {prettyjekyll}
 
 Requirements and features of FormatPost
