@@ -13,3 +13,6 @@ package.json
 jekyll-now-r-template.Rproj
 README.html
 *.html
+
+# Jekyll cache
+.jekyll-cache/
