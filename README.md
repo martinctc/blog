@@ -60,3 +60,7 @@ You can keep the default path to figures rendered by knitr. Caching is now suppo
 
 * To add a tag to a post, update the markdown files in `_posts` directly. 
 * To add a _new_ tag category, be sure to add a new markdown file under `blog/tag/`, following the layout and naming convention of the other files to match the tag name. This will make sure that a tagpage will be generated for the new tag category.
+
+## Other remarks
+
+* See [GitHub Pages dependency](https://pages.github.com/versions/) to check the jekyll dependencies used by GitHub Pages. 
