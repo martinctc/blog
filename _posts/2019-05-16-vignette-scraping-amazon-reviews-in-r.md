@@ -4,7 +4,7 @@ title: "Vignette: Scraping Amazon Reviews in R"
 author: "Martin Chan"
 date: "May 16, 2019"
 layout: post
-tags: vignettes r
+tags: vignettes r rvest
 image: http://martinctc.github.io/blog/images/amazon_got.PNG
 ---
 
