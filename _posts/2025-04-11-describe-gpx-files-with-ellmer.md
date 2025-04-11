@@ -2,18 +2,20 @@
 title: "Generate Route Titles and Descriptions from GPX Files with LLMs and {ellmer}"
 author: "Martin Chan"
 date: "April 11, 2025"
-tags: rstats LLMs GenAI GPX
+tags: rstats LLMs GenAI gpx
 layout: post
-image: https://raw.githubusercontent.com/martinctc/blog/master/images/gpxtoolbox/ellmer-gpx.jpg
+image: https://raw.githubusercontent.com/martinctc/blog/master/images/gpxtoolbox/cyclist-planning-route.png
 ---
 
 ## Introduction
 
-As someone who enjoys both cycling and coding in R, I've always wondered whether there are ways in which R (or data science more generally) could enhance training efficiency or the cycling experience. In the previous two posts in this blog, I wrote about using LLMs from [LM Studio](https://martinctc.github.io/blog/summarising-top-100-uk-climbs-running-local-language-models-with-lm-studio-and-r/) and [Azure](https://martinctc.github.io/blog/harness-azure-openai-and-r-summarisation-rvest/) to create text summaries and descriptions of the top 100 cycling climbs in the UK. As a sport that places heavy emphasis on data, there are actually plenty of opportunities to apply data science techniques to cycling. 
+![](https://raw.githubusercontent.com/martinctc/blog/master/images/gpxtoolbox/cyclist-planning-route.png)
+
+As someone who enjoys both cycling and coding in R, I've always wondered whether there are ways in which R (or data science more generally) could help with my training efficiency or the cycling experience. In the previous two posts in this blog, I wrote about using LLMs from [LM Studio](https://martinctc.github.io/blog/summarising-top-100-uk-climbs-running-local-language-models-with-lm-studio-and-r/) and [Azure OpenAI](https://martinctc.github.io/blog/harness-azure-openai-and-r-summarisation-rvest/) to create text summaries and descriptions of the top 100 cycling climbs in the UK. As a sport that places heavy emphasis on data, there are actually plenty of opportunities to apply data science techniques to cycling. 
 
 A recent opportunity for me is around the problem of planning cycle routes. Cycling routes are commonly stored in files with the extension `.gpx` (which stands for GPS Exchange Format), and they typically contain GPS data such as waypoints, routes, and tracks. GPX files are based on XML (Extensible Markup Language), meaning they use XML syntax to structure the data, making them both human-readable and machine-readable. 
 
-Each GPX file would represent a particular cycling route, and at a certain point, one would easily have accumulated over a hundred GPX files without a system to organise them. For instance,
+Each GPX file would represent a particular cycling route, and at a certain point, one would easily have accumulated over a hundred GPX files without a system to organise them. This poses a problem. For instance,
 
 * how would I figure out the distance and elevation of each route? 
 * is the route a loop, or is it a one-way route? 
@@ -26,9 +28,9 @@ With **a lot** of help from GitHub Copilot (so much so that I have to credit it 
 * Generate route maps and elevation profile graphs
 * Calculate total distance and elevation statistics
 * Identify locations at the start and end points of the route, as well as the 25%, 50%, and 75% marks 
-* Interface with LLMs with {ellmer} to generate a title and description of the GPX file. 
+* Interface with LLMs with [{ellmer}](https://ellmer.tidyverse.org/) to generate a title and description of the GPX file. The `{ellmer}` package provides a unified and consistent interface to interact with multiple large language model (LLM) providers, such as OpenAI, Azure OpenAI, Claude, and Gemini.
 
-What this essentially means is that there is now an R workflow to get from a GPX file (or hundreds of them) to an LLM-generated title and description for the route. Since {ellmer} allows you to interface with LLMs like OpenAI, Azure OpenAI, Claude, Gemini, and more, you can also play with the model options as well as the prompt to optimise the results. 
+What this essentially means is that there is now an R workflow to get from a GPX file (or hundreds of them) to an LLM-generated title and description for the route. Since {ellmer} allows you to interface with different LLMs, you can also play with the model options as well as the prompt to optimise the results. 
 
 This post will provide an introduction to {gpxtoolbox} and how to use it. 
 
