@@ -23,7 +23,7 @@ Each GPX file would represent a particular cycling route, and at a certain point
 
 The traditional way to figure this out is to manually load the GPX file into your route planner of choice, be it Strava, Komoot, Garmin, Hammerhead, etc., and again _manually_ give the route a title and a description. It's probably going to take 5 minutes to do this for each route - give or take - but why spend your time doing things manually when you can spend more time on the bike, right? 😊
 
-With **a lot** of help from GitHub Copilot (so much so that I have to credit it here), I created the [`gpxtoolbox`](https://github.com/martinchan/gpxtoolbox) package, which allows you to read in GPX files programmatically into R, and:
+With **a lot** of help from GitHub Copilot (so much so that I have to credit it here), I created the [`gpxtoolbox`](https://github.com/martinctc/gpxtoolbox) package, which allows you to read in GPX files programmatically into R, and:
 
 * Generate route maps and elevation profile graphs
 * Calculate total distance and elevation statistics
@@ -46,7 +46,7 @@ Let's start by installing the required packages:
 
 ```r
 install.packages("ellmer")
-devtools::install_github("martinchan/gpxtoolbox")
+devtools::install_github("martinctc/gpxtoolbox")
 ```
 
 Since {gpxtoolbox} is not (yet) available on CRAN, the above code installs this directly from the GitHub repository. 
