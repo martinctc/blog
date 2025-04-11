@@ -129,7 +129,7 @@ result <- gen_description(
   stats = stats,
   platform = "azure",
   api_key = Sys.getenv("OPENAI_API_KEY"),
-  model = "gpt-3.5-turbo"
+  deployment_id = "gpt-4o-mini"
 )
 
 cat(result)
@@ -143,7 +143,7 @@ The output will include a title and a detailed description of the route, highlig
 
 ### Step 3: Customizing the Prompt
 
-The `gen_description()` function uses a default prompt to generate the title and description. If you'd like to customize the output, you can use the `prompt` argument to supply your own prompt to the function. The template prompt, which is used as default, is stored in `desc_prompt.md` file included in the `{gpxtoolbox}` package. This allows you to tailor the tone and style of the generated text to your preferences.
+The `gen_description()` function uses a default prompt to generate the title and description. If you'd like to tailor the output, you can use the `prompt` argument to supply your own prompt to the function. The template prompt, which is used as default, is stored in `desc_prompt.md` file included in the `{gpxtoolbox}` package. This allows you to tailor the tone and style of the generated text to your preferences.
 
 ### Step 4: Visualizing the route
 
