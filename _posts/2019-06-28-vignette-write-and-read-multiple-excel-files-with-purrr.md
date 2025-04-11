@@ -4,7 +4,7 @@ title: "Vignette: Write & Read Multiple Excel files with purrr"
 author: "Martin Chan"
 date: "June 28, 2019"
 layout: post
-tags: tidyverse vignettes excel rdatatable r
+tags: tidyverse vignettes excel rdatatable r rstats
 image: http://martinctc.github.io/blog/images/hex-purrr.png
 ---
 
