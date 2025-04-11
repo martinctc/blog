@@ -4,7 +4,7 @@ title: "Working with SPSS labels in R"
 author: "Martin Chan"
 date: "June 13, 2019"
 layout: post
-tags: vignettes surveys r
+tags: vignettes surveys r rstats
 image: http://martinctc.github.io/blog/images/another-survey.jpg
 ---
 

@@ -4,7 +4,7 @@ title: "Vignette: Google Trends with the gtrendsR package"
 author: "Martin Chan"
 date: "October 18, 2019"
 layout: post
-tags: vignettes r
+tags: vignettes r rstats
 image: https://liberty4hk.github.io/img/music/glory-to-hk.jpg
 ---
 
