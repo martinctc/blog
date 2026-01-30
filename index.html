@@ -1,40 +1,93 @@
----
+﻿---
 layout: default
 title: All posts
 ---
 <!-- <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/bootstrap.min.css" /> -->
 <!-- <div style="width:image width px; font-size:80%; text-align:center;"><img src="https://martinctc.github.io/blog/images/alexandr-bormotin-Hd8b_WtKIck-unsplash.jpg" alt="Photo by Alexandr Bormotin on Unsplash" width="800px" style="padding-bottom:0.5em;" class="center">Hong Kong: Photo by Alexandr Bormotin on Unsplash</div> -->
 
-
 <h3><i class='fa fa-pencil'></i><i> {{ page.title }}</h3>
+
+<!-- Tag Filter Dropdown -->
+<div class="tag-filter-container">
+    <label for="tag-filter"><i class='fa fa-filter'></i> Filter by tag:</label>
+    <select id="tag-filter" onchange="filterByTag(this.value)">
+        <option value="all">Show All</option>
+        {% assign sorted_tags = site.tags | sort %}
+        {% for tag in sorted_tags %}
+            <option value="{{ tag[0] }}">{{ tag[0] }} ({{ tag[1].size }})</option>
+        {% endfor %}
+    </select>
+    <span id="post-count"></span>
+</div>
 
 <!-- <ul class="posts"> -->
 
   <!-- {% for post in site.posts %} -->
     <!-- <li><span>{{ post.date | date_to_string }}</span> -->
-		<!-- » <i class='fa fa-clock-o'></i><i>{% include readtime3.html content=post.content %}</i> -->
-	<!-- » <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>	 -->
-	<!-- </li> -->
+                <!-- Â <i class='fa fa-clock-o'></i><i>{% include readtime3.html content=post.content %}</i> -->
+                 <!-- Â <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>  -->
+        <!-- </li> -->
   <!-- {% endfor %} -->
-  
+
 <!-- </ul> -->
 
 <!-- Testing area for new layout -->
 <!-- <ul class="posts"> -->
   <!-- {% for post in site.posts %} -->
-	<!-- {% if post.image %} -->
-	<!-- <img src="{{ post.image }}" alt=""> -->
+        <!-- {% if post.image %} -->
+        <!-- <img src="{{ post.image }}" alt=""> -->
     <!-- {% endif %} -->
-	
+
     <!-- <span>{{ post.date | date_to_string }}</span> -->
-		<!-- » <i class='fa fa-clock-o'></i><i>{% include readtime3.html content=post.content %}</i> -->
-	<!-- » <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>		 -->
+                <!-- Â <i class='fa fa-clock-o'></i><i>{% include readtime3.html content=post.content %}</i> -->
+                 <!-- Â <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>          --> 
   <!-- {% endfor %} -->
  <!-- </ul> -->
 <style>
+.tag-filter-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tag-filter-container label {
+    font-weight: bold;
+    margin: 0;
+}
+
+#tag-filter {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    min-width: 180px;
+}
+
+#tag-filter:hover {
+    border-color: #999;
+}
+
+#tag-filter:focus {
+    outline: none;
+    border-color: #4a90d9;
+    box-shadow: 0 0 3px rgba(74, 144, 217, 0.5);
+}
+
+#post-count {
+    color: #666;
+    font-size: 14px;
+}
+
 .wrapper {
     <!-- width:600px; -->
-	height: 160px;
+        height: 160px;
     overflow:auto;
 }
 .wrapper>*{
@@ -48,41 +101,75 @@ title: All posts
     float: right;
     clear:both;
 }
-.floatLeft {   
+.floatLeft {
     clear:both;
-	float:left;
-	margin-right: 20px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	object-fit: cover;
-	<!-- overflow: hidden; -->
+        float:left;
+        margin-right: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        object-fit: cover;
+        <!-- overflow: hidden; -->
 }
 
-.floatLeft:hover {   
-	-webkit-transform: scale(1.1);
+.floatLeft:hover {
+        -webkit-transform: scale(1.1);
     transform: scale(1.1);
     -webkit-transition: all 0.8s;
-    transition: all 0.8s;    
+    transition: all 0.8s;
     opacity: 0.6;
-    filter: grayscale(10%) blur(1px) brightness(100%);  
+    filter: grayscale(10%) blur(1px) brightness(100%);
+}
+
+.wrapper.hidden {
+    display: none;
 }
 
 </style>
 
-<div class="container">	
-	{% for post in site.posts %}
-		<div class="wrapper">			
-				<a href="{{ site.baseurl }}{{ post.url }}">
-						<img class="floatLeft" src="{{ post.image }}" height="160" width="200">					
-						<div class="caption">
-							<h3>{{ post.title }}</h3>
-							<p>{{ post.date | date_to_string }}</p>
-							<p><i class='fa fa-clock-o'></i>{% include readtime3.html content=post.content %}</p>
-						</div>
-				</a>				
-		</div>
-	{% endfor %} 			
-</div>  
+<div class="container">
+        {% for post in site.posts %}
+                <div class="wrapper post-item" data-tags="{{ post.tags | join: ' ' }}">
+                                <a href="{{ site.baseurl }}{{ post.url }}">
+                                                <img class="floatLeft" src="{{ post.image }}" height="160" width="200">
+                                                <div class="caption">
+                                                        <h3>{{ post.title }}</h3>
+                                                        <p>{{ post.date | date_to_string }}</p>
+                                                        <p><i class='fa fa-clock-o'></i>{% include readtime3.html content=post.content %}</p>
+                                                </div>
+                                </a>
+                </div>
+        {% endfor %}
+</div>
+
+<script>
+function filterByTag(tag) {
+    const posts = document.querySelectorAll('.post-item');
+    let visibleCount = 0;
+    
+    posts.forEach(post => {
+        const postTags = post.getAttribute('data-tags').split(' ');
+        if (tag === 'all' || postTags.includes(tag)) {
+            post.classList.remove('hidden');
+            visibleCount++;
+        } else {
+            post.classList.add('hidden');
+        }
+    });
+    
+    const countSpan = document.getElementById('post-count');
+    const totalPosts = posts.length;
+    if (tag === 'all') {
+        countSpan.textContent = '';
+    } else {
+        countSpan.textContent = 'Showing ' + visibleCount + ' of ' + totalPosts + ' posts';
+    }
+}
+
+// Initialize count on page load
+document.addEventListener('DOMContentLoaded', function() {
+    filterByTag('all');
+});
+</script>
 
 <i class='fa fa-plus'></i><i> I also contribute to the following blogfeeds.
 Check them out!
@@ -90,7 +177,7 @@ Check them out!
 <ul>
     <li><a href="https://rweekly.org">R Weekly</a></li>
     <li><a href="https://www.r-bloggers.com/">r-bloggers</a></li>
-	<li><a href="https://www.r-craft.org/author/martin-chan/">R-craft.org</a></li>
+        <li><a href="https://www.r-craft.org/author/martin-chan/">R-craft.org</a></li>
 </ul>
 
 <i class='fa fa-plus'></i> Other affiliated sites
