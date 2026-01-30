@@ -81,8 +81,3 @@ exclude:
   - LICENSE
   - README.md
   - CNAME
-  - datasets
-  - dump
-  - examples
-  - knitr_files
-  - _knitr
