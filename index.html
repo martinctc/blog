@@ -12,9 +12,17 @@ title: All posts
     <label for="tag-filter"><i class='fa fa-filter'></i> Filter by tag:</label>
     <select id="tag-filter" onchange="filterByTag(this.value)">
         <option value="all">Show All</option>
-        {% assign sorted_tags = site.tags | sort %}
-        {% for tag in sorted_tags %}
-            <option value="{{ tag[0] }}">{{ tag[0] }} ({{ tag[1].size }})</option>
+        {% capture tags_with_counts %}
+        {% for tag in site.tags %}
+{{ tag[1].size | prepend: '0000' | slice: -4, 4 }}|||{{ tag[0] }}|||{{ tag[1].size }}***
+        {% endfor %}
+        {% endcapture %}
+        {% assign sorted_tags = tags_with_counts | split: '***' | sort | reverse %}
+        {% for tag_item in sorted_tags %}
+            {% assign tag_parts = tag_item | split: '|||' %}
+            {% if tag_parts[1] %}
+                <option value="{{ tag_parts[1] }}">{{ tag_parts[1] }} ({{ tag_parts[2] }})</option>
+            {% endif %}
         {% endfor %}
     </select>
     <span id="post-count"></span>
@@ -47,7 +55,7 @@ title: All posts
 .tag-filter-container {
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #f8f9fa;
+    background-color: #2d3748;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -58,20 +66,23 @@ title: All posts
 .tag-filter-container label {
     font-weight: bold;
     margin: 0;
+    color: #e2e8f0;
 }
 
 #tag-filter {
     padding: 8px 12px;
     font-size: 14px;
-    border: 1px solid #ccc;
+    border: 1px solid #4a5568;
     border-radius: 4px;
-    background-color: white;
+    background-color: #1a202c;
+    color: #e2e8f0;
     cursor: pointer;
     min-width: 180px;
 }
 
 #tag-filter:hover {
-    border-color: #999;
+    border-color: #718096;
+    background-color: #2d3748;
 }
 
 #tag-filter:focus {
@@ -80,8 +91,13 @@ title: All posts
     box-shadow: 0 0 3px rgba(74, 144, 217, 0.5);
 }
 
+#tag-filter option {
+    background-color: #1a202c;
+    color: #e2e8f0;
+}
+
 #post-count {
-    color: #666;
+    color: #cbd5e0;
     font-size: 14px;
 }
 
