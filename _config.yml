@@ -47,6 +47,13 @@ disqus: martinctc
 
 # Enter your Google Analytics web tracking code (e.g. UA-2110908-2) to activate tracking
 google_analytics: UA-138721086-1
+
+# Self-hosted, privacy-preserving analytics. The tracker stays disabled while
+# either host or website_id is empty.
+umami:
+  host: "https://ca-umami-prod.lemonglacier-6a5930b7.uksouth.azurecontainerapps.io"
+  website_id: "c9140473-61ef-40ef-b042-e69045d3b054"
+  domains: "martinctc.github.io"
 #
 # !! You don't need to change any of the configuration flags below !!
 #

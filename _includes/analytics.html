@@ -13,7 +13,17 @@
 		});
 	</script>
 	<!-- End Google Analytics -->
+{% endif %}
+
+{% if site.umami.host and site.umami.website_id %}
 	<!-- Umami Analytics -->
-	<script defer src="https://cloud.umami.is/script.js" data-website-id="0900783b-c31b-466c-b0b9-3dc77dcf8ce2"></script>
-	
+	<script
+		defer
+		src="{{ site.umami.host }}/script.js"
+		data-website-id="{{ site.umami.website_id }}"
+		data-domains="{{ site.umami.domains }}"
+		data-do-not-track="true"
+		data-exclude-search="true"
+		data-exclude-hash="true"></script>
+	<!-- End Umami Analytics -->
 {% endif %}
