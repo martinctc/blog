@@ -7,6 +7,15 @@ title: All posts
 
 <h3><i class='fa fa-pencil'></i><i> {{ page.title }}</h3>
 
+<div class="status-note">
+    <p><strong>Status:</strong> Active archive + new posts when I have something meaningful to share.</p>
+    <p><strong>Latest post:</strong> {{ site.posts.first.date | date: "%d %b %Y" }}.</p>
+    <p>This blog focuses on R/data-science workflows, with recent writing also covering LLMs, Copilot-related workflows, and practical analytics topics.</p>
+    <p>
+        Start with the latest posts below, or use the tag filter to browse by topic.
+    </p>
+</div>
+
 <!-- Tag Filter Dropdown -->
 <div class="tag-filter-container">
     <label for="tag-filter"><i class='fa fa-filter'></i> Filter by tag:</label>
@@ -101,6 +110,19 @@ title: All posts
     font-size: 14px;
 }
 
+.status-note {
+    margin-bottom: 20px;
+    padding: 16px;
+    border: 1px solid #4a5568;
+    background-color: #1f2937;
+    border-radius: 6px;
+    color: #dbe4f0;
+}
+
+.status-note p {
+    margin: 8px 0;
+}
+
 .wrapper {
     <!-- width:600px; -->
         height: 160px;
@@ -187,18 +209,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<i class='fa fa-plus'></i><i> I also contribute to the following blogfeeds.
-Check them out!
-
+<h4><i class='fa fa-plus'></i> Elsewhere</h4>
 <ul>
-    <li><a href="https://rweekly.org">R Weekly</a></li>
-    <li><a href="https://www.r-bloggers.com/">r-bloggers</a></li>
-        <li><a href="https://www.r-craft.org/author/martin-chan/">R-craft.org</a></li>
+    <li><a href="https://martinctc.github.io/">Personal website</a></li>
+    <li><a href="https://www.linkedin.com/in/martin-chan-tc/">LinkedIn</a></li>
+    <li><a href="https://github.com/martinctc">GitHub profile</a></li>
+    <li><a href="https://microsoft.github.io/vivainsights/">vivainsights (R)</a></li>
+    <li><a href="https://microsoft.github.io/vivainsights-py/">vivainsights (Python)</a></li>
+    <li><a href="https://microsoft.github.io/viva-insights-sample-code/">Viva Insights sample code</a></li>
 </ul>
 
-<i class='fa fa-plus'></i> Other affiliated sites
+<h4><i class='fa fa-plus'></i> Also featured on</h4>
 <ul>
-    <li><a href="https://www.r-users.com/">Jobs for R-users</a></li>
+    <li><a href="https://rweekly.org">R Weekly</a></li>
+    <li><a href="https://www.r-bloggers.com/">R-bloggers</a></li>
+    <li><a href="https://www.r-craft.org/author/martin-chan/">R-craft</a></li>
 </ul>
 
 {% include tag-cloud.html %}
