@@ -1,7 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="dark">
   <head>
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	<script>
+	  // Resolve the colour theme before first paint: stored preference wins,
+	  // otherwise fall back to the OS-level colour scheme. Dark is the default.
+	  (function () {
+	    var theme = 'dark';
+	    try {
+	      var stored = localStorage.getItem('theme');
+	      if (stored === 'light' || stored === 'dark') {
+	        theme = stored;
+	      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+	        theme = 'light';
+	      }
+	    } catch (e) { /* localStorage unavailable - fall back to dark */ }
+	    document.documentElement.setAttribute('data-theme', theme);
+	  })();
+	</script>
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }} – {{ site.description }}</title>
 
     {% include meta.html %}
@@ -33,6 +49,10 @@
             <p class="site-description">{{ site.description }}</p>
           </div>
 
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light mode">
+            <i class="fa fa-sun" aria-hidden="true"></i>
+          </button>
+
           <nav>
             <a href="{{ site.baseurl }}/"><i class='fa fa-home'></i> Home</a> 
 			<a href="{{ site.url }}/about.html"><i class='fa fa-user'></i> About</a>
@@ -55,5 +75,29 @@
     </div>
 	
     {% include analytics.html %}	
+
+    <script>
+      (function () {
+        var toggle = document.getElementById('theme-toggle');
+        if (!toggle) { return; }
+        var icon = toggle.querySelector('i');
+
+        function applyTheme(theme) {
+          document.documentElement.setAttribute('data-theme', theme);
+          var nextTheme = theme === 'light' ? 'dark' : 'light';
+          toggle.setAttribute('aria-label', 'Switch to ' + nextTheme + ' mode');
+          toggle.setAttribute('aria-pressed', theme === 'light');
+          if (icon) { icon.className = 'fa ' + (theme === 'light' ? 'fa-moon' : 'fa-sun'); }
+        }
+
+        toggle.addEventListener('click', function () {
+          var theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+          try { localStorage.setItem('theme', theme); } catch (e) { /* ignore */ }
+          applyTheme(theme);
+        });
+
+        applyTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+      })();
+    </script>
   </body>
 </html>
