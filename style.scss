@@ -24,10 +24,10 @@ html {
 }
 
 body {
-    background: $darkGray;
+    background: var(--color-bg);
     font: 18px/1.4 $trebuchet2;
     // color: $white;
-    color: #DEDEDE;
+    color: var(--color-text);
 }
 
 .container {
@@ -39,7 +39,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $trebuchet2;
-  color: $white;
+  color: var(--color-heading);
 
   line-height: 1.7;
   margin: 1em 0 15px;
@@ -78,18 +78,18 @@ p {
 // Newly added for image captions
 .caption{
   font-size: 12px;
-  color: #d6d6d6;
+  color: var(--color-text-muted);
 }
 
 // This affects links
 //
 a {
-    color: #33CC99; // Previously #69b8ff for light blue
+    color: var(--color-accent);
     text-decoration: none;
     cursor: pointer;
 
     &:hover, &:active {
-        color: #66FFCC; // Previously #B5DCFF for an even lighter blue
+        color: var(--color-accent-hover);
     }
 }
 
@@ -133,18 +133,18 @@ img {
 
 .date {
   font-style: italic;
-  color: #66FFCC; // Previously #9FE4EB
+  color: var(--color-accent-hover);
 }
 
 // Specify the color of the selection
 // moz is for Mozilla
 ::-moz-selection {
-  color: #48585d; // Previously #1d94ff for 'Windows' blue
-  background: #1d94ff; 
+  color: var(--color-selection-text);
+  background: var(--color-selection-bg);
 }
 ::selection {
-  color: #48585d;
-  background: #1d94ff; // Previously $white
+  color: var(--color-selection-text);
+  background: var(--color-selection-bg);
 }
 
 // Nicolas Gallagher's micro clearfix hack
@@ -173,7 +173,7 @@ img {
 
 .masthead {
   padding: 20px 0;
-  border-bottom: 1px solid #D3D3D3;
+  border-bottom: 1px solid var(--color-border);
 
   @include mobile {
     text-align: center;
@@ -209,7 +209,7 @@ img {
 
 .site-name {
   margin: 0;
-  color: #D3D3D3;
+  color: var(--color-text-muted);
   cursor: pointer;
   font-family: $trebuchet2;
   font-weight: 300;
@@ -219,7 +219,7 @@ img {
 
 .site-description {
   margin: -5px 0 0 0;
-  color: #FFFFFF;
+  color: var(--color-heading);
   font-size: 16px;
 
   @include mobile {
@@ -243,14 +243,14 @@ nav {
 
   a {
     margin-left: 20px;
-    color: #D3D3D3;
+    color: var(--color-border);
     text-align: right;
     font-weight: 300;
     letter-spacing: 1px;
 
     @include mobile {
       margin: 0 10px;
-      color: #B5DCFF;
+      color: var(--color-accent);
     }
   }
 }
@@ -261,7 +261,7 @@ nav {
 
 .posts > .post {
   padding-bottom: 2em;
-  border-bottom: 1px solid $darkGray;
+  border-bottom: 1px solid var(--color-border-muted);
 }
 
 .posts > .post:last-child {
@@ -272,9 +272,9 @@ nav {
 .post {
   blockquote {
     margin: 1.8em .8em;
-    border-left: 2px solid #FFAF8E;
+    border-left: 2px solid var(--color-blockquote);
     padding: 0.1em 1em;
-    color: #FFAF8E;
+    color: var(--color-blockquote);
     font-size: 22px;
     font-style: italic;
   }
@@ -291,9 +291,9 @@ nav {
 
 .wrapper-footer {
   margin-top: 50px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  background-color: $darkGray;
+  border-top: 1px solid var(--color-border-muted);
+  border-bottom: 1px solid var(--color-border-muted);
+  background-color: var(--color-bg);
 }
 
 footer {
@@ -303,21 +303,21 @@ footer {
 
 // Add formatting for tags 20190908
 .tag_format {
-    background-color: #48585d; // slate grey
+    background-color: var(--color-tag-bg);
     border-radius: 10px; // creates rounded corners
     padding: 2px; /*add this if you want a bit of space around the text*/
     font: 18px/1.4 $trebuchet2;
-    color: #33CC99; // Defines colour of tag icons
+    color: var(--color-accent); // Defines colour of tag icons
     a {
         margin-left: 0px;
-        color: #FFFFFF;
+        color: var(--color-heading);
         text-align: left;
         font-weight: 100;
         letter-spacing: 1px;
 
         @include mobile {
             margin: 0 10px;
-            color: #FFFFFF;
+            color: var(--color-heading);
         }
     }
 }

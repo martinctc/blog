@@ -1,4 +1,3 @@
-
 //
 // VARIABLES
 //
@@ -10,22 +9,62 @@
   }
 }
 
-// Colors
-$blue: #4183C4;
+// Design tokens.
+// Colors are exposed as CSS custom properties so they can be themed via the
+// `data-theme` attribute on the <html> element (set by the light/dark toggle).
+// Dark is the default; light overrides live under `[data-theme="light"]`.
+:root {
+  --color-bg: #333;
+  --color-surface: #222;
+  --color-raised: #2d3748;
+  --color-input-bg: #1a202c;
+  --color-text: #DEDEDE;
+  --color-text-muted: #d6d6d6;
+  --color-heading: #fff;
+  --color-border: #D3D3D3;
+  --color-border-muted: #ddd;
+  --color-accent: #00bc8c;
+  --color-accent-hover: #66FFCC;
+  --color-on-accent: #fff;
+  --color-quote: #819198;
+  --color-blockquote: #FFAF8E;
+  --color-code-bg: #727272;
+  --color-code-text: #f8f8f8;
+  --color-code-border: #ddd;
+  --color-tag-bg: #48585d;
+  --color-table-alt: #f2f2f2;
+  --color-selection-bg: #1d94ff;
+  --color-selection-text: #fff;
+}
 
-// Grays
-$black: #000;
-$darkerGray: #222;
-$darkGray: #333;
-$gray: #666;
-$lightGray: #eee;
-$white: #fff;
+[data-theme="light"] {
+  --color-bg: #ffffff;
+  --color-surface: #f7f7f7;
+  --color-raised: #eef2f6;
+  --color-input-bg: #ffffff;
+  --color-text: #222222;
+  --color-text-muted: #555555;
+  --color-heading: #222222;
+  --color-border: #D3D3D3;
+  --color-border-muted: #e0e0e0;
+  --color-accent: #00bc8c;
+  --color-accent-hover: #00a37c;
+  --color-on-accent: #ffffff;
+  --color-quote: #6b7280;
+  --color-blockquote: #c96a41;
+  --color-code-bg: #f3f6fa;
+  --color-code-text: #383e41;
+  --color-code-border: #dce6f0;
+  --color-tag-bg: #e6f4ec;
+  --color-table-alt: #fafafa;
+  --color-selection-bg: #cce5ff;
+  --color-selection-text: #003366;
+}
 
 // Font stacks
 $helvetica: Helvetica, Arial, sans-serif;
 $helveticaNeue: "Helvetica Neue", Helvetica, Arial, sans-serif;
 $georgia: Georgia, serif;
-$trebuchet: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
+$trebuchet: Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;
 $trebuchet2: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
 $garamond: "Palatino Linotype", Palatino, Palladio, "URW Palladio L", "Book Antiqua", Baskerville, "Bookman Old Style", "Bitstream Charter", "Nimbus Roman No9 L", Garamond, "Apple Garamond", "ITC Garamond Narrow", "New Century Schoolbook", "Century Schoolbook", "Century Schoolbook L", Georgia, serif;
-
