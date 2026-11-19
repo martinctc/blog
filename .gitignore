@@ -1,6 +1,7 @@
 _site
 .DS_Store
 .jekyll
+.jekyll-cache
 .jekyll-metadata
 .bundle
 .sass-cache
@@ -12,7 +13,12 @@ package.json
 .Rhistory
 jekyll-now-r-template.Rproj
 README.html
-*.html
+*.Rproj
+.vscode/
 
 # Jekyll cache
 .jekyll-cache/
+
+# Scratch / leftover files
+_temp_index.html
+dump/

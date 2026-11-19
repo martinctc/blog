@@ -1,4 +1,1 @@
-jekyll serve
-
-# Keep terminal open
-$SHELL
+bundle exec jekyll serve
