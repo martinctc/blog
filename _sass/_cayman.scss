@@ -31,7 +31,7 @@
   border: solid 1px var(--color-code-border);
   border-radius: 0.4rem;
   line-height: 1.45;
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .entry pre code, .entry pre tt {
