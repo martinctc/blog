@@ -16,7 +16,7 @@ layout: default
   <div class ="tags">
   {% for tag in page.tags %}
     {% capture tag_name %}{{ tag }}{% endcapture %}
-    <span class="tag_format"><i class='fa fa-tag'></i>&nbsp;<a href="{{ site.baseurl }}/tag/{{ tag_name }}">{{ tag_name }}</code>&nbsp;</a></span>
+    <span class="tag_format"><i class='fa fa-tag'></i>&nbsp;<a href="{{ site.baseurl }}/tag/{{ tag_name }}">{{ tag_name }}</a>&nbsp;</span>
   {% endfor %}
  </div>  
 
